@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WeatherPro Welcome Page</title>
 
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
   <!-- Your custom CSS -->
   <link rel="stylesheet" href="welcome.css" />
 </head>
@@ -17,71 +14,137 @@
   <div class="container-box">
 
     <!-- Progress Indicators -->
-    <div id="progress" class="flex gap-2 mb-8"></div>
+    <div id="progress" class="progress-container"></div>
 
     <!-- Content -->
-    <div class="text-center mb-8">
+    <div class="content-center">
       <div id="iconContainer" class="icon-wrapper"></div>
 
-      <h2 id="stepTitle" class="text-gray-900 mb-4 text-2xl font-semibold"></h2>
-      <p id="stepDescription" class="text-gray-600 text-lg leading-relaxed max-w-lg mx-auto"></p>
+      <h2 id="stepTitle" class="step-title"></h2>
+      <p id="stepDescription" class="step-description"></p>
     </div>
 
     <!-- Feature Grid -->
-    <div id="featureGrid" class="grid sm:grid-cols-2 gap-4 mb-8 hidden">
-      <div class="feature-card bg-blue-50 border-blue-100">
-        <h4 class="text-gray-900 mb-1">7-Day Forecasts</h4>
-        <p class="text-gray-600 text-sm">Detailed weekly weather predictions</p>
+    <div id="featureGrid" class="feature-grid hidden">
+      <div class="feature-card blue-card">
+        <h4>7-Day Forecasts</h4>
+        <p>Detailed weekly weather predictions</p>
       </div>
-      <div class="feature-card bg-purple-50 border-purple-100">
-        <h4 class="text-gray-900 mb-1">Weather Alerts</h4>
-        <p class="text-gray-600 text-sm">Real-time severe weather warnings</p>
+      <div class="feature-card purple-card">
+        <h4>Weather Alerts</h4>
+        <p>Real-time severe weather warnings</p>
       </div>
-      <div class="feature-card bg-green-50 border-green-100">
-        <h4 class="text-gray-900 mb-1">Historical Data</h4>
-        <p class="text-gray-600 text-sm">Compare past weather trends</p>
+      <div class="feature-card green-card">
+        <h4>Historical Data</h4>
+        <p>Compare past weather trends</p>
       </div>
-      <div class="feature-card bg-orange-50 border-orange-100">
-        <h4 class="text-gray-900 mb-1">Customizable</h4>
-        <p class="text-gray-600 text-sm">Personalize your experience</p>
+      <div class="feature-card orange-card">
+        <h4>Customizable</h4>
+        <p>Personalize your experience</p>
       </div>
     </div>
 
     <!-- Navigation -->
-    <div class="flex items-center justify-between gap-4">
+    <div class="nav-container">
       <div>
         <button id="prevBtn" class="nav-btn hidden">
-          <span class="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-            </svg>
-            Previous
-          </span>
+          &larr; Previous
         </button>
       </div>
 
-      <div class="flex gap-2">
+      <div class="nav-right">
         <button id="skipBtn" class="nav-btn">Skip</button>
-
-        <button id="nextBtn" class="next-btn">
-          <span id="nextText" class="flex items-center">
-            Next
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-          </span>
-        </button>
+        <button id="nextBtn" class="next-btn">Next &rarr;</button>
       </div>
     </div>
 
     <!-- Step Counter -->
-    <div id="stepCounter" class="text-center mt-6 text-gray-500 text-sm"></div>
+    <div id="stepCounter" class="step-counter"></div>
 
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const steps = [
+        {
+          title: "Welcome to WeatherPro",
+          description: "Your personalized weather dashboard is just a few steps away.",
+          icon: "☀️"
+        },
+        {
+          title: "Track Your Locations",
+          description: "Save multiple locations to see forecasts quickly.",
+          icon: "📍"
+        },
+        {
+          title: "Stay Alert",
+          description: "Get notified of severe weather and temperature changes.",
+          icon: "⚡"
+        },
+        {
+          title: "Explore Features",
+          description: "Access 7-day forecasts, historical data, and customizable settings.",
+          icon: "🧭",
+          showFeatures: true
+        }
+      ];
+
+      let currentStep = 0;
+
+      const stepTitle = document.getElementById("stepTitle");
+      const stepDescription = document.getElementById("stepDescription");
+      const iconContainer = document.getElementById("iconContainer");
+      const featureGrid = document.getElementById("featureGrid");
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const skipBtn = document.getElementById("skipBtn");
+      const stepCounter = document.getElementById("stepCounter");
+      const progress = document.getElementById("progress");
+
+      function renderStep() {
+        const step = steps[currentStep];
+        stepTitle.textContent = step.title;
+        stepDescription.textContent = step.description;
+        iconContainer.textContent = step.icon;
+        featureGrid.classList.toggle("hidden", !step.showFeatures);
+
+        prevBtn.classList.toggle("hidden", currentStep === 0);
+        nextBtn.textContent = currentStep === steps.length - 1 ? "Finish" : "Next";
+        stepCounter.textContent = `Step ${currentStep + 1} of ${steps.length}`;
+
+        // Render progress indicators
+        progress.innerHTML = "";
+        for (let i = 0; i < steps.length; i++) {
+          const dot = document.createElement("span");
+          dot.className = "progress-dot";
+          if (i === currentStep) dot.classList.add("active");
+          progress.appendChild(dot);
+        }
+      }
+
+      prevBtn.addEventListener("click", () => {
+        if (currentStep > 0) {
+          currentStep--;
+          renderStep();
+        }
+      });
+
+      nextBtn.addEventListener("click", () => {
+        if (currentStep < steps.length - 1) {
+          currentStep++;
+          renderStep();
+        } else {
+          alert("Welcome setup completed!");
+        }
+      });
+
+      skipBtn.addEventListener("click", () => {
+        alert("Welcome setup skipped!");
+      });
+
+      renderStep();
+    });
+  </script>
 
 </body>
 </html>

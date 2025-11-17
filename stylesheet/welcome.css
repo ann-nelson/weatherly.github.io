@@ -1,61 +1,115 @@
-/* Background */
-.main-bg {
-  min-height: 100vh;
-  display: flex;
-  background: linear-gradient(to bottom right, #3b82f6, #4f46e5, #9333ea);
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
+body.main-bg {
+  font-family: Arial, sans-serif;
+  background-color: #f4f5f7;
+  margin: 0;
+  padding: 0;
 }
 
-/* Main card container */
 .container-box {
-  max-width: 42rem;
-  width: 100%;
-  padding: 2rem 3rem;
-  background: white;
-  border-radius: 1rem;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  text-align: center;
 }
 
-/* Icon circle */
 .icon-wrapper {
-  width: 5rem;
-  height: 5rem;
-  border-radius: 9999px;
-  display: inline-flex;
-  align-items: center;
+  font-size: 50px;
+  margin-bottom: 20px;
+}
+
+.step-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.step-description {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.feature-grid {
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  margin-bottom: 1.5rem;
+  gap: 15px;
+  margin-bottom: 30px;
 }
 
-/* Feature cards */
 .feature-card {
-  padding: 1rem;
-  border: 1px solid;
-  border-radius: 0.5rem;
+  padding: 15px;
+  border-radius: 8px;
+  width: 45%;
+  box-sizing: border-box;
+  text-align: left;
 }
 
-/* Buttons */
-.nav-btn {
-  padding: 0.5rem 1rem;
-  background: #f3f4f6;
-  color: #374151;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
+.blue-card { background-color: #e0f0ff; border: 1px solid #a0d4ff; }
+.purple-card { background-color: #f0e0ff; border: 1px solid #d4a0ff; }
+.green-card { background-color: #e0ffe0; border: 1px solid #a0ffa0; }
+.orange-card { background-color: #fff4e0; border: 1px solid #ffd4a0; }
+
+.feature-card h4 {
+  margin: 0 0 5px 0;
+  font-size: 16px;
 }
 
-.nav-btn:hover {
-  background: #e5e7eb;
+.feature-card p {
+  margin: 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-right {
+  display: flex;
+  gap: 10px;
+}
+
+.nav-btn, .next-btn {
+  padding: 8px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
 }
 
 .next-btn {
-  padding: 0.5rem 1rem;
-  background: #2563eb;
-  color: white;
-  border-radius: 0.5rem;
+  background-color: #1e90ff;
+  color: #fff;
+  border: none;
 }
 
-.next-btn:hover {
-  background: #1d4ed8;
+.nav-btn.hidden {
+  display: none;
 }
+
+.step-counter {
+  margin-top: 15px;
+  font-size: 12px;
+  color: #888;
+}
+
+.progress-container {
+  margin-bottom: 20px;
+}
+
+.progress-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin: 0 3px;
+  border-radius: 50%;
+  background-color: #ccc;
+}
+
+.progress-dot.active {
+  background-color: #1e90ff;
+}
+
