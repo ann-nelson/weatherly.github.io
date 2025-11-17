@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Weather Alerts</title>
+  <link rel="stylesheet" href="alerts.css" />
+</head>
+
+<body class="page">
+
+  <div id="alerts-container" class="container">
+
+    <div class="header">
+      <h2>Weather Alerts</h2>
+      <p>Active warnings and advisories for your locations</p>
+    </div>
+
+    <div id="alert-list"></div>
+
+    <!-- No alerts -->
+    <div id="no-alerts" class="no-alerts hidden">
+      <div class="no-alerts-icon">ℹ️</div>
+      <h3>No Active Alerts</h3>
+      <p>There are currently no weather alerts for your saved locations.</p>
+    </div>
+
+    <!-- Alert Settings -->
+    <div class="alert-settings">
+      <div class="settings-icon">ℹ️</div>
+      <div>
+        <h3>Alert Notifications</h3>
+        <p>
+          Stay informed about weather conditions in your saved locations. Configure notification preferences in Settings.
+        </p>
+        <div class="settings-tags">
+          <span>Severe Weather</span>
+          <span>Temperature Alerts</span>
+          <span>Precipitation</span>
+          <span>Air Quality</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detailed Alert View -->
+  <div id="detailed-alert" class="hidden"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
