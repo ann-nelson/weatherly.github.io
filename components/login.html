@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+  <div class="login-container">
+    <div class="card">
+      <!-- Logo -->
+      <div class="logo-section">
+        <div class="logo-circle">☁️</div>
+        <h2 id="formTitle">Welcome Back</h2>
+        <p id="formSubtitle">Sign in to access your saved locations and preferences</p>
+      </div>
+
+      <!-- Form -->
+      <form id="loginForm">
+        <div id="nameField" class="form-group hidden">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" placeholder="John Doe">
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="you@example.com">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="••••••••">
+          <p id="passwordHint" class="hint hidden">Must be at least 6 characters</p>
+        </div>
+
+        <div id="errorMessage" class="error-message hidden"></div>
+
+        <button type="submit" class="btn btn-primary" id="submitButton">Sign In</button>
+      </form>
+
+      <!-- Demo Account -->
+      <div class="demo-info">
+        <p><strong>Quick Start:</strong> Click "Try Demo Account" to explore the app instantly, or create your own account to save personalized locations.</p>
+        <p class="small">Demo account comes with pre-loaded sample locations. Your data is saved only in your browser.</p>
+        <button type="button" class="btn btn-outline" id="demoBtn">☁️ Try Demo Account</button>
+      </div>
+
+      <!-- Toggle login/signup -->
+      <div class="toggle-form">
+        <p id="toggleText">
+          Don't have an account? 
+          <button type="button" id="toggleBtn">Sign up</button>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let isSignup = false;
+
+    const loginForm = document.getElementById('loginForm');
+    const nameField = document.getElementById('nameField');
+    const passwordHint = document.getElementById('passwordHint');
+    const formTitle = document.getElementById('formTitle');
+    const formSubtitle = document.getElementById('formSubtitle');
+    const submitButton = document.getElementById('submitButton');
+    const toggleBtn = document.getElementById('toggleBtn');
+    const toggleText = document.getElementById('toggleText');
+    const errorMessage = document.getElementById('errorMessage');
+    const demoBtn = document.getElementById('demoBtn');
+
+    function showError(message) {
+      errorMessage.textContent = message;
+      errorMessage.classList.remove('hidden');
+    }
+
+    function hideError() {
+      errorMessage.classList.add('hidden');
+      errorMessage.textContent = '';
+    }
+
+    function toggleForm() {
+      isSignup = !isSignup;
+      nameField.classList.toggle('hidden', !isSignup);
+      passwordHint.classList.toggle('hidden', !isSignup);
+      formTitle.textContent = isSignup ? 'Create Account' : 'Welcome Back';
+      formSubtitle.textContent = isSignup
+        ? 'Sign up to start tracking weather at your favorite locations'
+        : 'Sign in to access your saved locations and preferences';
+      submitButton.textContent = isSignup ? 'Create Account' : 'Sign In';
+      toggleText.innerHTML = isSignup
+        ? 'Already have an account? <button type="button" id="toggleBtn">Sign in</button>'
+        : 'Don\'t have an account? <button type="button" id="toggleBtn">Sign up</button>';
+      document.getElementById('toggleBtn').addEventListener('click', toggleForm);
+      hideError();
+    }
+
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      hideError();
+
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!email || !password) {
+        showError('Please fill in all required fields');
+        return;
+      }
+      if (isSignup && !name) {
+        showError('Please enter your name');
+        return;
+      }
+      if (password.length < 6) {
+        showError('Password must be at least 6 characters');
+        return;
+      }
+
+      const usersData = localStorage.getItem('users');
+      const users = usersData ? JSON.parse(usersData) : [];
+
+      if (isSignup) {
+        const existingUser = users.find(u => u.email === email);
+        if (existingUser) {
+          showError('An account with this email already exists');
+          return;
+        }
+        const newUser = { id: Date.now().toString(), name, email, createdAt: new Date().toISOString() };
+        users.push(newUser);
+        localStorage.setItem('users', JSON.stringify(users));
+        alert('Account created! Logged in as ' + name);
+      } else {
+        const user = users.find(u => u.email === email);
+        if (!user) {
+          showError('No account found with this email. Please sign up first.');
+          return;
+        }
+        alert('Logged in as ' + user.name);
+      }
+    });
+
+    demoBtn.addEventListener('click', function() {
+      const demoUser = { id: 'demo-user-001', name: 'Demo User', email: 'demo@weatherpro.com', createdAt: new Date('2024-01-01').toISOString() };
+      const usersData = localStorage.getItem('users');
+      const users = usersData ? JSON.parse(usersData) : [];
+      if (!users.find(u => u.id === demoUser.id)) {
+        users.push(demoUser);
+        localStorage.setItem('users', JSON.stringify(users));
+      }
+      alert('Logged in as Demo User');
+    });
+
+    toggleBtn.addEventListener('click', toggleForm);
+  </script>
+</body>
+</html>
