@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WeatherPro Welcome Page</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Your custom CSS -->
+  <link rel="stylesheet" href="welcome.css" />
+</head>
+
+<body class="main-bg">
+
+  <div class="container-box">
+
+    <!-- Progress Indicators -->
+    <div id="progress" class="flex gap-2 mb-8"></div>
+
+    <!-- Content -->
+    <div class="text-center mb-8">
+      <div id="iconContainer" class="icon-wrapper"></div>
+
+      <h2 id="stepTitle" class="text-gray-900 mb-4 text-2xl font-semibold"></h2>
+      <p id="stepDescription" class="text-gray-600 text-lg leading-relaxed max-w-lg mx-auto"></p>
+    </div>
+
+    <!-- Feature Grid -->
+    <div id="featureGrid" class="grid sm:grid-cols-2 gap-4 mb-8 hidden">
+      <div class="feature-card bg-blue-50 border-blue-100">
+        <h4 class="text-gray-900 mb-1">7-Day Forecasts</h4>
+        <p class="text-gray-600 text-sm">Detailed weekly weather predictions</p>
+      </div>
+      <div class="feature-card bg-purple-50 border-purple-100">
+        <h4 class="text-gray-900 mb-1">Weather Alerts</h4>
+        <p class="text-gray-600 text-sm">Real-time severe weather warnings</p>
+      </div>
+      <div class="feature-card bg-green-50 border-green-100">
+        <h4 class="text-gray-900 mb-1">Historical Data</h4>
+        <p class="text-gray-600 text-sm">Compare past weather trends</p>
+      </div>
+      <div class="feature-card bg-orange-50 border-orange-100">
+        <h4 class="text-gray-900 mb-1">Customizable</h4>
+        <p class="text-gray-600 text-sm">Personalize your experience</p>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="flex items-center justify-between gap-4">
+      <div>
+        <button id="prevBtn" class="nav-btn hidden">
+          <span class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            Previous
+          </span>
+        </button>
+      </div>
+
+      <div class="flex gap-2">
+        <button id="skipBtn" class="nav-btn">Skip</button>
+
+        <button id="nextBtn" class="next-btn">
+          <span id="nextText" class="flex items-center">
+            Next
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Step Counter -->
+    <div id="stepCounter" class="text-center mt-6 text-gray-500 text-sm"></div>
+
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>

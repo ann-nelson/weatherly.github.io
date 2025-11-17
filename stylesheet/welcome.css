@@ -1,0 +1,61 @@
+/* Background */
+.main-bg {
+  min-height: 100vh;
+  display: flex;
+  background: linear-gradient(to bottom right, #3b82f6, #4f46e5, #9333ea);
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+/* Main card container */
+.container-box {
+  max-width: 42rem;
+  width: 100%;
+  padding: 2rem 3rem;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Icon circle */
+.icon-wrapper {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Feature cards */
+.feature-card {
+  padding: 1rem;
+  border: 1px solid;
+  border-radius: 0.5rem;
+}
+
+/* Buttons */
+.nav-btn {
+  padding: 0.5rem 1rem;
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+}
+
+.nav-btn:hover {
+  background: #e5e7eb;
+}
+
+.next-btn {
+  padding: 0.5rem 1rem;
+  background: #2563eb;
+  color: white;
+  border-radius: 0.5rem;
+}
+
+.next-btn:hover {
+  background: #1d4ed8;
+}
