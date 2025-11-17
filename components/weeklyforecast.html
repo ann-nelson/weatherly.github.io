@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weekly Forecast</title>
+  <link rel="stylesheet" href="weekly.css" />
+</head>
+
+<body class="page">
+
+  <div class="container">
+    
+    <!-- Header -->
+    <div class="header">
+      <h2>7-Day Forecast</h2>
+      <p id="locationInfo"></p>
+    </div>
+
+    <!-- Current Weather Summary -->
+    <div class="current-weather">
+      <div class="current-info">
+        
+        <div class="weather-left">
+          <p class="label">Current Weather</p>
+
+          <div class="temp-row">
+            <span id="temp" class="temperature"></span>
+            <span id="condition" class="condition-text"></span>
+          </div>
+
+          <div class="weather-details">
+            <span id="high"></span>
+            <span id="low"></span>
+            <span id="humidity" class="hide-on-mobile"></span>
+            <span id="wind" class="hide-on-mobile"></span>
+          </div>
+
+          <div class="weather-details mobile-only">
+            <span id="humidityMobile"></span>
+            <span id="windMobile"></span>
+          </div>
+        </div>
+
+        <div id="weatherIcon" class="weather-icon">☀️</div>
+      </div>
+    </div>
+
+    <!-- Weekly Forecast Grid -->
+    <div id="weeklyGrid" class="weekly-grid"></div>
+
+  </div>
+
+  <script src="weekly.js"></script>
+
+</body>
+</html>
