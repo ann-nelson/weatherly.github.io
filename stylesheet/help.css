@@ -1,0 +1,164 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f9fafb;
+  margin: 0;
+  padding: 20px;
+  color: #333;
+}
+
+.container {
+  max-width: 1000px;
+  margin: auto;
+}
+
+.page-title {
+  font-size: 1.8rem;
+  margin-bottom: 5px;
+}
+
+.page-subtitle {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media(min-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.icon-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+.blue { background: #dbeafe; color: #3b82f6; }
+.purple { background: #ede9fe; color: #8b5cf6; }
+.green { background: #dcfce7; color: #10b981; }
+.orange { background: #ffedd5; color: #f97316; }
+.indigo { background: #e0e7ff; color: #4f46e5; }
+
+.card-subtitle {
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+  color: #555;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+}
+
+textarea { min-height: 120px; }
+
+.btn {
+  background: #3b82f6;
+  color: white;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #2563eb;
+}
+
+.quick-help .help-card {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.help-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.help-card h4 {
+  margin: 0 0 5px 0;
+  font-size: 0.95rem;
+}
+
+.help-card p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.help-card a {
+  color: #3b82f6;
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+.help-card a:hover {
+  text-decoration: underline;
+}
+
+/* Accordion */
+.accordion-item {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.accordion-trigger {
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  padding: 10px 0;
+  font-size: 0.95rem;
+  cursor: pointer;
+  color: #1f2937;
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  padding-left: 20px;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.accordion-content.open {
+  max-height: 500px;
+  padding: 5px 0 10px 20px;
+}
