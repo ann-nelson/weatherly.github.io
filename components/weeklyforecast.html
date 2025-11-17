@@ -51,7 +51,59 @@
 
   </div>
 
-  <script src="weekly.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+      // Sample data for demonstration
+      const currentWeather = {
+        location: "New York, NY",
+        temp: 75,
+        condition: "Sunny",
+        high: 78,
+        low: 68,
+        humidity: 55,
+        wind: 10,
+        icon: "☀️"
+      };
+
+      const weeklyForecast = [
+        { day: "Mon", high: 78, low: 65, condition: "Sunny", icon: "☀️" },
+        { day: "Tue", high: 80, low: 66, condition: "Cloudy", icon: "☁️" },
+        { day: "Wed", high: 82, low: 68, condition: "Rain", icon: "🌧️" },
+        { day: "Thu", high: 79, low: 67, condition: "Thunderstorm", icon: "⛈️" },
+        { day: "Fri", high: 77, low: 65, condition: "Sunny", icon: "☀️" },
+        { day: "Sat", high: 76, low: 64, condition: "Partly Cloudy", icon: "⛅" },
+        { day: "Sun", high: 75, low: 63, condition: "Sunny", icon: "☀️" },
+      ];
+
+      // Populate current weather
+      document.getElementById("locationInfo").textContent = currentWeather.location;
+      document.getElementById("temp").textContent = `${currentWeather.temp}°`;
+      document.getElementById("condition").textContent = currentWeather.condition;
+      document.getElementById("high").textContent = `H: ${currentWeather.high}°`;
+      document.getElementById("low").textContent = `L: ${currentWeather.low}°`;
+      document.getElementById("humidity").textContent = `Humidity: ${currentWeather.humidity}%`;
+      document.getElementById("wind").textContent = `Wind: ${currentWeather.wind} mph`;
+      document.getElementById("humidityMobile").textContent = `Humidity: ${currentWeather.humidity}%`;
+      document.getElementById("windMobile").textContent = `Wind: ${currentWeather.wind} mph`;
+      document.getElementById("weatherIcon").textContent = currentWeather.icon;
+
+      // Populate weekly forecast grid
+      const weeklyGrid = document.getElementById("weeklyGrid");
+      weeklyForecast.forEach(day => {
+        const card = document.createElement("div");
+        card.className = "day-card";
+        card.innerHTML = `
+          <p class="day">${day.day}</p>
+          <div class="icon">${day.icon}</div>
+          <p class="condition">${day.condition}</p>
+          <p class="temp">H: ${day.high}° / L: ${day.low}°</p>
+        `;
+        weeklyGrid.appendChild(card);
+      });
+
+    });
+  </script>
 
 </body>
 </html>

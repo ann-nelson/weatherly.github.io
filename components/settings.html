@@ -145,6 +145,74 @@
 
 </div>
 
-<script src="settings.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const el = id => document.getElementById(id);
+
+  const fields = {
+    temperatureUnit: "fahrenheit",
+    timeFormat: "12h",
+    fontSize: "medium",
+    contrastMode: "normal",
+    notifications: true,
+    severeWeatherAlerts: true,
+    dailyForecast: true,
+    temperatureChanges: false,
+    autoRefresh: true,
+    showHumidity: true,
+    showWindSpeed: true,
+    showPrecipitation: true
+  };
+
+  // Load values from localStorage
+  Object.keys(fields).forEach(key => {
+    const stored = localStorage.getItem(key);
+    if (stored !== null) {
+      fields[key] = stored === "true" ? true : stored === "false" ? false : stored;
+    }
+
+    if (typeof fields[key] === "boolean") {
+      el(key).checked = fields[key];
+    } else {
+      el(key).value = fields[key];
+    }
+  });
+
+  // Show/hide notification options
+  const showNotificationOptions = () => {
+    el("notificationOptions").style.display = el("notifications").checked ? "block" : "none";
+  };
+  el("notifications").addEventListener("change", showNotificationOptions);
+  showNotificationOptions();
+
+  // Save button
+  el("saveBtn").addEventListener("click", () => {
+    Object.keys(fields).forEach(key => {
+      const input = el(key);
+      const val = input.type === "checkbox" ? input.checked : input.value;
+      localStorage.setItem(key, val);
+    });
+    alert("Settings saved successfully!");
+  });
+
+  // Reset button
+  el("resetBtn").addEventListener("click", () => {
+    Object.keys(fields).forEach(key => {
+      const def = fields[key];
+      if (typeof def === "boolean") {
+        el(key).checked = def;
+        localStorage.setItem(key, def);
+      } else {
+        el(key).value = def;
+        localStorage.setItem(key, def);
+      }
+    });
+    showNotificationOptions();
+    alert("Settings reset to defaults!");
+  });
+});
+</script>
+
 </body>
 </html>
+

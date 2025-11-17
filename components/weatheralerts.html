@@ -45,6 +45,67 @@
   <!-- Detailed Alert View -->
   <div id="detailed-alert" class="hidden"></div>
 
-  <script src="app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const alertList = document.getElementById("alert-list");
+      const noAlerts = document.getElementById("no-alerts");
+      const detailedAlert = document.getElementById("detailed-alert");
+
+      // Load alerts from localStorage or use sample data
+      const alertsData = JSON.parse(localStorage.getItem("weatherAlerts")) || [
+        {
+          id: 1,
+          title: "Severe Thunderstorm Warning",
+          location: "New York, NY",
+          severity: "High",
+          description: "A severe thunderstorm is approaching with heavy rain and wind."
+        },
+        {
+          id: 2,
+          title: "Flash Flood Advisory",
+          location: "Houston, TX",
+          severity: "Medium",
+          description: "Heavy rain may cause flash flooding in low-lying areas."
+        }
+      ];
+
+      function renderAlerts() {
+        alertList.innerHTML = "";
+
+        if (!alertsData || alertsData.length === 0) {
+          noAlerts.classList.remove("hidden");
+          return;
+        }
+
+        noAlerts.classList.add("hidden");
+
+        alertsData.forEach(alert => {
+          const card = document.createElement("div");
+          card.className = "alert-card";
+          card.innerHTML = `
+            <h4>${alert.title}</h4>
+            <p><strong>Location:</strong> ${alert.location}</p>
+            <p><strong>Severity:</strong> ${alert.severity}</p>
+          `;
+          card.addEventListener("click", () => showDetailedAlert(alert));
+          alertList.appendChild(card);
+        });
+      }
+
+      function showDetailedAlert(alert) {
+        detailedAlert.classList.remove("hidden");
+        detailedAlert.innerHTML = `
+          <h3>${alert.title}</h3>
+          <p><strong>Location:</strong> ${alert.location}</p>
+          <p><strong>Severity:</strong> ${alert.severity}</p>
+          <p>${alert.description}</p>
+        `;
+        detailedAlert.scrollIntoView({ behavior: "smooth" });
+      }
+
+      renderAlerts();
+    });
+  </script>
+
 </body>
 </html>
