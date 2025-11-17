@@ -97,24 +97,37 @@ function setView(view) {
   renderMainContent();
 }
 
+function renderLoginPage() {
+  fetch('./components/login.html') // adjust the path
+    .then(response => response.text())
+    .then(html => {
+      mainContent.innerHTML = html;
+
+      // Add event listener for login button
+      const loginBtn = document.getElementById('loginBtn');
+      if (loginBtn) {
+        loginBtn.addEventListener('click', () => loginUser(defaultUser));
+      }
+    })
+    .catch(err => {
+      mainContent.innerHTML = `<p>Error loading login page.</p>`;
+      console.error(err);
+    });
+}
+
+
 function renderApp() {
-  if(!state.isAuthenticated){
-    mainContent.innerHTML = `
-      <div class="login-page">
-        <h2>Login</h2>
-        <button id="loginBtn" class="btn">Login as John Doe</button>
-      </div>
-    `;
-    document.getElementById('loginBtn').addEventListener('click', ()=>loginUser(defaultUser));
+  if (!state.isAuthenticated) {
+    renderLoginPage(); // use fetch-based function
     return;
   }
 
-  // Update header info
+  // Update header info and render main content for logged-in users
   userName.textContent = state.currentUser.name;
   userEmail.textContent = state.currentUser.email;
-
   renderMainContent();
 }
+
 
 /* Function to load component HTML (even if it has <html> and <body>) */
 function loadComponentHTML(filePath){
@@ -129,15 +142,15 @@ function loadComponentHTML(filePath){
 
 function renderMainContent(){
   const viewMap = {
-    dashboard: 'components/saved.html',
-    search: 'components/search.html',
-    past: 'components/pastWeather.html',
-    alerts: 'components/weatherAlerts.html',
-    settings: 'components/settings.html',
-    help: 'components/help.html',
-    profile: 'components/profilePage.html',
-    weekly: 'components/weeklyForecast.html',
-    daily: 'components/dailyForecast.html'
+    dashboard: '/components/saved.html',
+    search: '/components/search.html',
+    past: '/components/pastWeather.html',
+    alerts: '/components/weatherAlerts.html',
+    settings: '/components/settings.html',
+    help: '/components/help.html',
+    profile: '/components/profilePage.html',
+    weekly: '/components/weeklyForecast.html',
+    daily: '/components/dailyForecast.html'
   };
 
   const filePath = viewMap[state.currentView];
@@ -148,18 +161,30 @@ function renderMainContent(){
   }
 
   if(state.currentView === 'weekly' && state.selectedLocation){
-    // Example: add dynamic data to weekly forecast
-    mainContent.innerHTML = `
-      <h2>Weekly Forecast for ${state.selectedLocation.name}</h2>
-      <button class="btn" id="backDashboardBtn">← Back to Dashboard</button>
-      <div class="forecast">[Weekly forecast data here]</div>
-    `;
-    document.getElementById('backDashboardBtn').addEventListener('click', ()=>{
-      state.currentView='dashboard';
-      renderMainContent();
+  fetch('./components/weeklyforecast.html') // adjust path to your file
+    .then(response => response.text())
+    .then(html => {
+      mainContent.innerHTML = html;
+
+      // Add dynamic content (e.g., location name)
+      const title = mainContent.querySelector('#weeklyTitle');
+      if(title) title.textContent = `Weekly Forecast for ${state.selectedLocation.name}`;
+
+      // Back button
+      const backBtn = mainContent.querySelector('#backDashboardBtn');
+      if(backBtn) backBtn.addEventListener('click', () => {
+        state.currentView = 'dashboard';
+        renderMainContent();
+      });
+    })
+    .catch(err => {
+      mainContent.innerHTML = `<p>Error loading weekly forecast.</p>`;
+      console.error(err);
     });
-    return;
-  }
+
+  return;
+}
+
 
   // Load HTML component dynamically
   loadComponentHTML(filePath)
