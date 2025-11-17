@@ -6,10 +6,10 @@
 <title>Weatherly</title>
 <link rel="stylesheet" href="index.css">
 <style>
-/* Minimal inline CSS for welcome page visibility */
-.hidden { display: none; }
-.progress-dot { display: inline-block; width: 10px; height: 10px; margin: 0 3px; border-radius: 50%; background-color: #ccc; }
-.progress-dot.active { background-color: #007bff; }
+  /* Minimal inline CSS for welcome page visibility */
+  .hidden { display: none; }
+  .progress-dot { display: inline-block; width: 10px; height: 10px; margin: 0 3px; border-radius: 50%; background-color: #ccc; }
+  .progress-dot.active { background-color: #007bff; }
 </style>
 </head>
 <body>
@@ -73,7 +73,7 @@ const profileBtn = document.getElementById('profileBtn');
 const logoutBtn = document.getElementById('logoutBtn');
 const navButtons = document.querySelectorAll('.nav-btn');
 
-/* ---------- Functions ---------- */
+/* ---------- Helper Functions ---------- */
 function loginUser(user) {
   state.isAuthenticated = true;
   state.currentUser = user;
@@ -92,6 +92,16 @@ function logoutUser() {
 function setView(view) {
   state.currentView = view;
   renderMainContent();
+}
+
+function loadComponentHTML(filePath) {
+  return fetch(filePath)
+    .then(res => res.text())
+    .then(htmlText => {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(htmlText, 'text/html');
+      return doc.body.innerHTML;
+    });
 }
 
 /* ---------- Welcome Page ---------- */
@@ -150,31 +160,25 @@ function renderWelcomePage() {
     nextBtn.textContent = currentStep === steps.length - 1 ? "Finish" : "Next";
     stepCounter.textContent = `Step ${currentStep + 1} of ${steps.length}`;
 
-    // progress dots
     progress.innerHTML = "";
     steps.forEach((_, i) => {
       const dot = document.createElement("span");
       dot.className = "progress-dot";
-      if (i === currentStep) dot.classList.add("active");
+      if(i === currentStep) dot.classList.add("active");
       progress.appendChild(dot);
     });
   }
 
   prevBtn.addEventListener("click", () => {
-    if (currentStep > 0) {
-      currentStep--;
-      renderStep();
-    }
+    if(currentStep > 0) { currentStep--; renderStep(); }
   });
 
   nextBtn.addEventListener("click", () => {
-    if (currentStep < steps.length - 1) {
-      currentStep++;
-      renderStep();
-    } else {
+    if(currentStep < steps.length - 1) { currentStep++; renderStep(); }
+    else {
       state.hasSeenWelcome = true;
       localStorage.setItem('hasSeenWelcome', 'true');
-      renderLoginPage();
+      renderLoginPage(); // show login AFTER welcome
     }
   });
 
@@ -198,39 +202,30 @@ function renderLoginPage() {
   document.getElementById('loginBtn').addEventListener('click', () => loginUser(defaultUser));
 }
 
-/* ---------- Component Loader ---------- */
-function loadComponentHTML(filePath){
-  return fetch(filePath)
-    .then(res => res.text())
-    .then(htmlText => {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(htmlText, 'text/html');
-      return doc.body.innerHTML;
-    });
-}
-
-function renderMainContent(){
+/* ---------- Render Main Content ---------- */
+function renderMainContent() {
   const viewMap = {
-    dashboard: '/components/saved.html',
-    search: '/components/search.html',
-    past: '/components/pastWeather.html',
-    alerts: '/components/weatherAlerts.html',
-    settings: '/components/settings.html',
-    help: '/components/help.html',
-    profile: '/components/profilePage.html',
-    weekly: '/components/weeklyForecast.html',
-    daily: '/components/dailyForecast.html'
+    dashboard: 'components/saved.html',
+    search: 'components/search.html',
+    past: 'components/pastWeather.html',
+    alerts: 'components/weatherAlerts.html',
+    settings: 'components/settings.html',
+    help: 'components/help.html',
+    profile: 'components/profilePage.html',
+    weekly: 'components/weeklyForecast.html',
+    daily: 'components/dailyForecast.html'
   };
 
-  if(!state.isAuthenticated){
+  if(!state.isAuthenticated) {
     mainContent.innerHTML = '<p>Please login first.</p>';
     return;
   }
 
   const filePath = viewMap[state.currentView];
 
-  if(state.currentView === 'weekly' && state.selectedLocation){
-    fetch('/components/weeklyForecast.html')
+  // Special case for weekly view with selected location
+  if(state.currentView === 'weekly' && state.selectedLocation) {
+    fetch('components/weeklyForecast.html')
       .then(res => res.text())
       .then(html => {
         mainContent.innerHTML = html;
@@ -249,17 +244,10 @@ function renderMainContent(){
 
 /* ---------- App Renderer ---------- */
 function renderApp() {
-  if (!state.isAuthenticated) {
-    if (!state.hasSeenWelcome) {
-      renderWelcomePage();
-      return;
-    } else {
-      renderLoginPage();
-      return;
-    }
-  }
+  if(!state.hasSeenWelcome) { renderWelcomePage(); return; }
+  if(!state.isAuthenticated) { renderLoginPage(); return; }
 
-  // logged-in header info
+  // Logged-in user
   userName.textContent = state.currentUser.name;
   userEmail.textContent = state.currentUser.email;
   renderMainContent();
@@ -268,10 +256,8 @@ function renderApp() {
 /* ---------- Event Listeners ---------- */
 profileBtn.addEventListener('click', ()=>setView('profile'));
 logoutBtn.addEventListener('click', logoutUser);
-navButtons.forEach(btn=>{
-  btn.addEventListener('click', e=>{
-    setView(e.currentTarget.dataset.view);
-  });
+navButtons.forEach(btn => {
+  btn.addEventListener('click', e => setView(e.currentTarget.dataset.view));
 });
 
 /* ---------- Initial Render ---------- */
@@ -279,3 +265,4 @@ renderApp();
 </script>
 </body>
 </html>
+
