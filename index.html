@@ -26,12 +26,12 @@
 
   <!-- Navigation -->
   <nav id="navBar" class="nav-bar">
-    <button class="nav-btn" data-view="dashboard">Dashboard</button>
-    <button class="nav-btn" data-view="search">Search</button>
-    <button class="nav-btn" data-view="past">Past Weather</button>
-    <button class="nav-btn" data-view="alerts">Alerts</button>
-    <button class="nav-btn" data-view="settings">Settings</button>
-    <button class="nav-btn" data-view="help">Help</button>
+    <button class="nav-btn" data-view="dashboard" data-src="components/saved.html">Dashboard</button>
+    <button class="nav-btn" data-view="search" data-src="components/search.html">Search</button>
+    <button class="nav-btn" data-view="past" data-src="components/pastWeather.html">Past Weather</button>
+    <button class="nav-btn" data-view="alerts" data-src="components/weatherAlerts.html">Alerts</button>
+    <button class="nav-btn" data-view="settings" data-src="components/settings.html">Settings</button>
+    <button class="nav-btn" data-view="help" data-src="components/help.html">Help</button>
   </nav>
 
   <!-- Main Content -->
@@ -41,12 +41,12 @@
 
   <!-- Bottom nav for mobile -->
   <nav class="bottom-nav">
-    <button class="nav-btn" data-view="dashboard">🏠</button>
-    <button class="nav-btn" data-view="search">📍</button>
-    <button class="nav-btn" data-view="past">📊</button>
-    <button class="nav-btn" data-view="alerts">⚠️</button>
-    <button class="nav-btn" data-view="settings">⚙️</button>
-    <button class="nav-btn" data-view="help">❓</button>
+    <button class="nav-btn" data-view="dashboard" data-src="components/saved.html">🏠</button>
+    <button class="nav-btn" data-view="search" data-src="components/search.html">📍</button>
+    <button class="nav-btn" data-view="past" data-src="components/pastWeather.html">📊</button>
+    <button class="nav-btn" data-view="alerts" data-src="components/weatherAlerts.html">⚠️</button>
+    <button class="nav-btn" data-view="settings" data-src="components/settings.html">⚙️</button>
+    <button class="nav-btn" data-view="help" data-src="components/help.html">❓</button>
   </nav>
 </div>
 
@@ -116,79 +116,67 @@ function renderApp() {
   renderMainContent();
 }
 
-function renderMainContent() {
-  switch(state.currentView){
-    case 'dashboard':
-      mainContent.innerHTML = `
-        <h2>Dashboard</h2>
-        <div class="locations">
-          ${state.savedLocations.map(loc=>`
-            <div class="location-card">
-              <span class="loc-icon">${loc.icon}</span>
-              <span class="loc-name">${loc.name}, ${loc.country}</span>
-              <span class="loc-temp">${loc.temp}°F</span>
-              <button class="btn-small" data-id="${loc.id}">View</button>
-            </div>
-          `).join('')}
-        </div>
-      `;
-      document.querySelectorAll('.btn-small').forEach(btn=>{
-        btn.addEventListener('click', e=>{
-          const id = e.target.dataset.id;
-          state.selectedLocation = state.savedLocations.find(loc=>loc.id===id);
-          state.currentView='weekly';
-          renderMainContent();
-        });
-      });
-      break;
+/* Function to load component HTML (even if it has <html> and <body>) */
+function loadComponentHTML(filePath){
+  return fetch(filePath)
+    .then(res => res.text())
+    .then(htmlText => {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(htmlText, 'text/html');
+      return doc.body.innerHTML; // Only get the body content
+    });
+}
 
-    case 'weekly':
-      mainContent.innerHTML = `
-        <h2>Weekly Forecast for ${state.selectedLocation.name}</h2>
-        <button class="btn" id="backDashboardBtn">← Back to Dashboard</button>
-        <div class="forecast">[Weekly forecast data here]</div>
-      `;
-      document.getElementById('backDashboardBtn').addEventListener('click', ()=>{
-        state.currentView='dashboard';
-        renderMainContent();
-      });
-      break;
+function renderMainContent(){
+  const viewMap = {
+    dashboard: 'components/saved.html',
+    search: 'components/search.html',
+    past: 'components/pastWeather.html',
+    alerts: 'components/weatherAlerts.html',
+    settings: 'components/settings.html',
+    help: 'components/help.html',
+    profile: 'components/profilePage.html',
+    weekly: 'components/weeklyForecast.html',
+    daily: 'components/dailyForecast.html'
+  };
 
-    case 'search':
-      mainContent.innerHTML = `<h2>Search Locations</h2><p>Search page placeholder</p>`;
-      break;
+  const filePath = viewMap[state.currentView];
 
-    case 'past':
-      mainContent.innerHTML = `<h2>Past Weather</h2><p>Past weather data placeholder</p>`;
-      break;
-
-    case 'alerts':
-      mainContent.innerHTML = `<h2>Weather Alerts</h2><p>Alerts placeholder</p>`;
-      break;
-
-    case 'settings':
-      mainContent.innerHTML = `<h2>Settings</h2><p>Settings placeholder</p>`;
-      break;
-
-    case 'help':
-      mainContent.innerHTML = `<h2>Help & Feedback</h2><p>Help placeholder</p>`;
-      break;
-
-    case 'profile':
-      mainContent.innerHTML = `
-        <h2>User Profile</h2>
-        <p>Name: ${state.currentUser.name}</p>
-        <p>Email: ${state.currentUser.email}</p>
-      `;
-      break;
+  if(!state.isAuthenticated){
+    mainContent.innerHTML = '<p>Please login first.</p>';
+    return;
   }
+
+  if(state.currentView === 'weekly' && state.selectedLocation){
+    // Example: add dynamic data to weekly forecast
+    mainContent.innerHTML = `
+      <h2>Weekly Forecast for ${state.selectedLocation.name}</h2>
+      <button class="btn" id="backDashboardBtn">← Back to Dashboard</button>
+      <div class="forecast">[Weekly forecast data here]</div>
+    `;
+    document.getElementById('backDashboardBtn').addEventListener('click', ()=>{
+      state.currentView='dashboard';
+      renderMainContent();
+    });
+    return;
+  }
+
+  // Load HTML component dynamically
+  loadComponentHTML(filePath)
+    .then(content => mainContent.innerHTML = content)
+    .catch(err => {
+      mainContent.innerHTML = `<p>Error loading page: ${state.currentView}</p>`;
+      console.error(err);
+    });
 }
 
 /* Event Listeners */
 profileBtn.addEventListener('click', ()=>setView('profile'));
 logoutBtn.addEventListener('click', logoutUser);
 navButtons.forEach(btn=>{
-  btn.addEventListener('click', e=>setView(e.currentTarget.dataset.view));
+  btn.addEventListener('click', e=>{
+    setView(e.currentTarget.dataset.view);
+  });
 });
 
 /* Initial Render */
