@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Weatherly</title>
 <link rel="stylesheet" href="index.css">
+<style>
+/* Minimal inline CSS for welcome page visibility */
+.hidden { display: none; }
+.progress-dot { display: inline-block; width: 10px; height: 10px; margin: 0 3px; border-radius: 50%; background-color: #ccc; }
+.progress-dot.active { background-color: #007bff; }
+</style>
 </head>
 <body>
 <div class="app-container">
@@ -26,27 +32,29 @@
 
   <!-- Navigation -->
   <nav id="navBar" class="nav-bar">
-    <button class="nav-btn" data-view="dashboard" src="/components/saved.html">Dashboard</button>
-    <button class="nav-btn" data-view="search" src="/components/search.html">Search</button>
-    <button class="nav-btn" data-view="past" src="components/pastWeather.html">Past Weather</button>
-    <button class="nav-btn" data-view="alerts" src="components/weatherAlerts.html">Alerts</button>
-    <button class="nav-btn" data-view="settings" src="components/settings.html">Settings</button>
-    <button class="nav-btn" data-view="help" src="components/help.html">Help</button>
+    <button class="nav-btn" data-view="dashboard">Dashboard</button>
+    <button class="nav-btn" data-view="search">Search</button>
+    <button class="nav-btn" data-view="past">Past Weather</button>
+    <button class="nav-btn" data-view="alerts">Alerts</button>
+    <button class="nav-btn" data-view="settings">Settings</button>
+    <button class="nav-btn" data-view="help">Help</button>
   </nav>
 
   <!-- Main Content -->
   <main id="mainContent" class="main-content">
     <!-- Dynamic content loaded here -->
   </main>
+</div>
 
 <script>
-/* State */
+/* ---------- State ---------- */
 let state = {
   isAuthenticated: false,
   currentUser: null,
   currentView: 'dashboard',
   savedLocations: [],
-  selectedLocation: null
+  selectedLocation: null,
+  hasSeenWelcome: localStorage.getItem('hasSeenWelcome') === 'true'
 };
 
 /* Sample Data */
@@ -57,7 +65,7 @@ const defaultLocations = [
   {id:'3', name:'Tokyo', country:'Japan', temp:68, condition:'Sunny', high:73, low:62, humidity:55, windSpeed:8, icon:'☀️'}
 ];
 
-/* DOM Elements */
+/* ---------- DOM Elements ---------- */
 const mainContent = document.getElementById('mainContent');
 const userName = document.getElementById('userName');
 const userEmail = document.getElementById('userEmail');
@@ -65,7 +73,7 @@ const profileBtn = document.getElementById('profileBtn');
 const logoutBtn = document.getElementById('logoutBtn');
 const navButtons = document.querySelectorAll('.nav-btn');
 
-/* Functions */
+/* ---------- Functions ---------- */
 function loginUser(user) {
   state.isAuthenticated = true;
   state.currentUser = user;
@@ -86,46 +94,118 @@ function setView(view) {
   renderMainContent();
 }
 
-function renderLoginPage() {
-  fetch('./components/login.html') // adjust the path
-    .then(response => response.text())
-    .then(html => {
-      mainContent.innerHTML = html;
+/* ---------- Welcome Page ---------- */
+function renderWelcomePage() {
+  const steps = [
+    { title: "Welcome to Weatherly", description: "Your personalized weather dashboard is just a few steps away.", icon: "☀️" },
+    { title: "Track Your Locations", description: "Save multiple locations to see forecasts quickly.", icon: "📍" },
+    { title: "Stay Alert", description: "Get notified of severe weather and temperature changes.", icon: "⚡" },
+    { title: "Explore Features", description: "Access 7-day forecasts, historical data, and customizable settings.", icon: "🧭", showFeatures: true }
+  ];
 
-      // Add event listener for login button
-      const loginBtn = document.getElementById('loginBtn');
-      if (loginBtn) {
-        loginBtn.addEventListener('click', () => loginUser(defaultUser));
-      }
-    })
-    .catch(err => {
-      mainContent.innerHTML = `<p>Error loading login page.</p>`;
-      console.error(err);
+  let currentStep = 0;
+
+  mainContent.innerHTML = `
+    <div class="welcome-container">
+      <div id="progress" class="progress-container"></div>
+      <div class="content-center">
+        <div id="iconContainer" class="icon-wrapper"></div>
+        <h2 id="stepTitle" class="step-title"></h2>
+        <p id="stepDescription" class="step-description"></p>
+      </div>
+      <div id="featureGrid" class="feature-grid hidden">
+        <div class="feature-card blue-card"><h4>7-Day Forecasts</h4><p>Detailed weekly weather predictions</p></div>
+        <div class="feature-card purple-card"><h4>Weather Alerts</h4><p>Real-time severe weather warnings</p></div>
+        <div class="feature-card green-card"><h4>Historical Data</h4><p>Compare past weather trends</p></div>
+        <div class="feature-card orange-card"><h4>Customizable</h4><p>Personalize your experience</p></div>
+      </div>
+      <div class="nav-container">
+        <div><button id="prevBtn" class="nav-btn hidden">&larr; Previous</button></div>
+        <div class="nav-right">
+          <button id="skipBtn" class="nav-btn">Skip</button>
+          <button id="nextBtn" class="next-btn">Next &rarr;</button>
+        </div>
+      </div>
+      <div id="stepCounter" class="step-counter"></div>
+    </div>
+  `;
+
+  const stepTitle = document.getElementById("stepTitle");
+  const stepDescription = document.getElementById("stepDescription");
+  const iconContainer = document.getElementById("iconContainer");
+  const featureGrid = document.getElementById("featureGrid");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const skipBtn = document.getElementById("skipBtn");
+  const stepCounter = document.getElementById("stepCounter");
+  const progress = document.getElementById("progress");
+
+  function renderStep() {
+    const step = steps[currentStep];
+    stepTitle.textContent = step.title;
+    stepDescription.textContent = step.description;
+    iconContainer.textContent = step.icon;
+    featureGrid.classList.toggle("hidden", !step.showFeatures);
+    prevBtn.classList.toggle("hidden", currentStep === 0);
+    nextBtn.textContent = currentStep === steps.length - 1 ? "Finish" : "Next";
+    stepCounter.textContent = `Step ${currentStep + 1} of ${steps.length}`;
+
+    // progress dots
+    progress.innerHTML = "";
+    steps.forEach((_, i) => {
+      const dot = document.createElement("span");
+      dot.className = "progress-dot";
+      if (i === currentStep) dot.classList.add("active");
+      progress.appendChild(dot);
     });
-}
-
-
-function renderApp() {
-  if (!state.isAuthenticated) {
-    renderLoginPage(); // use fetch-based function
-    return;
   }
 
-  // Update header info and render main content for logged-in users
-  userName.textContent = state.currentUser.name;
-  userEmail.textContent = state.currentUser.email;
-  renderMainContent();
+  prevBtn.addEventListener("click", () => {
+    if (currentStep > 0) {
+      currentStep--;
+      renderStep();
+    }
+  });
+
+  nextBtn.addEventListener("click", () => {
+    if (currentStep < steps.length - 1) {
+      currentStep++;
+      renderStep();
+    } else {
+      state.hasSeenWelcome = true;
+      localStorage.setItem('hasSeenWelcome', 'true');
+      renderLoginPage();
+    }
+  });
+
+  skipBtn.addEventListener("click", () => {
+    state.hasSeenWelcome = true;
+    localStorage.setItem('hasSeenWelcome', 'true');
+    renderLoginPage();
+  });
+
+  renderStep();
 }
 
+/* ---------- Login Page ---------- */
+function renderLoginPage() {
+  mainContent.innerHTML = `
+    <div class="login-page">
+      <h2>Login</h2>
+      <button id="loginBtn">Login as John Doe</button>
+    </div>
+  `;
+  document.getElementById('loginBtn').addEventListener('click', () => loginUser(defaultUser));
+}
 
-/* Function to load component HTML (even if it has <html> and <body>) */
+/* ---------- Component Loader ---------- */
 function loadComponentHTML(filePath){
   return fetch(filePath)
     .then(res => res.text())
     .then(htmlText => {
       const parser = new DOMParser();
       const doc = parser.parseFromString(htmlText, 'text/html');
-      return doc.body.innerHTML; // Only get the body content
+      return doc.body.innerHTML;
     });
 }
 
@@ -142,49 +222,50 @@ function renderMainContent(){
     daily: '/components/dailyForecast.html'
   };
 
-  const filePath = viewMap[state.currentView];
-
   if(!state.isAuthenticated){
     mainContent.innerHTML = '<p>Please login first.</p>';
     return;
   }
 
+  const filePath = viewMap[state.currentView];
+
   if(state.currentView === 'weekly' && state.selectedLocation){
-  fetch('./components/weeklyforecast.html') // adjust path to your file
-    .then(response => response.text())
-    .then(html => {
-      mainContent.innerHTML = html;
-
-      // Add dynamic content (e.g., location name)
-      const title = mainContent.querySelector('#weeklyTitle');
-      if(title) title.textContent = `Weekly Forecast for ${state.selectedLocation.name}`;
-
-      // Back button
-      const backBtn = mainContent.querySelector('#backDashboardBtn');
-      if(backBtn) backBtn.addEventListener('click', () => {
-        state.currentView = 'dashboard';
-        renderMainContent();
+    fetch('/components/weeklyForecast.html')
+      .then(res => res.text())
+      .then(html => {
+        mainContent.innerHTML = html;
+        const title = mainContent.querySelector('#weeklyTitle');
+        if(title) title.textContent = `Weekly Forecast for ${state.selectedLocation.name}`;
+        const backBtn = mainContent.querySelector('#backDashboardBtn');
+        if(backBtn) backBtn.addEventListener('click', () => { state.currentView='dashboard'; renderMainContent(); });
       });
-    })
-    .catch(err => {
-      mainContent.innerHTML = `<p>Error loading weekly forecast.</p>`;
-      console.error(err);
-    });
+    return;
+  }
 
-  return;
-}
-
-
-  // Load HTML component dynamically
   loadComponentHTML(filePath)
     .then(content => mainContent.innerHTML = content)
-    .catch(err => {
-      mainContent.innerHTML = `<p>Error loading page: ${state.currentView}</p>`;
-      console.error(err);
-    });
+    .catch(err => mainContent.innerHTML = `<p>Error loading page: ${state.currentView}</p>`);
 }
 
-/* Event Listeners */
+/* ---------- App Renderer ---------- */
+function renderApp() {
+  if (!state.isAuthenticated) {
+    if (!state.hasSeenWelcome) {
+      renderWelcomePage();
+      return;
+    } else {
+      renderLoginPage();
+      return;
+    }
+  }
+
+  // logged-in header info
+  userName.textContent = state.currentUser.name;
+  userEmail.textContent = state.currentUser.email;
+  renderMainContent();
+}
+
+/* ---------- Event Listeners ---------- */
 profileBtn.addEventListener('click', ()=>setView('profile'));
 logoutBtn.addEventListener('click', logoutUser);
 navButtons.forEach(btn=>{
@@ -193,7 +274,7 @@ navButtons.forEach(btn=>{
   });
 });
 
-/* Initial Render */
+/* ---------- Initial Render ---------- */
 renderApp();
 </script>
 </body>

@@ -18,7 +18,7 @@
 
       <!-- Form -->
       <form id="loginForm">
-        <div id="nameField" class="form-group hidden">
+        <div class="form-group hidden" id="nameField">
           <label for="name">Full Name</label>
           <input type="text" id="name" placeholder="John Doe">
         </div>
@@ -41,8 +41,7 @@
 
       <!-- Demo Account -->
       <div class="demo-info">
-        <p><strong>Quick Start:</strong> Click "Try Demo Account" to explore the app instantly, or create your own account to save personalized locations.</p>
-        <p class="small">Demo account comes with pre-loaded sample locations. Your data is saved only in your browser.</p>
+        <p><strong>Quick Start:</strong> Click "Try Demo Account" to explore the app instantly.</p>
         <button type="button" class="btn btn-outline" id="demoBtn">☁️ Try Demo Account</button>
       </div>
 
@@ -56,102 +55,119 @@
     </div>
   </div>
 
-  <script>
-    let isSignup = false;
+<script>
+let isSignup = false;
 
-    const loginForm = document.getElementById('loginForm');
-    const nameField = document.getElementById('nameField');
-    const passwordHint = document.getElementById('passwordHint');
-    const formTitle = document.getElementById('formTitle');
-    const formSubtitle = document.getElementById('formSubtitle');
-    const submitButton = document.getElementById('submitButton');
-    const toggleBtn = document.getElementById('toggleBtn');
-    const toggleText = document.getElementById('toggleText');
-    const errorMessage = document.getElementById('errorMessage');
-    const demoBtn = document.getElementById('demoBtn');
+// Elements
+const loginForm = document.getElementById('loginForm');
+const nameField = document.getElementById('nameField');
+const passwordHint = document.getElementById('passwordHint');
+const formTitle = document.getElementById('formTitle');
+const formSubtitle = document.getElementById('formSubtitle');
+const submitButton = document.getElementById('submitButton');
+const toggleBtn = document.getElementById('toggleBtn');
+const toggleText = document.getElementById('toggleText');
+const errorMessage = document.getElementById('errorMessage');
+const demoBtn = document.getElementById('demoBtn');
 
-    function showError(message) {
-      errorMessage.textContent = message;
-      errorMessage.classList.remove('hidden');
+function showError(message) {
+  errorMessage.textContent = message;
+  errorMessage.classList.remove('hidden');
+}
+function hideError() {
+  errorMessage.classList.add('hidden');
+  errorMessage.textContent = '';
+}
+
+function toggleForm() {
+  isSignup = !isSignup;
+  nameField.classList.toggle('hidden', !isSignup);
+  passwordHint.classList.toggle('hidden', !isSignup);
+  formTitle.textContent = isSignup ? 'Create Account' : 'Welcome Back';
+  formSubtitle.textContent = isSignup
+    ? 'Sign up to start tracking weather at your favorite locations'
+    : 'Sign in to access your saved locations and preferences';
+  submitButton.textContent = isSignup ? 'Create Account' : 'Sign In';
+  toggleText.innerHTML = isSignup
+    ? 'Already have an account? <button type="button" id="toggleBtn">Sign in</button>'
+    : 'Don\'t have an account? <button type="button" id="toggleBtn">Sign up</button>';
+  document.getElementById('toggleBtn').addEventListener('click', toggleForm);
+  hideError();
+}
+
+// ---------- SPA Integration ----------
+function loginSPAUser(user) {
+  if (window.state && typeof window.renderApp === 'function') {
+    window.state.isAuthenticated = true;
+    window.state.currentUser = user;
+    window.state.savedLocations = [
+      {id:'1', name:'New York', country:'USA', temp:72, condition:'Partly Cloudy', high:75, low:65, humidity:65, windSpeed:12, icon:'⛅'},
+      {id:'2', name:'London', country:'UK', temp:61, condition:'Rainy', high:64, low:58, humidity:85, windSpeed:15, icon:'🌧️'},
+      {id:'3', name:'Tokyo', country:'Japan', temp:68, condition:'Sunny', high:73, low:62, humidity:55, windSpeed:8, icon:'☀️'}
+    ];
+    window.renderApp(); // redirect to dashboard
+  }
+}
+
+// ---------- Login/Signup Form ----------
+loginForm.addEventListener('submit', function(e) {
+  e.preventDefault();
+  hideError();
+
+  const name = document.getElementById('name')?.value.trim();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+
+  if (!email || !password) {
+    showError('Please fill in all required fields');
+    return;
+  }
+  if (isSignup && !name) {
+    showError('Please enter your name');
+    return;
+  }
+  if (password.length < 6) {
+    showError('Password must be at least 6 characters');
+    return;
+  }
+
+  const usersData = localStorage.getItem('users');
+  const users = usersData ? JSON.parse(usersData) : [];
+
+  if (isSignup) {
+    const existingUser = users.find(u => u.email === email);
+    if (existingUser) {
+      showError('An account with this email already exists');
+      return;
     }
-
-    function hideError() {
-      errorMessage.classList.add('hidden');
-      errorMessage.textContent = '';
+    const newUser = { id: Date.now().toString(), name, email };
+    users.push(newUser);
+    localStorage.setItem('users', JSON.stringify(users));
+    loginSPAUser(newUser);
+  } else {
+    const user = users.find(u => u.email === email);
+    if (!user) {
+      showError('No account found with this email. Please sign up first.');
+      return;
     }
+    loginSPAUser(user);
+  }
+});
 
-    function toggleForm() {
-      isSignup = !isSignup;
-      nameField.classList.toggle('hidden', !isSignup);
-      passwordHint.classList.toggle('hidden', !isSignup);
-      formTitle.textContent = isSignup ? 'Create Account' : 'Welcome Back';
-      formSubtitle.textContent = isSignup
-        ? 'Sign up to start tracking weather at your favorite locations'
-        : 'Sign in to access your saved locations and preferences';
-      submitButton.textContent = isSignup ? 'Create Account' : 'Sign In';
-      toggleText.innerHTML = isSignup
-        ? 'Already have an account? <button type="button" id="toggleBtn">Sign in</button>'
-        : 'Don\'t have an account? <button type="button" id="toggleBtn">Sign up</button>';
-      document.getElementById('toggleBtn').addEventListener('click', toggleForm);
-      hideError();
-    }
+// ---------- Demo Account ----------
+demoBtn.addEventListener('click', function() {
+  const demoUser = { id: 'demo-user-001', name: 'Demo User', email: 'demo@weatherpro.com' };
+  const usersData = localStorage.getItem('users');
+  const users = usersData ? JSON.parse(usersData) : [];
+  if (!users.find(u => u.id === demoUser.id)) {
+    users.push(demoUser);
+    localStorage.setItem('users', JSON.stringify(users));
+  }
+  loginSPAUser(demoUser);
+});
 
-    loginForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      hideError();
-
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
-
-      if (!email || !password) {
-        showError('Please fill in all required fields');
-        return;
-      }
-      if (isSignup && !name) {
-        showError('Please enter your name');
-        return;
-      }
-      if (password.length < 6) {
-        showError('Password must be at least 6 characters');
-        return;
-      }
-
-      const usersData = localStorage.getItem('users');
-      const users = usersData ? JSON.parse(usersData) : [];
-
-      if (isSignup) {
-        const existingUser = users.find(u => u.email === email);
-        if (existingUser) {
-          showError('An account with this email already exists');
-          return;
-        }
-        const newUser = { id: Date.now().toString(), name, email, createdAt: new Date().toISOString() };
-        users.push(newUser);
-        localStorage.setItem('users', JSON.stringify(users));
-        alert('Account created! Logged in as ' + name);
-      } else {
-        const user = users.find(u => u.email === email);
-        if (!user) {
-          showError('No account found with this email. Please sign up first.');
-          return;
-        }
-        alert('Logged in as ' + user.name);
-      }
-    });
-
-    demoBtn.addEventListener('click', function() {
-      const demoUser = { id: 'demo-user-001', name: 'Demo User', email: 'demo@weatherpro.com', createdAt: new Date('2024-01-01').toISOString() };
-      const usersData = localStorage.getItem('users');
-      const users = usersData ? JSON.parse(usersData) : [];
-      if (!users.find(u => u.id === demoUser.id)) {
-        users.push(demoUser);
-        localStorage.setItem('users', JSON.stringify(users));
-      }
-      alert('Logged in as Demo User');
-    });
-
-    toggleBtn.addEventListener('click', toggleForm);
-  </script>
+toggleBtn.addEventListener('click', toggleForm);
+</script>
 </body>
 </html>
+
