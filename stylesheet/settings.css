@@ -1,0 +1,10 @@
+
+
+body {
+  font-family: system-ui, sans-serif;
+}
+
+#settings select,
+#settings input[type="checkbox"] {
+  cursor: pointer;
+}
