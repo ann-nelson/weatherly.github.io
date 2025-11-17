@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Search Location</title>
+
+<!-- External CSS -->
+<link rel="stylesheet" href="search.css" />
+
+</head>
+
+<body>
+
+<h2>Search Locations</h2>
+<p class="subtitle">Find and add locations to your dashboard</p>
+
+<div class="card">
+    <div class="search-row">
+        <div class="search-wrapper">
+            <span class="search-icon">🔍</span>
+            <input id="searchInput" class="input" type="text" placeholder="Search by city or country..." />
+        </div>
+        <button id="searchBtn">Search</button>
+    </div>
+</div>
+
+<div id="resultsContainer"></div>
+
+<script>
+// ---------------- MOCK DATA ----------------
+const mockLocations = [
+    { id: '1', name: 'Charlotte', country: 'USA (NC)', temp: 78, condition: 'Partly Cloudy', high: 82, low: 68, humidity: 62, windSpeed: 9, icon: '⛅' },
+    { id: '16', name: 'Moscow', country: 'Russia', temp: 48, condition: 'Cold', high: 52, low: 42, humidity: 60, windSpeed: 13, icon: '❄️' },
+    { id: '2', name: 'New York', country: 'USA (NY)', temp: 72, condition: 'Partly Cloudy', high: 75, low: 65, humidity: 65, windSpeed: 12, icon: '⛅' },
+    { id: '3', name: 'London', country: 'UK', temp: 61, condition: 'Rainy', high: 64, low: 58, humidity: 85, windSpeed: 15, icon: '🌧️' },
+    { id: '4', name: 'Tokyo', country: 'Japan', temp: 68, condition: 'Sunny', high: 73, low: 62, humidity: 55, windSpeed: 8, icon: '☀️' },
+    { id: '5', name: 'Paris', country: 'France', temp: 66, condition: 'Cloudy', high: 69, low: 59, humidity: 70, windSpeed: 10, icon: '☁️' },
+    { id: '6', name: 'Sydney', country: 'Australia', temp: 77, condition: 'Sunny', high: 82, low: 70, humidity: 60, windSpeed: 14, icon: '☀️' },
+    { id: '7', name: 'Dubai', country: 'UAE', temp: 95, condition: 'Hot', high: 99, low: 88, humidity: 40, windSpeed: 8, icon: '🌡️' },
+    { id: '8', name: 'Singapore', country: 'Singapore', temp: 86, condition: 'Humid', high: 89, low: 79, humidity: 85, windSpeed: 6, icon: '🌤️' },
+    { id: '9', name: 'Los Angeles', country: 'USA (CA)', temp: 75, condition: 'Sunny', high: 78, low: 68, humidity: 50, windSpeed: 9, icon: '☀️' },
+    { id: '10', name: 'Berlin', country: 'Germany', temp: 59, condition: 'Partly Cloudy', high: 63, low: 54, humidity: 65, windSpeed: 11, icon: '⛅' },
+    { id: '11', name: 'Toronto', country: 'Canada', temp: 64, condition: 'Clear', high: 68, low: 57, humidity: 55, windSpeed: 10, icon: '🌙' },
+    { id: '12', name: 'Mumbai', country: 'India', temp: 88, condition: 'Humid', high: 91, low: 82, humidity: 80, windSpeed: 12, icon: '🌦️' },
+    { id: '13', name: 'Barcelona', country: 'Spain', temp: 71, condition: 'Sunny', high: 75, low: 66, humidity: 60, windSpeed: 8, icon: '☀️' },
+];
+
+// --------- Search State ---------
+let addedLocations = new Set();
+
+// ----------- Search Function -----------
+function handleSearch() {
+    const query = document.getElementById("searchInput").value.trim().toLowerCase();
+    const container = document.getElementById("resultsContainer");
+
+    if (!query) {
+        container.innerHTML = "";
+        return;
+    }
+
+    const results = mockLocations.filter(loc =>
+        loc.name.toLowerCase().includes(query) ||
+        loc.country.toLowerCase().includes(query)
+    );
+
+    if (results.length === 0) {
+        container.innerHTML = `
+            <div class="card center">
+                <h3>No Results Found</h3>
+                <p>Try searching for another city or country.</p>
+            </div>`;
+        return;
+    }
+
+    container.innerHTML = `
+        <div class="results-grid">
+            ${results.map(loc => createLocationCard(loc)).join("")}
+        </div>`;
+}
+
+// -------- Render Location Card --------
+function createLocationCard(location) {
+    const isAdded = addedLocations.has(location.id);
+
+    return `
+        <div class="location-card">
+            <div class="row-space">
+                <div>
+                    <div class="location-title">${location.name}</div>
+                    <div class="location-country">${location.country}</div>
+                </div>
+                <div class="emoji">${location.icon}</div>
+            </div>
+
+            <div class="temp-row">
+                <span class="temp">${location.temp}°</span>
+                <span class="condition">${location.condition}</span>
+            </div>
+
+            <div class="hl">H: ${location.high}° • L: ${location.low}°</div>
+
+            <button class="add-btn" onclick="addLocation('${location.id}')" ${isAdded ? "disabled" : ""}>
+                ${isAdded ? "Added to Dashboard" : "Add Location"}
+            </button>
+        </div>
+    `;
+}
+
+// -------- Add Location --------
+function addLocation(id) {
+    addedLocations.add(id);
+    handleSearch(); // re-render
+}
+
+// Button listener
+document.getElementById("searchBtn").addEventListener("click", handleSearch);
+</script>
+
+</body>
+</html>
