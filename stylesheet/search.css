@@ -1,0 +1,115 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f3f4f6;
+    margin: 0;
+    padding: 20px;
+}
+
+h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.subtitle {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    padding-left: 40px;
+}
+
+.search-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.search-icon {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    color: gray;
+}
+
+button {
+    padding: 12px 20px;
+    border: none;
+    background: #2563eb;
+    color: white;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:disabled {
+    background: #ccc;
+    cursor: default;
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+}
+
+.location-card {
+    padding: 20px;
+    border-radius: 12px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: 0.2s;
+}
+
+.location-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.location-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.location-country {
+    color: #666;
+}
+
+.temp {
+    font-size: 28px;
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.condition {
+    color: #555;
+    font-size: 16px;
+}
+
+.hl {
+    color: #666;
+    font-size: 14px;
+    margin-top: 6px;
+}
+
+.center {
+    text-align: center;
+    color: #555;
+}
+
+.add-btn {
+    margin-top: 16px;
+    width: 100%;
+}
