@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Forecast</title>
+<link rel="stylesheet" href="daily.css">
+</head>
+<body>
+<div class="daily-forecast-container">
+  <div id="forecastHeader" class="forecast-header"></div>
+  <div id="daySummary" class="day-summary"></div>
+  <div id="hourlyForecast" class="hourly-forecast"></div>
+  <div id="detailedMetrics" class="detailed-metrics"></div>
+  <div id="additionalDetails" class="additional-details"></div>
+</div>
+
+<script>
+/* Sample data (replace with dynamic location if needed) */
+const location = {
+  name: 'New York',
+  country: 'USA',
+  humidity: 65,
+  windSpeed: 12,
+};
+
+const hourlyData = [
+  { time: '6 AM', temp: 65, icon: '🌅', precipitation: 0 },
+  { time: '9 AM', temp: 68, icon: '☀️', precipitation: 0 },
+  { time: '12 PM', temp: 73, icon: '☀️', precipitation: 0 },
+  { time: '3 PM', temp: 75, icon: '⛅', precipitation: 5 },
+  { time: '6 PM', temp: 72, icon: '⛅', precipitation: 10 },
+  { time: '9 PM', temp: 68, icon: '🌙', precipitation: 5 },
+];
+
+/* Render header */
+document.getElementById('forecastHeader').innerHTML = `
+  <h2>Detailed Forecast</h2>
+  <p>Monday, November 13 - ${location.name}, ${location.country}</p>
+`;
+
+/* Day summary */
+document.getElementById('daySummary').innerHTML = `
+  <div class="card day-summary-card">
+    <div class="summary-top">
+      <div class="temp-info">
+        <span class="temp">75°</span>
+        <span class="condition">Sunny</span>
+        <div class="high-low">
+          <span>H: 75°</span> <span>L: 65°</span>
+        </div>
+      </div>
+      <div class="icon">☀️</div>
+    </div>
+    <p class="summary-text">
+      A beautiful sunny day with clear skies. Perfect weather for outdoor activities.
+    </p>
+  </div>
+`;
+
+/* Hourly forecast */
+document.getElementById('hourlyForecast').innerHTML = `
+  <h3>Hourly Forecast</h3>
+  <div class="card hourly-card">
+    <div class="hour-grid">
+      ${hourlyData.map(hour => `
+        <div class="hour-item">
+          <div class="hour-time">${hour.time}</div>
+          <div class="hour-icon">${hour.icon}</div>
+          <div class="hour-temp">${hour.temp}°</div>
+          <div class="hour-precip">${hour.precipitation}%</div>
+        </div>
+      `).join('')}
+    </div>
+  </div>
+`;
+
+/* Detailed Metrics */
+document.getElementById('detailedMetrics').innerHTML = `
+  <div class="metrics-grid">
+    <div class="card metric-card">
+      <div class="metric-row">
+        <span class="metric-label">Sunrise</span>
+        <span class="metric-value">6:42 AM</span>
+      </div>
+      <div class="metric-row">
+        <span class="metric-label">Sunset</span>
+        <span class="metric-value">7:28 PM</span>
+      </div>
+    </div>
+
+    <div class="card metric-card">
+      <div class="metric-row">
+        <span class="metric-label">Humidity</span>
+        <span class="metric-value">${location.humidity}%</span>
+      </div>
+      <div class="metric-row">
+        <span class="metric-label">Wind Speed</span>
+        <span class="metric-value">${location.windSpeed} mph NE</span>
+      </div>
+    </div>
+  </div>
+`;
+
+/* Additional Details */
+document.getElementById('additionalDetails').innerHTML = `
+  <div class="additional-grid">
+    <div class="card small-card">
+      <div class="small-label">Visibility</div>
+      <div class="small-value">10 mi</div>
+    </div>
+    <div class="card small-card">
+      <div class="small-label">Pressure</div>
+      <div class="small-value">30.12 in</div>
+    </div>
+    <div class="card small-card">
+      <div class="small-label">Precipitation</div>
+      <div class="small-value">0%</div>
+    </div>
+    <div class="card small-card">
+      <div class="small-label">UV Index</div>
+      <div class="small-value">6 (High)</div>
+    </div>
+  </div>
+`;
+</script>
+</body>
+</html>
