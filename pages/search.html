@@ -4,10 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Search Location</title>
-
-<!-- External CSS -->
 <link rel="stylesheet" href="search.css" />
-
 </head>
 
 <body>
@@ -15,11 +12,11 @@
 <h2>Search Locations</h2>
 <p class="subtitle">Find and add locations to your dashboard</p>
 
-<div class="card">
-    <div style="display:flex; gap:10px;">
+<div class="card search-card">
+    <div class="search-row">
         <div class="search-wrapper">
             <span class="search-icon">🔍</span>
-            <input id="searchInput" class="input" type="text" placeholder="Search by city or country..." />
+            <input id="searchInput" type="text" placeholder="Search by city or country..." />
         </div>
         <button onclick="handleSearch()">Search</button>
     </div>
