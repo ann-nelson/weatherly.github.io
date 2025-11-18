@@ -32,12 +32,12 @@
 
   <!-- Navigation -->
   <nav id="navBar" class="nav-bar">
-    <button class="nav-btn" data-view="dashboard">Dashboard</button>
-    <button class="nav-btn" data-view="search">Search</button>
-    <button class="nav-btn" data-view="past">Past Weather</button>
-    <button class="nav-btn" data-view="alerts">Alerts</button>
-    <button class="nav-btn" data-view="settings">Settings</button>
-    <button class="nav-btn" data-view="help">Help</button>
+    <button class="nav-btn" data-view="dashboard" data-src="/pages/saved.html">Dashboard</button>
+    <button class="nav-btn" data-view="search" data-src="/pages/search.html">Search</button>
+    <button class="nav-btn" data-view="past" data-src="/pages/pastWeather.html">Past Weather</button>
+    <button class="nav-btn" data-view="alerts" data-src="/pages/weatherAlerts.html">Alerts</button>
+    <button class="nav-btn" data-view="settings" data-src="/pages/settings.html">Settings</button>
+    <button class="nav-btn" data-view="help" data-src="/pages/help.html">Help</button>
   </nav>
 
   <!-- Main Content -->
@@ -205,15 +205,15 @@ function renderLoginPage() {
 /* ---------- Render Main Content ---------- */
 function renderMainContent() {
   const viewMap = {
-    dashboard: 'components/saved.html',
-    search: 'components/search.html',
-    past: 'components/pastWeather.html',
-    alerts: 'components/weatherAlerts.html',
-    settings: 'components/settings.html',
-    help: 'components/help.html',
-    profile: 'components/profilePage.html',
-    weekly: 'components/weeklyForecast.html',
-    daily: 'components/dailyForecast.html'
+    dashboard: 'pages/saved.html',
+    search: 'pages/search.html',
+    past: 'pages/pastWeather.html',
+    alerts: 'pages/weatherAlerts.html',
+    settings: 'pages/settings.html',
+    help: 'pages/help.html',
+    profile: 'pages/profile.html',
+    weekly: 'pages/weeklyForecast.html',
+    daily: 'pages/dailyForecast.html'
   };
 
   if(!state.isAuthenticated) {
@@ -225,7 +225,7 @@ function renderMainContent() {
 
   // Special case for weekly view with selected location
   if(state.currentView === 'weekly' && state.selectedLocation) {
-    fetch('components/weeklyForecast.html')
+    fetch('pages/weeklyForecast.html')
       .then(res => res.text())
       .then(html => {
         mainContent.innerHTML = html;
