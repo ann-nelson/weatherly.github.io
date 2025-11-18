@@ -1,111 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Weather Alerts</title>
-  <link rel="stylesheet" href="alerts.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weatherly - Alerts</title>
+<link rel="stylesheet" href="alerts.css">
 </head>
+<body>
 
-<body class="page">
+<!-- Top Navigation -->
+<header class="top-nav">
+  <div class="logo">☁️ Weatherly</div>
+  <nav class="nav-links">
+    <a href="saved.html">Dashboard</a>
+    <a href="search.html">Search</a>
+    <a href="pastWeather.html">Past Weather</a>
+    <a href="weatherAlerts.html" class="active">Alerts</a>
+    <a href="settings.html">Settings</a>
+    <a href="help.html">Help</a>
+  </nav>
+  <div class="user-section">
+    <span class="user-name">Demo User</span>
+    <button onclick="window.location.href='login.html'" class="logout-btn">Logout</button>
+  </div>
+</header>
 
-  <div id="alerts-container" class="container">
+<main class="main-container">
+  <header class="section-header">
+    <h1>Weather Alerts</h1>
+    <p>Active warnings and advisories for your saved locations</p>
+  </header>
 
-    <div class="header">
-      <h2>Weather Alerts</h2>
-      <p>Active warnings and advisories for your locations</p>
-    </div>
+  <div id="alerts-container" class="alerts-grid">
+    <div id="alert-list" class="grid-list"></div>
 
-    <div id="alert-list"></div>
-
-    <!-- No alerts -->
-    <div id="no-alerts" class="no-alerts hidden">
+    <div id="no-alerts" class="card no-alerts hidden">
       <div class="no-alerts-icon">ℹ️</div>
       <h3>No Active Alerts</h3>
       <p>There are currently no weather alerts for your saved locations.</p>
     </div>
+  </div>
 
-    <!-- Alert Settings -->
-    <div class="alert-settings">
-      <div class="settings-icon">ℹ️</div>
-      <div>
-        <h3>Alert Notifications</h3>
-        <p>
-          Stay informed about weather conditions in your saved locations. Configure notification preferences in Settings.
-        </p>
-        <div class="settings-tags">
-          <span>Severe Weather</span>
-          <span>Temperature Alerts</span>
-          <span>Precipitation</span>
-          <span>Air Quality</span>
-        </div>
+  <div class="card alert-settings">
+    <div class="settings-icon">ℹ️</div>
+    <div>
+      <h3>Alert Notifications</h3>
+      <p>
+        Stay informed about weather conditions in your saved locations. Configure notification preferences in Settings.
+      </p>
+      <div class="settings-tags">
+        <span>Severe Weather</span>
+        <span>Temperature Alerts</span>
+        <span>Precipitation</span>
+        <span>Air Quality</span>
       </div>
     </div>
   </div>
 
-  <!-- Detailed Alert View -->
-  <div id="detailed-alert" class="hidden"></div>
+  <!-- Detailed Alert -->
+  <div id="detailed-alert" class="card hidden"></div>
+</main>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const alertList = document.getElementById("alert-list");
-      const noAlerts = document.getElementById("no-alerts");
-      const detailedAlert = document.getElementById("detailed-alert");
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const alertList = document.getElementById("alert-list");
+  const noAlerts = document.getElementById("no-alerts");
+  const detailedAlert = document.getElementById("detailed-alert");
 
-      // Load alerts from localStorage or use sample data
-      const alertsData = JSON.parse(localStorage.getItem("weatherAlerts")) || [
-        {
-          id: 1,
-          title: "Severe Thunderstorm Warning",
-          location: "New York, NY",
-          severity: "High",
-          description: "A severe thunderstorm is approaching with heavy rain and wind."
-        },
-        {
-          id: 2,
-          title: "Flash Flood Advisory",
-          location: "Houston, TX",
-          severity: "Medium",
-          description: "Heavy rain may cause flash flooding in low-lying areas."
-        }
-      ];
+  // Sample alerts for demo account
+  const alertsData = JSON.parse(localStorage.getItem("weatherAlerts")) || [
+    { id: 1, title: "Severe Thunderstorm Warning", location: "New York, NY", severity: "High", description: "A severe thunderstorm is approaching with heavy rain and wind." },
+    { id: 2, title: "Flash Flood Advisory", location: "Houston, TX", severity: "Medium", description: "Heavy rain may cause flash flooding in low-lying areas." }
+  ];
 
-      function renderAlerts() {
-        alertList.innerHTML = "";
+  function renderAlerts() {
+    alertList.innerHTML = "";
 
-        if (!alertsData || alertsData.length === 0) {
-          noAlerts.classList.remove("hidden");
-          return;
-        }
+    if (!alertsData || alertsData.length === 0) {
+      noAlerts.classList.remove("hidden");
+      return;
+    }
 
-        noAlerts.classList.add("hidden");
+    noAlerts.classList.add("hidden");
 
-        alertsData.forEach(alert => {
-          const card = document.createElement("div");
-          card.className = "alert-card";
-          card.innerHTML = `
-            <h4>${alert.title}</h4>
-            <p><strong>Location:</strong> ${alert.location}</p>
-            <p><strong>Severity:</strong> ${alert.severity}</p>
-          `;
-          card.addEventListener("click", () => showDetailedAlert(alert));
-          alertList.appendChild(card);
-        });
-      }
-
-      function showDetailedAlert(alert) {
-        detailedAlert.classList.remove("hidden");
-        detailedAlert.innerHTML = `
-          <h3>${alert.title}</h3>
-          <p><strong>Location:</strong> ${alert.location}</p>
-          <p><strong>Severity:</strong> ${alert.severity}</p>
-          <p>${alert.description}</p>
-        `;
-        detailedAlert.scrollIntoView({ behavior: "smooth" });
-      }
-
-      renderAlerts();
+    alertsData.forEach(alert => {
+      const card = document.createElement("div");
+      card.className = "alert-card card";
+      card.innerHTML = `
+        <h4>${alert.title}</h4>
+        <p><strong>Location:</strong> ${alert.location}</p>
+        <p><strong>Severity:</strong> ${alert.severity}</p>
+      `;
+      card.addEventListener("click", () => showDetailedAlert(alert));
+      alertList.appendChild(card);
     });
-  </script>
+  }
+
+  function showDetailedAlert(alert) {
+    detailedAlert.classList.remove("hidden");
+    detailedAlert.innerHTML = `
+      <h3>${alert.title}</h3>
+      <p><strong>Location:</strong> ${alert.location}</p>
+      <p><strong>Severity:</strong> ${alert.severity}</p>
+      <p>${alert.description}</p>
+    `;
+    detailedAlert.scrollIntoView({ behavior: "smooth" });
+  }
+
+  renderAlerts();
+});
+</script>
 
 </body>
 </html>

@@ -1,218 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Detailed Alert</title>
-  <link rel="stylesheet" href="detailed-alert.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weatherly - Detailed Alert</title>
+<link rel="stylesheet" href="detailed-alert.css">
 </head>
 <body>
-  <div class="container">
-    <!-- Back Button -->
-    <button id="backBtn" class="btn-ghost">
-      ← Back to Alerts
-    </button>
 
-    <!-- Alert Header -->
-    <div id="alertHeader" class="card alert-header">
-      <div id="alertIcon" class="icon-circle">⚠️</div>
-      <div class="alert-info">
-        <div class="alert-title-row">
-          <h2 id="alertTitle">Severe Thunderstorm</h2>
-          <span id="alertBadge" class="badge">Severe</span>
-        </div>
-        <div class="alert-location">
-          📍 <span id="alertLocation">Springfield</span>
-        </div>
+<!-- Top Navigation -->
+<header class="top-nav">
+  <div class="logo">☁️ Weatherly</div>
+  <nav class="nav-links">
+    <a href="saved.html">Dashboard</a>
+    <a href="search.html">Search</a>
+    <a href="pastWeather.html">Past Weather</a>
+    <a href="weatherAlerts.html">Alerts</a>
+    <a href="settings.html">Settings</a>
+    <a href="help.html">Help</a>
+  </nav>
+  <div class="user-section">
+    <span class="user-name">Demo User</span>
+    <button onclick="window.location.href='login.html'" class="logout-btn">Logout</button>
+  </div>
+</header>
+
+<main class="main-container">
+
+  <button id="backBtn" class="btn-ghost" onclick="window.location.href='weatherAlerts.html'">
+    ← Back to Alerts
+  </button>
+
+  <!-- Alert Header -->
+  <div id="alertHeader" class="card alert-header">
+    <div id="alertIcon" class="icon-circle">⚠️</div>
+    <div class="alert-info">
+      <div class="alert-title-row">
+        <h2 id="alertTitle">Severe Thunderstorm</h2>
+        <span id="alertBadge" class="badge">Severe</span>
       </div>
-      <button id="shareBtn" class="btn-outline">Share</button>
+      <div class="alert-location">
+        📍 <span id="alertLocation">Springfield</span>
+      </div>
+    </div>
+    <button id="shareBtn" class="btn-outline">Share</button>
+  </div>
+
+  <div class="grid alert-details-grid">
+    <!-- Left/Main Column -->
+    <div class="main-column">
+      <div class="card">
+        <h3>Alert Description</h3>
+        <p id="alertDescription"></p>
+      </div>
+
+      <div id="instructionsCard" class="card card-yellow hidden">
+        <h3>⚠️ Safety Instructions</h3>
+        <ul id="instructionsList"></ul>
+      </div>
+
+      <div id="areasCard" class="card hidden">
+        <h3>Affected Areas</h3>
+        <div id="affectedAreas" class="badge-container"></div>
+      </div>
+
+      <div id="detailsCard" class="card hidden">
+        <h3>Expected Conditions</h3>
+        <div class="grid-conditions" id="weatherConditions"></div>
+      </div>
     </div>
 
-    <!-- Main Content -->
-    <div class="grid">
-      <!-- Left/Main Column -->
-      <div class="main-column">
-        <!-- Description -->
-        <div class="card">
-          <h3>Alert Description</h3>
-          <p id="alertDescription">Severe thunderstorm warning in effect for Springfield. Heavy rainfall and high winds expected.</p>
-        </div>
-
-        <!-- Instructions -->
-        <div id="instructionsCard" class="card card-yellow" style="display:none;">
-          <h3>⚠️ Safety Instructions</h3>
-          <ul id="instructionsList"></ul>
-        </div>
-
-        <!-- Affected Areas -->
-        <div id="areasCard" class="card" style="display:none;">
-          <h3>Affected Areas</h3>
-          <div id="affectedAreas" class="badge-container"></div>
-        </div>
-
-        <!-- Weather Conditions -->
-        <div id="detailsCard" class="card" style="display:none;">
-          <h3>Expected Conditions</h3>
-          <div class="grid-conditions" id="weatherConditions"></div>
-        </div>
+    <!-- Sidebar Column -->
+    <div class="sidebar-column">
+      <div class="card">
+        <h3>Time Details</h3>
+        <p><strong>Issued:</strong> <span id="issuedTime"></span></p>
+        <p><strong>Effective:</strong> <span id="effectivePeriod"></span></p>
       </div>
 
-      <!-- Right/Sidebar Column -->
-      <div class="sidebar-column">
-        <!-- Time Info -->
-        <div class="card">
-          <h3>Time Details</h3>
-          <p><strong>Issued:</strong> <span id="issuedTime"></span></p>
-          <p><strong>Effective:</strong> <span id="effectivePeriod"></span></p>
-        </div>
+      <div id="classificationCard" class="card hidden">
+        <h3>Alert Classification</h3>
+        <p><strong>Severity:</strong> <span id="severity"></span></p>
+        <p><strong>Urgency:</strong> <span id="urgency"></span></p>
+        <p><strong>Certainty:</strong> <span id="certainty"></span></p>
+      </div>
 
-        <!-- Alert Classification -->
-        <div id="classificationCard" class="card" style="display:none;">
-          <h3>Alert Classification</h3>
-          <p><strong>Severity:</strong> <span id="severity"></span></p>
-          <p><strong>Urgency:</strong> <span id="urgency"></span></p>
-          <p><strong>Certainty:</strong> <span id="certainty"></span></p>
-        </div>
-
-        <!-- Issued By -->
-        <div id="issuedByCard" class="card card-gray" style="display:none;">
-          <h3>Issued By</h3>
-          <p id="issuedBy"></p>
-        </div>
+      <div id="issuedByCard" class="card card-gray hidden">
+        <h3>Issued By</h3>
+        <p id="issuedBy"></p>
       </div>
     </div>
   </div>
 
-  <script>
-    // Sample Alert Data
-    const alert = {
-      id: "1",
-      type: "severe",
-      title: "Severe Thunderstorm",
-      location: "Springfield",
-      description: "Severe thunderstorm warning in effect for Springfield. Heavy rainfall and high winds expected.",
-      startTime: "2025-11-17 14:00",
-      endTime: "2025-11-17 18:00",
-      issued: "2025-11-17 13:45",
-      issuedBy: "National Weather Service",
-      affectedAreas: ["Downtown", "Northside", "West Hills"],
-      instructions: ["Stay indoors", "Secure outdoor objects", "Avoid driving if possible"],
-      details: {
-        windSpeed: "50 mph",
-        precipitation: "2 inches",
-        temperature: "75°F",
-        visibility: "2 miles",
-        severity: "Severe",
-        urgency: "Immediate",
-        certainty: "Observed"
-      }
-    };
+</main>
 
-    // DOM Elements
-    const alertIcon = document.getElementById('alertIcon');
-    const alertTitle = document.getElementById('alertTitle');
-    const alertBadge = document.getElementById('alertBadge');
-    const alertLocation = document.getElementById('alertLocation');
-    const alertDescription = document.getElementById('alertDescription');
-    const instructionsCard = document.getElementById('instructionsCard');
-    const instructionsList = document.getElementById('instructionsList');
-    const areasCard = document.getElementById('areasCard');
-    const affectedAreas = document.getElementById('affectedAreas');
-    const detailsCard = document.getElementById('detailsCard');
-    const weatherConditions = document.getElementById('weatherConditions');
-    const issuedTime = document.getElementById('issuedTime');
-    const effectivePeriod = document.getElementById('effectivePeriod');
-    const classificationCard = document.getElementById('classificationCard');
-    const severity = document.getElementById('severity');
-    const urgency = document.getElementById('urgency');
-    const certainty = document.getElementById('certainty');
-    const issuedByCard = document.getElementById('issuedByCard');
-    const issuedBy = document.getElementById('issuedBy');
-    const shareBtn = document.getElementById('shareBtn');
-    const backBtn = document.getElementById('backBtn');
-
-    // Populate Alert Data
-    const alertColors = {
-      severe: {bg: '#fee2e2', text: '#b91c1c'},
-      moderate: {bg: '#ffedd5', text: '#ea580c'},
-      info: {bg: '#dbeafe', text: '#1e40af'}
-    };
-
-    alertIcon.style.backgroundColor = alertColors[alert.type].bg;
-    alertIcon.style.color = alertColors[alert.type].text;
-
-    alertTitle.textContent = alert.title;
-    alertBadge.textContent = alert.type.charAt(0).toUpperCase() + alert.type.slice(1);
-    alertLocation.textContent = alert.location;
-    alertDescription.textContent = alert.description;
-
-    if(alert.instructions && alert.instructions.length > 0){
-      instructionsCard.style.display = 'block';
-      alert.instructions.forEach(inst=>{
-        const li = document.createElement('li');
-        li.textContent = inst;
-        instructionsList.appendChild(li);
-      });
+<script>
+  const alert = {
+    id: "1",
+    type: "severe",
+    title: "Severe Thunderstorm",
+    location: "Springfield",
+    description: "Severe thunderstorm warning in effect for Springfield. Heavy rainfall and high winds expected.",
+    startTime: "2025-11-17 14:00",
+    endTime: "2025-11-17 18:00",
+    issued: "2025-11-17 13:45",
+    issuedBy: "National Weather Service",
+    affectedAreas: ["Downtown", "Northside", "West Hills"],
+    instructions: ["Stay indoors", "Secure outdoor objects", "Avoid driving if possible"],
+    details: {
+      windSpeed: "50 mph",
+      precipitation: "2 inches",
+      temperature: "75°F",
+      visibility: "2 miles",
+      severity: "Severe",
+      urgency: "Immediate",
+      certainty: "Observed"
     }
+  };
 
-    if(alert.affectedAreas && alert.affectedAreas.length > 0){
-      areasCard.style.display = 'block';
-      alert.affectedAreas.forEach(area=>{
-        const span = document.createElement('span');
-        span.className = 'badge-outline';
-        span.textContent = area;
-        affectedAreas.appendChild(span);
-      });
-    }
+  // DOM elements
+  const alertIcon = document.getElementById('alertIcon');
+  const alertTitle = document.getElementById('alertTitle');
+  const alertBadge = document.getElementById('alertBadge');
+  const alertLocation = document.getElementById('alertLocation');
+  const alertDescription = document.getElementById('alertDescription');
+  const instructionsCard = document.getElementById('instructionsCard');
+  const instructionsList = document.getElementById('instructionsList');
+  const areasCard = document.getElementById('areasCard');
+  const affectedAreas = document.getElementById('affectedAreas');
+  const detailsCard = document.getElementById('detailsCard');
+  const weatherConditions = document.getElementById('weatherConditions');
+  const issuedTime = document.getElementById('issuedTime');
+  const effectivePeriod = document.getElementById('effectivePeriod');
+  const classificationCard = document.getElementById('classificationCard');
+  const severity = document.getElementById('severity');
+  const urgency = document.getElementById('urgency');
+  const certainty = document.getElementById('certainty');
+  const issuedByCard = document.getElementById('issuedByCard');
+  const issuedBy = document.getElementById('issuedBy');
+  const shareBtn = document.getElementById('shareBtn');
 
-    if(alert.details){
-      detailsCard.style.display = 'block';
-      const details = alert.details;
-      const conditions = [
-        {label: "Wind Speed", value: details.windSpeed, icon: "💨"},
-        {label: "Precipitation", value: details.precipitation, icon: "💧"},
-        {label: "Temperature", value: details.temperature, icon: "🌡️"},
-        {label: "Visibility", value: details.visibility, icon: "👁️"}
-      ];
-      conditions.forEach(cond=>{
-        if(cond.value){
-          const div = document.createElement('div');
-          div.className = 'condition-card';
-          div.innerHTML = `<span class="condition-icon">${cond.icon}</span>
-                           <div>
-                             <p class="condition-label">${cond.label}</p>
-                             <p class="condition-value">${cond.value}</p>
-                           </div>`;
-          weatherConditions.appendChild(div);
-        }
-      });
-      classificationCard.style.display = 'block';
-      severity.textContent = details.severity;
-      urgency.textContent = details.urgency;
-      certainty.textContent = details.certainty;
-    }
+  // Apply colors
+  const alertColors = { severe:{bg:'#fee2e2',text:'#b91c1c'}, moderate:{bg:'#ffedd5',text:'#ea580c'}, info:{bg:'#dbeafe',text:'#1e40af'} };
+  alertIcon.style.backgroundColor = alertColors[alert.type].bg;
+  alertIcon.style.color = alertColors[alert.type].text;
 
-    if(alert.issuedBy){
-      issuedByCard.style.display = 'block';
-      issuedBy.textContent = alert.issuedBy;
-    }
+  // Populate alert info
+  alertTitle.textContent = alert.title;
+  alertBadge.textContent = alert.type.charAt(0).toUpperCase() + alert.type.slice(1);
+  alertLocation.textContent = alert.location;
+  alertDescription.textContent = alert.description;
 
-    issuedTime.textContent = alert.issued;
-    effectivePeriod.textContent = alert.startTime + " - " + alert.endTime;
+  if(alert.instructions.length){ instructionsCard.classList.remove('hidden'); alert.instructions.forEach(i=>{ const li=document.createElement('li'); li.textContent=i; instructionsList.appendChild(li); }); }
+  if(alert.affectedAreas.length){ areasCard.classList.remove('hidden'); alert.affectedAreas.forEach(a=>{ const span=document.createElement('span'); span.className='badge-outline'; span.textContent=a; affectedAreas.appendChild(span); }); }
+  if(alert.details){ 
+    detailsCard.classList.remove('hidden'); 
+    const conds = [ {label:'Wind Speed', value:alert.details.windSpeed, icon:'💨'}, {label:'Precipitation', value:alert.details.precipitation, icon:'💧'}, {label:'Temperature', value:alert.details.temperature, icon:'🌡️'}, {label:'Visibility', value:alert.details.visibility, icon:'👁️'} ];
+    conds.forEach(c=>{ if(c.value){ const div=document.createElement('div'); div.className='condition-card'; div.innerHTML=`<span class="condition-icon">${c.icon}</span><div><p class="condition-label">${c.label}</p><p class="condition-value">${c.value}</p></div>`; weatherConditions.appendChild(div); } });
+    classificationCard.classList.remove('hidden');
+    severity.textContent = alert.details.severity;
+    urgency.textContent = alert.details.urgency;
+    certainty.textContent = alert.details.certainty;
+  }
+  if(alert.issuedBy){ issuedByCard.classList.remove('hidden'); issuedBy.textContent=alert.issuedBy; }
 
-    // Share functionality
-    shareBtn.addEventListener('click', ()=>{
-      const text = `${alert.title} - ${alert.location}: ${alert.description}`;
-      if(navigator.share){
-        navigator.share({title: alert.title, text});
-      } else {
-        navigator.clipboard.writeText(text);
-        alert("Alert copied to clipboard");
-      }
-    });
+  issuedTime.textContent = alert.issued;
+  effectivePeriod.textContent = alert.startTime + " - " + alert.endTime;
 
-    // Back button
-    backBtn.addEventListener('click', ()=>{ alert("Go back to alerts list"); });
-  </script>
+  // Share
+  shareBtn.addEventListener('click', ()=>{
+    const text=`${alert.title} - ${alert.location}: ${alert.description}`;
+    if(navigator.share){ navigator.share({title:alert.title,text}); }
+    else{ navigator.clipboard.writeText(text); alert("Alert copied to clipboard"); }
+  });
+</script>
+
 </body>
 </html>

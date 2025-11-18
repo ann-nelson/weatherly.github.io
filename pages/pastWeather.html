@@ -1,18 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Past Weather Data</title>
-  <link rel="stylesheet" href="pastWeather.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weatherly - Past Weather</title>
+<link rel="stylesheet" href="pastWeather.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <div class="container">
-    <h2>Past Weather Data</h2>
-    <p>View and compare historical weather information</p>
 
-    <!-- Time Range Selector -->
+<!-- Top Navigation -->
+<header class="top-nav">
+  <div class="logo">☁️ Weatherly</div>
+  <nav class="nav-links">
+    <a href="saved.html">Dashboard</a>
+    <a href="search.html">Search</a>
+    <a href="pastWeather.html" class="active">Past Weather</a>
+    <a href="weatherAlerts.html">Alerts</a>
+    <a href="settings.html">Settings</a>
+    <a href="help.html">Help</a>
+  </nav>
+  <div class="user-section">
+    <span class="user-name">Demo User</span>
+    <button onclick="window.location.href='login.html'" class="logout-btn">Logout</button>
+  </div>
+</header>
+
+<main class="main-container">
+  <header class="section-header">
+    <h1>Past Weather Data</h1>
+    <p>View and compare historical weather information</p>
+  </header>
+
+  <!-- Controls -->
+  <div class="controls-grid">
     <div class="card">
       <label for="timeRange">Time Range:</label>
       <select id="timeRange">
@@ -23,204 +44,178 @@
       </select>
     </div>
 
-    <!-- Location Selectors -->
     <div class="card">
       <label for="location1">Location 1:</label>
       <select id="location1"></select>
-
       <label for="location2">Location 2:</label>
       <select id="location2"></select>
     </div>
+  </div>
 
-    <!-- Temperature Chart -->
+  <!-- Charts -->
+  <div class="charts-grid">
     <div class="card">
       <h3>Temperature Trend</h3>
       <canvas id="tempChart" height="300"></canvas>
     </div>
-
-    <!-- Precipitation Chart -->
     <div class="card">
       <h3>Precipitation History</h3>
       <canvas id="precipChart" height="250"></canvas>
     </div>
-
-    <!-- Humidity Chart -->
     <div class="card">
       <h3>Humidity Levels</h3>
       <canvas id="humidityChart" height="200"></canvas>
     </div>
-
-    <!-- Wind Speed Chart -->
     <div class="card">
       <h3>Wind Speed</h3>
       <canvas id="windChart" height="200"></canvas>
     </div>
-
-    <!-- Temperature Comparison -->
-    <div class="card" id="comparisonCard">
+    <div class="card">
       <h3>Compare Locations</h3>
       <canvas id="comparisonChart" height="300"></canvas>
     </div>
   </div>
+</main>
 
-  <script>
-    // Sample locations
-    const locations = [
-      { id: "1", name: "New York", country: "USA" },
-      { id: "2", name: "London", country: "UK" },
-      { id: "3", name: "Tokyo", country: "Japan" },
-      { id: "4", name: "Paris", country: "France" },
-      { id: "5", name: "Sydney", country: "Australia" },
-      { id: "6", name: "Dubai", country: "UAE" },
-      { id: "7", name: "Singapore", country: "Singapore" },
-      { id: "8", name: "Los Angeles", country: "USA" },
-    ];
+<script>
+const locations = [
+  { id: "1", name: "New York", country: "USA" },
+  { id: "2", name: "London", country: "UK" },
+  { id: "3", name: "Tokyo", country: "Japan" },
+  { id: "4", name: "Paris", country: "France" },
+  { id: "5", name: "Sydney", country: "Australia" },
+  { id: "6", name: "Dubai", country: "UAE" },
+  { id: "7", name: "Singapore", country: "Singapore" },
+  { id: "8", name: "Los Angeles", country: "USA" },
+];
 
-    const location1Select = document.getElementById('location1');
-    const location2Select = document.getElementById('location2');
-    const timeRangeSelect = document.getElementById('timeRange');
+const location1Select = document.getElementById('location1');
+const location2Select = document.getElementById('location2');
+const timeRangeSelect = document.getElementById('timeRange');
 
-    // Populate location selects
-    locations.forEach(loc => {
-      location1Select.innerHTML += `<option value="${loc.id}">${loc.name}, ${loc.country}</option>`;
-      location2Select.innerHTML += `<option value="${loc.id}">${loc.name}, ${loc.country}</option>`;
-    });
+locations.forEach(loc => {
+  location1Select.innerHTML += `<option value="${loc.id}">${loc.name}, ${loc.country}</option>`;
+  location2Select.innerHTML += `<option value="${loc.id}">${loc.name}, ${loc.country}</option>`;
+});
 
-    let selectedLocation1 = locations[0].id;
-    let selectedLocation2 = locations[1].id;
-    let timeRange = timeRangeSelect.value;
+let selectedLocation1 = locations[0].id;
+let selectedLocation2 = locations[1].id;
+let timeRange = timeRangeSelect.value;
 
-    location1Select.value = selectedLocation1;
-    location2Select.value = selectedLocation2;
+location1Select.value = selectedLocation1;
+location2Select.value = selectedLocation2;
 
-    // Generate historical data
-    function generateHistoricalData(locationId, timeRange) {
-      const dataPoints = timeRange === '7days' ? 7 :
-                         timeRange === '14days' ? 14 :
-                         timeRange === '30days' ? 30 : 90;
+function generateHistoricalData(locationId, timeRange) {
+  const dataPoints = timeRange === '7days' ? 7 :
+                     timeRange === '14days' ? 14 :
+                     timeRange === '30days' ? 30 : 90;
+  const locationTemps = {
+    '1': { base: 70, variance: 8 },
+    '2': { base: 60, variance: 6 },
+    '3': { base: 68, variance: 7 },
+    '4': { base: 65, variance: 6 },
+    '5': { base: 78, variance: 5 },
+    '6': { base: 92, variance: 6 },
+    '7': { base: 86, variance: 3 },
+    '8': { base: 75, variance: 7 },
+  };
+  const tempConfig = locationTemps[locationId] || { base: 70, variance: 8 };
+  const today = new Date();
+  const data = [];
 
-      const locationTemps = {
-        '1': { base: 70, variance: 8 },
-        '2': { base: 60, variance: 6 },
-        '3': { base: 68, variance: 7 },
-        '4': { base: 65, variance: 6 },
-        '5': { base: 78, variance: 5 },
-        '6': { base: 92, variance: 6 },
-        '7': { base: 86, variance: 3 },
-        '8': { base: 75, variance: 7 },
-      };
-      const tempConfig = locationTemps[locationId] || { base: 70, variance: 8 };
-      const today = new Date();
-      const data = [];
+  for (let i = dataPoints - 1; i >= 0; i--) {
+    const date = new Date(today);
+    date.setDate(date.getDate() - i);
+    const dayOfWeek = date.getDay();
+    const seasonalEffect = Math.sin((date.getMonth()/12)*Math.PI*2)*5;
+    const randomVariation = (Math.random() - 0.5) * tempConfig.variance;
+    const weekendEffect = (dayOfWeek === 0 || dayOfWeek === 6) ? 2 : 0;
 
-      for (let i = dataPoints - 1; i >= 0; i--) {
-        const date = new Date(today);
-        date.setDate(date.getDate() - i);
-        const dayOfWeek = date.getDay();
-        const seasonalEffect = Math.sin((date.getMonth()/12)*Math.PI*2)*5;
-        const randomVariation = (Math.random() - 0.5) * tempConfig.variance;
-        const weekendEffect = (dayOfWeek === 0 || dayOfWeek === 6) ? 2 : 0;
+    const avgTemp = Math.round(tempConfig.base + seasonalEffect + randomVariation + weekendEffect);
+    const highTemp = avgTemp + Math.floor(Math.random()*5)+3;
+    const lowTemp = avgTemp - Math.floor(Math.random()*5)-3;
+    const precipitation = Math.floor(Math.random()*100);
+    const humidity = Math.floor(50 + Math.random()*40);
+    const windSpeed = Math.floor(5 + Math.random()*15);
 
-        const avgTemp = Math.round(tempConfig.base + seasonalEffect + randomVariation + weekendEffect);
-        const highTemp = avgTemp + Math.floor(Math.random()*5)+3;
-        const lowTemp = avgTemp - Math.floor(Math.random()*5)-3;
-        const precipitation = Math.floor(Math.random()*100);
-        const humidity = Math.floor(50 + Math.random()*40);
-        const windSpeed = Math.floor(5 + Math.random()*15);
+    data.push({ date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }), temp: avgTemp, high: highTemp, low: lowTemp, precipitation, humidity, windSpeed });
+  }
 
-        data.push({
-          date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-          temp: avgTemp,
-          high: highTemp,
-          low: lowTemp,
-          precipitation,
-          humidity,
-          windSpeed
-        });
-      }
+  return data;
+}
 
-      return data;
-    }
+function generateComparisonData(loc1, loc2, timeRange) {
+  const data1 = generateHistoricalData(loc1, timeRange);
+  const data2 = generateHistoricalData(loc2, timeRange);
+  return data1.map((item, idx) => ({
+    date: item.date,
+    location1: item.temp,
+    location2: data2[idx]?.temp || item.temp
+  }));
+}
 
-    function generateComparisonData(loc1, loc2, timeRange) {
-      const data1 = generateHistoricalData(loc1, timeRange);
-      const data2 = generateHistoricalData(loc2, timeRange);
-      return data1.map((item, idx) => ({
-        date: item.date,
-        location1: item.temp,
-        location2: data2[idx]?.temp || item.temp
-      }));
-    }
+let tempChart, precipChart, humidityChart, windChart, comparisonChart;
 
-    // Initialize charts
-    let tempChart, precipChart, humidityChart, windChart, comparisonChart;
+function renderCharts() {
+  const historicalData = generateHistoricalData(selectedLocation1, timeRange);
+  const comparisonData = generateComparisonData(selectedLocation1, selectedLocation2, timeRange);
 
-    function renderCharts() {
-      const historicalData = generateHistoricalData(selectedLocation1, timeRange);
-      const comparisonData = generateComparisonData(selectedLocation1, selectedLocation2, timeRange);
+  const labels = historicalData.map(d => d.date);
+  const tempHigh = historicalData.map(d => d.high);
+  const tempAvg = historicalData.map(d => d.temp);
+  const tempLow = historicalData.map(d => d.low);
+  const precipitation = historicalData.map(d => d.precipitation);
+  const humidity = historicalData.map(d => d.humidity);
+  const wind = historicalData.map(d => d.windSpeed);
+  const comparison1 = comparisonData.map(d => d.location1);
+  const comparison2 = comparisonData.map(d => d.location2);
 
-      const labels = historicalData.map(d => d.date);
-      const tempHigh = historicalData.map(d => d.high);
-      const tempAvg = historicalData.map(d => d.temp);
-      const tempLow = historicalData.map(d => d.low);
-      const precipitation = historicalData.map(d => d.precipitation);
-      const humidity = historicalData.map(d => d.humidity);
-      const wind = historicalData.map(d => d.windSpeed);
-      const comparison1 = comparisonData.map(d => d.location1);
-      const comparison2 = comparisonData.map(d => d.location2);
+  [tempChart, precipChart, humidityChart, windChart, comparisonChart].forEach(c => c?.destroy());
 
-      // Destroy existing charts
-      [tempChart, precipChart, humidityChart, windChart, comparisonChart].forEach(c => c?.destroy());
+  tempChart = new Chart(document.getElementById('tempChart'), {
+    type: 'line',
+    data: { labels, datasets: [
+      { label: 'High', data: tempHigh, borderColor: '#ef4444', fill: false },
+      { label: 'Average', data: tempAvg, borderColor: '#3b82f6', fill: true, backgroundColor: 'rgba(59,130,246,0.3)' },
+      { label: 'Low', data: tempLow, borderColor: '#6366f1', fill: false }
+    ]},
+    options: { responsive: true, plugins: { legend: { position: 'top' } } }
+  });
 
-      tempChart = new Chart(document.getElementById('tempChart'), {
-        type: 'line',
-        data: {
-          labels,
-          datasets: [
-            { label: 'High', data: tempHigh, borderColor: '#ef4444', fill: false },
-            { label: 'Average', data: tempAvg, borderColor: '#3b82f6', fill: true, backgroundColor: 'rgba(59,130,246,0.3)' },
-            { label: 'Low', data: tempLow, borderColor: '#6366f1', fill: false }
-          ]
-        },
-        options: { responsive: true, plugins: { legend: { position: 'top' } } }
-      });
+  precipChart = new Chart(document.getElementById('precipChart'), {
+    type: 'bar',
+    data: { labels, datasets: [{ label: 'Precipitation (%)', data: precipitation, backgroundColor: '#06b6d4' }] },
+    options: { responsive: true }
+  });
 
-      precipChart = new Chart(document.getElementById('precipChart'), {
-        type: 'bar',
-        data: { labels, datasets: [{ label: 'Precipitation (%)', data: precipitation, backgroundColor: '#06b6d4' }] },
-        options: { responsive: true }
-      });
+  humidityChart = new Chart(document.getElementById('humidityChart'), {
+    type: 'line',
+    data: { labels, datasets: [{ label: 'Humidity (%)', data: humidity, borderColor: '#8b5cf6', fill: false }] },
+    options: { responsive: true }
+  });
 
-      humidityChart = new Chart(document.getElementById('humidityChart'), {
-        type: 'line',
-        data: { labels, datasets: [{ label: 'Humidity (%)', data: humidity, borderColor: '#8b5cf6', fill: false }] },
-        options: { responsive: true }
-      });
+  windChart = new Chart(document.getElementById('windChart'), {
+    type: 'line',
+    data: { labels, datasets: [{ label: 'Wind (mph)', data: wind, borderColor: '#10b981', fill: false }] },
+    options: { responsive: true }
+  });
 
-      windChart = new Chart(document.getElementById('windChart'), {
-        type: 'line',
-        data: { labels, datasets: [{ label: 'Wind (mph)', data: wind, borderColor: '#10b981', fill: false }] },
-        options: { responsive: true }
-      });
+  comparisonChart = new Chart(document.getElementById('comparisonChart'), {
+    type: 'line',
+    data: { labels, datasets: [
+      { label: locations.find(l=>l.id===selectedLocation1).name, data: comparison1, borderColor: '#3b82f6', fill: false },
+      { label: locations.find(l=>l.id===selectedLocation2).name, data: comparison2, borderColor: '#8b5cf6', fill: false }
+    ]},
+    options: { responsive: true, plugins: { legend: { position: 'top' } } }
+  });
+}
 
-      comparisonChart = new Chart(document.getElementById('comparisonChart'), {
-        type: 'line',
-        data: {
-          labels,
-          datasets: [
-            { label: locations.find(l=>l.id===selectedLocation1).name, data: comparison1, borderColor: '#3b82f6', fill: false },
-            { label: locations.find(l=>l.id===selectedLocation2).name, data: comparison2, borderColor: '#8b5cf6', fill: false }
-          ]
-        },
-        options: { responsive: true, plugins: { legend: { position: 'top' } } }
-      });
-    }
+location1Select.addEventListener('change', e => { selectedLocation1 = e.target.value; renderCharts(); });
+location2Select.addEventListener('change', e => { selectedLocation2 = e.target.value; renderCharts(); });
+timeRangeSelect.addEventListener('change', e => { timeRange = e.target.value; renderCharts(); });
 
-    location1Select.addEventListener('change', e => { selectedLocation1 = e.target.value; renderCharts(); });
-    location2Select.addEventListener('change', e => { selectedLocation2 = e.target.value; renderCharts(); });
-    timeRangeSelect.addEventListener('change', e => { timeRange = e.target.value; renderCharts(); });
+renderCharts();
+</script>
 
-    renderCharts();
-  </script>
 </body>
 </html>

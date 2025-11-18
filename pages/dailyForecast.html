@@ -4,61 +4,90 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daily Forecast</title>
-<link rel="stylesheet" href="daily.css">
+<link rel="stylesheet" href="daily.css"> <!-- Use universal CSS if you prefer -->
 </head>
 <body>
+
 <div class="daily-forecast-container">
+
+  <!-- Header -->
   <div id="forecastHeader" class="forecast-header"></div>
+
+  <!-- Day Summary -->
   <div id="daySummary" class="day-summary"></div>
+
+  <!-- Hourly Forecast -->
   <div id="hourlyForecast" class="hourly-forecast"></div>
+
+  <!-- Detailed Metrics -->
   <div id="detailedMetrics" class="detailed-metrics"></div>
+
+  <!-- Additional Details -->
   <div id="additionalDetails" class="additional-details"></div>
+
 </div>
 
 <script>
-/* Sample data (replace with dynamic location if needed) */
-const location = {
-  name: 'New York',
-  country: 'USA',
-  humidity: 65,
-  windSpeed: 12,
+/* ---------------- Dynamic Daily Forecast JS ---------------- */
+
+// Load selected day forecast from localStorage
+const selectedDay = JSON.parse(localStorage.getItem('selectedDayForecast')) || {
+  day: "Mon",
+  high: 75,
+  low: 65,
+  condition: "Sunny",
+  icon: "☀️",
+  location: "Unknown Location"
 };
 
-const hourlyData = [
-  { time: '6 AM', temp: 65, icon: '🌅', precipitation: 0 },
-  { time: '9 AM', temp: 68, icon: '☀️', precipitation: 0 },
-  { time: '12 PM', temp: 73, icon: '☀️', precipitation: 0 },
-  { time: '3 PM', temp: 75, icon: '⛅', precipitation: 5 },
-  { time: '6 PM', temp: 72, icon: '⛅', precipitation: 10 },
-  { time: '9 PM', temp: 68, icon: '🌙', precipitation: 5 },
-];
+// Generate sample hourly data dynamically
+const hourlyData = [];
+for (let i = 0; i < 6; i++) {
+  const hourTemp = selectedDay.high - Math.floor(Math.random() * 5);
+  const hourIcon = selectedDay.icon;
+  const precip = Math.floor(Math.random() * 20);
+  const hourLabel = `${6 + i*3} ${i < 4 ? 'AM' : 'PM'}`;
+  hourlyData.push({ time: hourLabel, temp: hourTemp, icon: hourIcon, precipitation: precip });
+}
 
-/* Render header */
+// Sample additional metrics
+const metrics = {
+  humidity: Math.floor(50 + Math.random()*40),
+  windSpeed: Math.floor(5 + Math.random()*15),
+  sunrise: "6:42 AM",
+  sunset: "7:28 PM",
+  visibility: "10 mi",
+  pressure: "30.12 in",
+  precipitation: Math.floor(Math.random()*20) + "%",
+  uvIndex: "6 (High)"
+};
+
+/* ---------------- Render Header ---------------- */
 document.getElementById('forecastHeader').innerHTML = `
   <h2>Detailed Forecast</h2>
-  <p>Monday, November 13 - ${location.name}, ${location.country}</p>
+  <p>${selectedDay.day} - ${selectedDay.location}</p>
 `;
 
-/* Day summary */
+/* ---------------- Day Summary ---------------- */
 document.getElementById('daySummary').innerHTML = `
   <div class="card day-summary-card">
     <div class="summary-top">
       <div class="temp-info">
-        <span class="temp">75°</span>
-        <span class="condition">Sunny</span>
+        <span class="temp">${selectedDay.high}°</span>
+        <span class="condition">${selectedDay.condition}</span>
         <div class="high-low">
-          <span>H: 75°</span> <span>L: 65°</span>
+          <span>H: ${selectedDay.high}°</span> <span>L: ${selectedDay.low}°</span>
         </div>
       </div>
-      <div class="icon">☀️</div>
+      <div class="icon">${selectedDay.icon}</div>
     </div>
     <p class="summary-text">
-      A beautiful sunny day with clear skies. Perfect weather for outdoor activities.
+      Forecast for ${selectedDay.location} on ${selectedDay.day}. Expect ${selectedDay.condition.toLowerCase()} conditions.
     </p>
   </div>
 `;
 
-/* Hourly forecast */
+/* ---------------- Hourly Forecast ---------------- */
 document.getElementById('hourlyForecast').innerHTML = `
   <h3>Hourly Forecast</h3>
   <div class="card hourly-card">
@@ -75,54 +104,55 @@ document.getElementById('hourlyForecast').innerHTML = `
   </div>
 `;
 
-/* Detailed Metrics */
+/* ---------------- Detailed Metrics ---------------- */
 document.getElementById('detailedMetrics').innerHTML = `
   <div class="metrics-grid">
     <div class="card metric-card">
       <div class="metric-row">
         <span class="metric-label">Sunrise</span>
-        <span class="metric-value">6:42 AM</span>
+        <span class="metric-value">${metrics.sunrise}</span>
       </div>
       <div class="metric-row">
         <span class="metric-label">Sunset</span>
-        <span class="metric-value">7:28 PM</span>
+        <span class="metric-value">${metrics.sunset}</span>
       </div>
     </div>
 
     <div class="card metric-card">
       <div class="metric-row">
         <span class="metric-label">Humidity</span>
-        <span class="metric-value">${location.humidity}%</span>
+        <span class="metric-value">${metrics.humidity}%</span>
       </div>
       <div class="metric-row">
         <span class="metric-label">Wind Speed</span>
-        <span class="metric-value">${location.windSpeed} mph NE</span>
+        <span class="metric-value">${metrics.windSpeed} mph</span>
       </div>
     </div>
   </div>
 `;
 
-/* Additional Details */
+/* ---------------- Additional Details ---------------- */
 document.getElementById('additionalDetails').innerHTML = `
   <div class="additional-grid">
     <div class="card small-card">
       <div class="small-label">Visibility</div>
-      <div class="small-value">10 mi</div>
+      <div class="small-value">${metrics.visibility}</div>
     </div>
     <div class="card small-card">
       <div class="small-label">Pressure</div>
-      <div class="small-value">30.12 in</div>
+      <div class="small-value">${metrics.pressure}</div>
     </div>
     <div class="card small-card">
       <div class="small-label">Precipitation</div>
-      <div class="small-value">0%</div>
+      <div class="small-value">${metrics.precipitation}</div>
     </div>
     <div class="card small-card">
       <div class="small-label">UV Index</div>
-      <div class="small-value">6 (High)</div>
+      <div class="small-value">${metrics.uvIndex}</div>
     </div>
   </div>
 `;
 </script>
+
 </body>
 </html>

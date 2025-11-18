@@ -134,12 +134,12 @@
           currentStep++;
           renderStep();
         } else {
-          alert("Welcome setup completed!");
+          window.dispatchEvent(new Event("welcomeComplete"));
         }
       });
 
       skipBtn.addEventListener("click", () => {
-        alert("Welcome setup skipped!");
+        window.dispatchEvent(new Event("welcomeComplete"));
       });
 
       renderStep();

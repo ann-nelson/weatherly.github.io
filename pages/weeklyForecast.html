@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Weekly Forecast</title>
-  <link rel="stylesheet" href="weekly.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Weekly Forecast</title>
+<link rel="stylesheet" href="style.css" />
 </head>
 
-<body class="page">
+<body>
 
-  <div class="container">
-    
+  <div class="main-container">
+
     <!-- Header -->
     <div class="header">
       <h2>7-Day Forecast</h2>
@@ -18,44 +18,41 @@
     </div>
 
     <!-- Current Weather Summary -->
-    <div class="current-weather">
-      <div class="current-info">
+    <div class="card current-weather">
+      <div class="current-info" style="display:flex; justify-content:space-between; align-items:center;">
         
         <div class="weather-left">
           <p class="label">Current Weather</p>
-
-          <div class="temp-row">
+          <div class="temp-row" style="display:flex; gap:12px; align-items:center;">
             <span id="temp" class="temperature"></span>
             <span id="condition" class="condition-text"></span>
           </div>
-
           <div class="weather-details">
             <span id="high"></span>
             <span id="low"></span>
             <span id="humidity" class="hide-on-mobile"></span>
             <span id="wind" class="hide-on-mobile"></span>
           </div>
-
           <div class="weather-details mobile-only">
             <span id="humidityMobile"></span>
             <span id="windMobile"></span>
           </div>
         </div>
 
-        <div id="weatherIcon" class="weather-icon">☀️</div>
+        <div id="weatherIcon" class="weather-icon" style="font-size:48px;">☀️</div>
       </div>
     </div>
 
     <!-- Weekly Forecast Grid -->
-    <div id="weeklyGrid" class="weekly-grid"></div>
+    <div id="weeklyGrid" class="results-grid"></div>
 
   </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
 
-      // Sample data for demonstration
-      const currentWeather = {
+      // Retrieve selected location data from localStorage or dashboard click
+      const currentWeather = JSON.parse(localStorage.getItem("selectedLocationWeather")) || {
         location: "New York, NY",
         temp: 75,
         condition: "Sunny",
@@ -66,7 +63,7 @@
         icon: "☀️"
       };
 
-      const weeklyForecast = [
+      const weeklyForecast = JSON.parse(localStorage.getItem("selectedLocationWeekly")) || [
         { day: "Mon", high: 78, low: 65, condition: "Sunny", icon: "☀️" },
         { day: "Tue", high: 80, low: 66, condition: "Cloudy", icon: "☁️" },
         { day: "Wed", high: 82, low: 68, condition: "Rain", icon: "🌧️" },
@@ -99,9 +96,15 @@
           <p class="condition">${day.condition}</p>
           <p class="temp">H: ${day.high}° / L: ${day.low}°</p>
         `;
+        
+        // ---------- Click to Daily Forecast ----------
+        card.addEventListener('click', () => {
+          const selectedDay = {...day, location: currentWeather.location};
+          localStorage.setItem('selectedDayForecast', JSON.stringify(selectedDay));
+          window.location.href = 'dailyforecpast.html';
+        });
         weeklyGrid.appendChild(card);
       });
-
     });
   </script>
 
