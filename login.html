@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login Page</title>
   <!-- Universal CSS applied -->
-  <link rel="stylesheet" href="universal.css">
+  <link rel="stylesheet" href="global.css">
 </head>
 <body class="page">
 
@@ -45,23 +45,20 @@
 document.addEventListener("DOMContentLoaded", () => {
   const demoBtn = document.getElementById('demoBtn');
 
-  // Disable regular login form
-  const submitButton = document.getElementById('submitButton');
-  submitButton.disabled = true;
-
-  // Add info text above demo button
+  // Demo account info text above button
   const demoInfo = document.createElement('p');
-  demoInfo.textContent = "Explore WeatherPro instantly using our demo account:";
+  demoInfo.textContent = "Explore Weatherly instantly using our demo account:";
   demoInfo.style.fontWeight = '600';
   demoInfo.style.marginBottom = '0.5rem';
   demoBtn.parentNode.insertBefore(demoInfo, demoBtn);
 
-  // Demo account navigation
+  // Demo button click redirects to saved.html
   demoBtn.addEventListener('click', () => {
-    window.location.href = "saved.html"; // Navigate to dashboard
+    window.location.href = "saved.html"; 
   });
 });
 </script>
+
 
 </body>
 </html>
