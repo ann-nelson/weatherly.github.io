@@ -1,4 +1,4 @@
-# weatherly..github.io
+# weatherly.github.io
 Course: ITIS 4390-051 
 Semester: Fall 2025 
 Capstone Project - Group 9
