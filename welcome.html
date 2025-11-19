@@ -6,7 +6,7 @@
   <title>WeatherPro Welcome Page</title>
 
   <!-- Your custom CSS -->
-  <link rel="stylesheet" href="welcome.css" />
+  <link rel="stylesheet" href="global.css" />
 </head>
 
 <body class="main-bg">
@@ -66,27 +66,10 @@
  <script>
 document.addEventListener("DOMContentLoaded", () => {
   const steps = [
-    {
-      title: "Welcome to WeatherPro",
-      description: "Your personalized weather dashboard is just a few steps away.",
-      icon: "☀️"
-    },
-    {
-      title: "Track Your Locations",
-      description: "Save multiple locations to see forecasts quickly.",
-      icon: "📍"
-    },
-    {
-      title: "Stay Alert",
-      description: "Get notified of severe weather and temperature changes.",
-      icon: "⚡"
-    },
-    {
-      title: "Explore Features",
-      description: "Access 7-day forecasts, historical data, and customizable settings.",
-      icon: "🧭",
-      showFeatures: true
-    }
+    { title: "Welcome to WeatherPro", description: "Your personalized weather dashboard is just a few steps away.", icon: "☀️" },
+    { title: "Track Your Locations", description: "Save multiple locations to see forecasts quickly.", icon: "📍" },
+    { title: "Stay Alert", description: "Get notified of severe weather and temperature changes.", icon: "⚡" },
+    { title: "Explore Features", description: "Access 7-day forecasts, historical data, and customizable settings.", icon: "🧭", showFeatures: true }
   ];
 
   let currentStep = 0;
@@ -107,12 +90,10 @@ document.addEventListener("DOMContentLoaded", () => {
     stepDescription.textContent = step.description;
     iconContainer.textContent = step.icon;
     featureGrid.classList.toggle("hidden", !step.showFeatures);
-
     prevBtn.classList.toggle("hidden", currentStep === 0);
     nextBtn.textContent = currentStep === steps.length - 1 ? "Finish" : "Next";
     stepCounter.textContent = `Step ${currentStep + 1} of ${steps.length}`;
 
-    // Render progress indicators
     progress.innerHTML = "";
     for (let i = 0; i < steps.length; i++) {
       const dot = document.createElement("span");
@@ -134,17 +115,15 @@ document.addEventListener("DOMContentLoaded", () => {
       currentStep++;
       renderStep();
     } else {
-      redirectToLogin();
+      // Navigate to login page
+      window.location.href = "login.html";
     }
   });
 
   skipBtn.addEventListener("click", () => {
-    redirectToLogin();
+    // Navigate to login page
+    window.location.href = "login.html";
   });
-
-  function redirectToLogin() {
-    window.location.href = "login.html"; // Redirect to login page
-  }
 
   renderStep();
 });
