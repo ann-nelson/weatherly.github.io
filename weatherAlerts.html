@@ -48,24 +48,37 @@
       <p>
         Stay informed about weather conditions in your saved locations. Configure notification preferences in Settings.
       </p>
+
+      <!-- FIXED CHECKBOX STRUCTURE -->
       <div class="settings-tags">
-        <span>Severe Weather</span>
-        <span>Temperature Alerts</span>
-        <span>Precipitation</span>
-        <span>Air Quality</span>
+        <label>
+          <input type="checkbox" id="pref-severe">
+          <span>Severe Weather</span>
+        </label>
+
+        <label>
+          <input type="checkbox" id="pref-temp">
+          <span>Temperature Alerts</span>
+        </label>
+
+        <label>
+          <input type="checkbox" id="pref-precip">
+          <span>Precipitation</span>
+        </label>
+
+        <label>
+          <input type="checkbox" id="pref-air">
+          <span>Air Quality</span>
+        </label>
       </div>
     </div>
   </div>
-
-  <!-- Detailed Alert -->
-  <div id="detailed-alert" class="card hidden"></div>
 </main>
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const alertList = document.getElementById("alert-list");
   const noAlerts = document.getElementById("no-alerts");
-  const detailedAlert = document.getElementById("detailed-alert");
 
   // Sample alerts for demo account
   const alertsData = JSON.parse(localStorage.getItem("weatherAlerts")) || [
@@ -86,25 +99,23 @@ document.addEventListener("DOMContentLoaded", () => {
     alertsData.forEach(alert => {
       const card = document.createElement("div");
       card.className = "alert-card card";
+
       card.innerHTML = `
         <h4>${alert.title}</h4>
         <p><strong>Location:</strong> ${alert.location}</p>
         <p><strong>Severity:</strong> ${alert.severity}</p>
+
+        <!-- NEW BUTTON -->
+        <button
+          class="more-info-btn"
+          onclick="event.stopPropagation(); window.location.href='detailedAlert.html?id=${alert.id}'"
+        >
+          More Info →
+        </button>
       `;
-      card.addEventListener("click", () => showDetailedAlert(alert));
+
       alertList.appendChild(card);
     });
-  }
-
-  function showDetailedAlert(alert) {
-    detailedAlert.classList.remove("hidden");
-    detailedAlert.innerHTML = `
-      <h3>${alert.title}</h3>
-      <p><strong>Location:</strong> ${alert.location}</p>
-      <p><strong>Severity:</strong> ${alert.severity}</p>
-      <p>${alert.description}</p>
-    `;
-    detailedAlert.scrollIntoView({ behavior: "smooth" });
   }
 
   renderAlerts();
