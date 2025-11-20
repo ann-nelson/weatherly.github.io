@@ -8,6 +8,26 @@
 </head>
 
 <body>
+  <!-- Top Navigation -->
+<header class="top-nav">
+  <div class="logo">☁️ Weatherly</div>
+  <nav class="nav-links">
+    <a href="saved.html">Dashboard</a>
+    <a href="search.html">Search</a>
+    <a href="pastWeather.html">Past Weather</a>
+    <a href="weatherAlerts.html" class="active" >Alerts</a>
+    <a href="settings.html">Settings</a>
+    <a href="help.html">Help</a>
+  </nav>
+  <div class="user-section">
+    <button onclick="window.location.href='profile.html'" class="profile-btn">Demo User</button>
+    <button onclick="window.location.href='login.html'" class="logout-btn">Logout</button>
+  </div>
+</header>
+
+<button id="backBtn" class="btn-ghost" onclick="window.location.href='saved.html'">
+    ← Back to Dashboard
+  </button>
 
   <div class="main-container">
 
