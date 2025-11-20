@@ -29,7 +29,7 @@
   <!-- Header -->
   <header class="section-header">
     <h1>My Locations</h1>
-    <p id="locationsInfo">Manage your top 0 of 5 saved locations</p>
+    <p id="locationsInfo">Manage your top 3 of 5 saved locations</p>
   </header>
 
   <!-- Locations Grid -->
@@ -37,23 +37,32 @@
 </main>
 
 <script>
-/* -------- Sample Data -------- */
+/* -------- Saved Locations (start with 3) -------- */
 let locations = [
   {id:'1', name:'New York', country:'USA', temp:72, condition:'Partly Cloudy', high:75, low:65, humidity:65, windSpeed:12, icon:'⛅'},
   {id:'2', name:'London', country:'UK', temp:61, condition:'Rainy', high:64, low:58, humidity:85, windSpeed:15, icon:'🌧️'},
   {id:'3', name:'Tokyo', country:'Japan', temp:68, condition:'Sunny', high:73, low:62, humidity:55, windSpeed:8, icon:'☀️'}
 ];
 
-/* -------- DOM Elements -------- */
+/* -------- Extra sample (not saved yet) -------- */
+let extraSampleLocations = [
+  {id:'4', name:'Sydney', country:'Australia', temp:78, condition:'Sunny', high:82, low:70, humidity:45, windSpeed:10, icon:'☀️'},
+  {id:'5', name:'Toronto', country:'Canada', temp:59, condition:'Cloudy', high:63, low:54, humidity:72, windSpeed:14, icon:'☁️'}
+];
+
+/* DOM */
 const locationsContainer = document.getElementById('locationsContainer');
 const locationsInfo = document.getElementById('locationsInfo');
 
-/* ---------- Dashboard JS (saved.html) ---------- */
+/* Render */
 function renderLocations() {
   locationsContainer.innerHTML = '';
-  locationsInfo.textContent = `Manage your top ${locations.length} of 5 saved locations`;
+  const maxDisplayed = 5;
+  const displayedLocations = locations.slice(0, maxDisplayed);
 
-  locations.forEach(loc => {
+  locationsInfo.textContent = `Your top ${displayedLocations.length} of ${maxDisplayed} saved locations`;
+
+  displayedLocations.forEach(loc => {
     const card = document.createElement('div');
     card.className = 'location-card';
     card.innerHTML = `
@@ -64,6 +73,7 @@ function renderLocations() {
         </div>
         <div class="loc-icon">${loc.icon}</div>
       </div>
+
       <div class="card-body">
         <div class="temp-condition">
           <span class="temp">${loc.temp}°</span>
@@ -77,49 +87,15 @@ function renderLocations() {
           <span>Humidity: ${loc.humidity}%</span>
           <span>Wind: ${loc.windSpeed} mph</span>
         </div>
+
         <button class="view-weekly-btn">7-Day Forecast</button>
         <button class="remove-btn" data-id="${loc.id}">Remove</button>
       </div>
     `;
+
     locationsContainer.appendChild(card);
 
-    // ---------- Click to Weekly Forecast ----------
-    card.querySelector('.view-weekly-btn').addEventListener('click', () => {
-      // Save current weather
-      const selectedWeather = {
-        location: `${loc.name}, ${loc.country}`,
-        temp: loc.temp,
-        condition: loc.condition,
-        high: loc.high,
-        low: loc.low,
-        humidity: loc.humidity,
-        wind: loc.windSpeed,
-        icon: loc.icon
-      };
-
-      // Generate sample weekly forecast for the location
-      const weekly = [];
-      const days = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
-      for(let i=0; i<7; i++){
-        const variation = Math.floor(Math.random()*5)-2;
-        weekly.push({
-          day: days[i],
-          high: loc.high + variation,
-          low: loc.low + variation,
-          condition: loc.condition,
-          icon: loc.icon
-        });
-      }
-
-      // Save to localStorage
-      localStorage.setItem("selectedLocationWeather", JSON.stringify(selectedWeather));
-      localStorage.setItem("selectedLocationWeekly", JSON.stringify(weekly));
-
-      // Redirect
-      window.location.href = "weeklyforecast.html";
-    });
-
-    // ---------- Remove Location ----------
+    // Remove location
     card.querySelector('.remove-btn').addEventListener('click', e => {
       const id = e.target.dataset.id;
       locations = locations.filter(l => l.id !== id);
@@ -127,28 +103,70 @@ function renderLocations() {
     });
   });
 
-  // Add card to add new location
-  if (locations.length < 5) {
+  /* ----- Add Location Card (if room) ----- */
+  if (locations.length < maxDisplayed) {
+    const remaining = maxDisplayed - locations.length;
+
     const addCard = document.createElement('div');
     addCard.className = 'add-card';
     addCard.innerHTML = `
       <div class="add-content">
         <span class="plus">+</span>
         <p>Add Location</p>
-        <small>${5 - locations.length} slot${5 - locations.length !== 1 ? 's' : ''} remaining</small>
+        <small>${remaining} slot${remaining !== 1 ? 's' : ''} remaining</small>
       </div>
     `;
-    addCard.addEventListener('click', () => {
-      const name = prompt('Enter location name');
-      if (!name) return;
-      const newLoc = {id: Date.now().toString(), name, country:'Unknown', temp:70, condition:'Sunny', high:75, low:65, humidity:50, windSpeed:10, icon:'☀️'};
-      locations.push(newLoc);
-      renderLocations();
-    });
+
+    addCard.addEventListener('click', showSearchBar);
     locationsContainer.appendChild(addCard);
   }
 }
 
+/* ---- SHOW SEARCH BAR ---- */
+function showSearchBar() {
+  const searchWrapper = document.createElement('div');
+  searchWrapper.className = 'search-wrapper';
+
+  searchWrapper.innerHTML = `
+    <input id="locSearchInput" class="search-input" type="text" placeholder="Search location...">
+    <button id="locSearchBtn" class="search-btn">Search</button>
+    <p id="searchError" class="search-error" style="color:red;display:none;">Location not found</p>
+  `;
+
+  locationsContainer.appendChild(searchWrapper);
+
+  document.getElementById('locSearchBtn').addEventListener('click', handleSearch);
+}
+
+/* ---- SEARCH HANDLER ---- */
+function handleSearch() {
+  const query = document.getElementById('locSearchInput').value.trim().toLowerCase();
+  const error = document.getElementById('searchError');
+
+  // Allowed sample location names
+  const allowed = extraSampleLocations.map(l => l.name.toLowerCase());
+
+  if (!allowed.includes(query)) {
+    error.style.display = 'block';
+    return;
+  }
+
+  error.style.display = 'none';
+
+  // Find matching location
+  const found = extraSampleLocations.find(l => l.name.toLowerCase() === query);
+
+  // Add to saved list
+  locations.push(found);
+
+  // Remove from available sample list
+  extraSampleLocations = extraSampleLocations.filter(l => l.id !== found.id);
+
+  renderLocations();
+}
+
+renderLocations();
 </script>
+
 </body>
 </html>
