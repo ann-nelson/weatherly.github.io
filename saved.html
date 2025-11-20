@@ -88,7 +88,7 @@ function renderLocations() {
           <span>Wind: ${loc.windSpeed} mph</span>
         </div>
 
-        <button class="view-weekly-btn">7-Day Forecast</button>
+        <button onclick="window.location.href='weeklyForecast.html'" class="view-weekly-btn">7-Day Forecast</button>
         <button class="remove-btn" data-id="${loc.id}">Remove</button>
       </div>
     `;
