@@ -21,7 +21,7 @@ body, html {
 
 /* Saved Locations (saved.html) */
 .main-container {
-  padding: 5rem;
+  padding: 3rem 18rem;
 }
 
 .saved-temp {
@@ -57,11 +57,16 @@ body, html {
 
 .country-name {
   font-size: 0.88rem;
+  color: #6b7280;
 }
 
-.loc-icon {
-  font-size: 2rem;
+.card-saved .loc-icon {
+  font-size: 3.5rem;
   align-self: flex-start;
+}
+
+.saved-condition {
+  color: #6b7280;
 }
 
 .card-close {
@@ -76,7 +81,7 @@ body, html {
   color: rgba(17, 24, 39, 0.7);
   font-weight: 600;
   font-size: 1.25rem;
-  line-height: 1;
+  line-height: 0;
   cursor: pointer;
   opacity: 0;
   transform: scale(0.85);
@@ -85,6 +90,7 @@ body, html {
   align-items: center;
   justify-content: center;
   padding: 0;
+  text-align: center;
 }
 
 .card-saved:hover .card-close {
@@ -105,6 +111,7 @@ body, html {
 
 .saved-high-low {
   font-size: 0.88rem;
+  color: #6b7280;
 }
 
 .card-divider {
@@ -112,6 +119,42 @@ body, html {
   background-color: #e5e7eb;
   margin: 0.75rem 0;
   border: none;
+}
+
+.saved-metrics {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.saved-metric-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.metric-icon-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.metric-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.metric-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.metric-value {
+  font-size: 1rem;
+  color: #111827;
+  padding-left: calc(1.5rem + 0.5rem);
 }
 
 /* end saved.html */

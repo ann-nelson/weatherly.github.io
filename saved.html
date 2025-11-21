@@ -79,16 +79,28 @@ function renderLocations() {
         <div class="card-body">
           <div class="temp-condition">
             <span class="saved-temp">${loc.temp}°</span>
-            <span>${loc.condition}</span>
+            <span class="saved-condition">${loc.condition}</span>
           </div>
           <div class="saved-high-low">
             <span>H: ${loc.high}°</span>
             <span>L: ${loc.low}°</span>
           </div>
           <div class="card-divider"></div>
-          <div class="metrics">
-            <span>Humidity: ${loc.humidity}%</span>
-            <span>Wind: ${loc.windSpeed} mph</span>
+          <div class="saved-metrics">
+            <div class="saved-metric-item">
+              <div class="metric-icon-label">
+                <span class="metric-icon">💧</span>
+                <span class="metric-label">Humidity</span>
+              </div>
+              <span class="metric-value">${loc.humidity}%</span>
+            </div>
+            <div class="saved-metric-item">
+              <div class="metric-icon-label">
+                <span class="metric-icon">🌬️</span>
+                <span class="metric-label">Wind</span>
+              </div>
+              <span class="metric-value">${loc.windSpeed} mph</span>
+            </div>
           </div>
         </div>
       </div>
