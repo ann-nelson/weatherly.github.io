@@ -145,7 +145,9 @@ function renderLocations() {
       </div>
     `;
 
-    addCard.addEventListener('click', showSearchBar);
+    addCard.addEventListener('click', () => {
+      window.location.href = 'search.html';
+    });
     locationsContainer.appendChild(addCard);
   }
 }
