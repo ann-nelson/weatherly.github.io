@@ -24,6 +24,10 @@ body, html {
   padding: 5rem;
 }
 
+.saved-temp {
+  font-size: 2rem;
+}
+
 .card-saved {
   background-color: #ffffff;
   border-radius: 0.75rem;
@@ -31,6 +35,13 @@ body, html {
   box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
   margin-bottom: 1.5rem;
   transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  position: relative;
+  cursor: pointer;
+}
+
+.card-saved:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
 }
 
 .card-header {
@@ -40,10 +51,70 @@ body, html {
   margin-bottom: 1rem;
 }
 
+.city-name {
+  font-size: 1.15rem;
+}
+
+.country-name {
+  font-size: 0.88rem;
+}
+
 .loc-icon {
   font-size: 2rem;
   align-self: flex-start;
 }
+
+.card-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 25%;
+  border: 1px solid transparent;
+  background: rgba(17, 24, 39, 0.04);
+  color: rgba(17, 24, 39, 0.7);
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.card-saved:hover .card-close {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.card-close:hover {
+  background: #fee2e2;
+  border-color: #fecaca;
+  color: #dc2626;
+}
+
+.card-close:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.saved-high-low {
+  font-size: 0.88rem;
+}
+
+.card-divider {
+  height: 1px;
+  background-color: #e5e7eb;
+  margin: 0.75rem 0;
+  border: none;
+}
+
+/* end saved.html */
 
 
 /* Links */

@@ -67,43 +67,56 @@ function renderLocations() {
     card.className = 'location-card';
     card.innerHTML = `
       <div class="card-saved">
+        <button class="card-close" data-id="${loc.id}" aria-label="Remove ${loc.name}">&times;</button>
         <div class="card-header">
           <div>
-            <h3>${loc.name}</h3>
-            <p>${loc.country}</p>
+            <h3 class="city-name">${loc.name}</h3>
+            <p class="country-name">${loc.country}</p>
           </div>
           <div class="loc-icon">${loc.icon}</div>
         </div>
 
         <div class="card-body">
           <div class="temp-condition">
-            <span class="temp">${loc.temp}°</span>
-            <span class="condition">${loc.condition}</span>
+            <span class="saved-temp">${loc.temp}°</span>
+            <span>${loc.condition}</span>
           </div>
-          <div class="high-low">
+          <div class="saved-high-low">
             <span>H: ${loc.high}°</span>
             <span>L: ${loc.low}°</span>
           </div>
+          <div class="card-divider"></div>
           <div class="metrics">
             <span>Humidity: ${loc.humidity}%</span>
             <span>Wind: ${loc.windSpeed} mph</span>
           </div>
         </div>
       </div>
-      <div>
-        <button onclick="window.location.href='weeklyForecast.html'" class="view-weekly-btn">7-Day Forecast</button>
-        <button class="remove-btn" data-id="${loc.id}">Remove</button>
-      </div>
     `;
 
     locationsContainer.appendChild(card);
 
-    // Remove location
-    card.querySelector('.remove-btn').addEventListener('click', e => {
-      const id = e.target.dataset.id;
-      locations = locations.filter(l => l.id !== id);
-      renderLocations();
+    const cardSaved = card.querySelector('.card-saved');
+    
+    // Make card clickable to navigate to weekly forecast
+    cardSaved.addEventListener('click', (e) => {
+      // Don't navigate if clicking the close button
+      if (e.target.classList.contains('card-close') || e.target.closest('.card-close')) {
+        return;
+      }
+      window.location.href = 'weeklyForecast.html';
     });
+
+    // Remove location handler for X button
+    const closeBtn = card.querySelector('.card-close');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        const id = e.currentTarget.dataset.id;
+        locations = locations.filter(l => l.id !== id);
+        renderLocations();
+      });
+    }
   });
 
   /* ----- Add Location Card (if room) ----- */
