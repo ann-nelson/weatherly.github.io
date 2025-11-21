@@ -1,6 +1,132 @@
+/* login.css */
+
+/* Center login layout (already handled earlier) */
 body.page {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  background: linear-gradient(to right, #4f46e5, #3b82f6);
+}
+
+/* Card styling */
+.login-container .card {
+  background: white;
+  border-radius: 1rem;
+  padding: 2.5rem 2rem;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Title & Description */
+.logo-section h2 {
+  margin-top: 1rem;
+  font-size: 1.5rem;
+}
+
+.logo-section p {
+  font-size: 0.95rem;
+  color: #6b7280;
+}
+
+/* Form Group */
+.form-group {
+  text-align: left;
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  font-size: 0.875rem;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.form-group input {
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  width: 100%;
+  font-size: 0.95rem;
+  background-color: #f9fafb;
+}
+
+/* Sign In Button */
+form button[type="submit"] {
+  margin-top: 0.5rem;
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  background-color: #111827;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+}
+
+/* Demo Info Box */
+.demo-info {
+  background-color: #f0f9ff;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  text-align: left;
+  margin-top: 2rem;
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.demo-info strong {
+  color: #111827;
+}
+
+/* Divider */
+.divider {
+  margin: 2rem 0 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: #e5e7eb;
+  margin: 0 1rem;
+}
+
+/* Demo Button */
+#demoBtn {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  background-color: transparent;
+  color: #374151;
+  border: 2px solid #cbd5e1;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+#demoBtn:hover {
+  background-color: #f3f4f6;
+}
+
+/* Footer Signup Link */
+.footer-link {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.875rem;
+}
+
+.footer-link a {
+  color: #3b82f6;
+  font-weight: 500;
 }
