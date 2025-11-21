@@ -10,7 +10,7 @@
 
 <!-- Top Navigation -->
 <header class="top-nav">
-  <div class="logo">☁️ Weatherly</div>
+  <div class="logo">☁️<h1>Weatherly</h1></div>
   <nav class="nav-links">
     <a href="saved.html" class="active">Dashboard</a>
     <a href="search.html">Search</a>
@@ -28,7 +28,7 @@
 <main class="main-container">
   <!-- Header -->
   <header class="section-header">
-    <h1>My Locations</h1>
+    <h2>My Locations</h2>
     <p id="locationsInfo">Manage your top 3 of 5 saved locations</p>
   </header>
 
@@ -66,28 +66,31 @@ function renderLocations() {
     const card = document.createElement('div');
     card.className = 'location-card';
     card.innerHTML = `
-      <div class="card-header">
-        <div>
-          <h3>${loc.name}</h3>
-          <p>${loc.country}</p>
+      <div class="card-saved">
+        <div class="card-header">
+          <div>
+            <h3>${loc.name}</h3>
+            <p>${loc.country}</p>
+          </div>
+          <div class="loc-icon">${loc.icon}</div>
         </div>
-        <div class="loc-icon">${loc.icon}</div>
+
+        <div class="card-body">
+          <div class="temp-condition">
+            <span class="temp">${loc.temp}°</span>
+            <span class="condition">${loc.condition}</span>
+          </div>
+          <div class="high-low">
+            <span>H: ${loc.high}°</span>
+            <span>L: ${loc.low}°</span>
+          </div>
+          <div class="metrics">
+            <span>Humidity: ${loc.humidity}%</span>
+            <span>Wind: ${loc.windSpeed} mph</span>
+          </div>
+        </div>
       </div>
-
-      <div class="card-body">
-        <div class="temp-condition">
-          <span class="temp">${loc.temp}°</span>
-          <span class="condition">${loc.condition}</span>
-        </div>
-        <div class="high-low">
-          <span>H: ${loc.high}°</span>
-          <span>L: ${loc.low}°</span>
-        </div>
-        <div class="metrics">
-          <span>Humidity: ${loc.humidity}%</span>
-          <span>Wind: ${loc.windSpeed} mph</span>
-        </div>
-
+      <div>
         <button onclick="window.location.href='weeklyForecast.html'" class="view-weekly-btn">7-Day Forecast</button>
         <button class="remove-btn" data-id="${loc.id}">Remove</button>
       </div>
