@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Weekly Forecast</title>
 <link rel="stylesheet" href="stylesheet/global.css" />
+<!-- SHARED MOCK DATA INITIALIZER -->
+<script src="mockData.js"></script>
 </head>
 
 <body>
@@ -15,7 +17,7 @@
     <a href="saved.html">Dashboard</a>
     <a href="search.html">Search</a>
     <a href="pastWeather.html">Past Weather</a>
-    <a href="weatherAlerts.html" class="active" >Alerts</a>
+    <a href="weatherAlerts.html" class="active">Alerts</a>
     <a href="settings.html">Settings</a>
     <a href="help.html">Help</a>
   </nav>
@@ -117,11 +119,11 @@
           <p class="temp">H: ${day.high}° / L: ${day.low}°</p>
         `;
         
-        // ---------- Click to Daily Forecast ----------
+        // Click to Daily Forecast
         card.addEventListener('click', () => {
           const selectedDay = {...day, location: currentWeather.location};
           localStorage.setItem('selectedDayForecast', JSON.stringify(selectedDay));
-          window.location.href = 'dailyforecpast.html';
+          window.location.href = 'dailyForecast.html';
         });
         weeklyGrid.appendChild(card);
       });
@@ -130,3 +132,4 @@
 
 </body>
 </html>
+
