@@ -117,9 +117,6 @@ function renderLocations() {
           </div>
         </div>
       </div>
-      <div class="card-actions">
-        <button class="view-weekly-btn">7-Day Forecast</button>
-      </div>
     `;
 
     locationsContainer.appendChild(card);
@@ -169,47 +166,6 @@ function renderLocations() {
       });
     }
 
-    const weeklyBtn = card.querySelector('.view-weekly-btn');
-    weeklyBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-
-      const currentWeather = {
-        location: `${loc.name}, ${loc.country}`,
-        temp: loc.temp,
-        condition: loc.condition,
-        high: loc.high,
-        low: loc.low,
-        humidity: loc.humidity,
-        wind: loc.windSpeed,
-        icon: loc.icon
-      };
-
-      const weeklyForecast = [
-        { day: "Mon", high: loc.high,     low: loc.low,     condition: loc.condition,         icon: loc.icon },
-        { day: "Tue", high: loc.high+1,   low: loc.low-1,   condition: "Partly Cloudy",       icon: "⛅" },
-        { day: "Wed", high: loc.high+2,   low: loc.low,     condition: "Light Rain",          icon: "🌧️" },
-        { day: "Thu", high: loc.high-1,   low: loc.low-2,   condition: "Thunderstorm",        icon: "⛈️" },
-        { day: "Fri", high: loc.high,     low: loc.low-1,   condition: "Sunny",               icon: "☀️" },
-        { day: "Sat", high: loc.high-2,   low: loc.low-3,   condition: "Partly Cloudy",       icon: "⛅" },
-        { day: "Sun", high: loc.high-1,   low: loc.low-2,   condition: "Sunny",               icon: "☀️" }
-      ];
-
-      localStorage.setItem('selectedLocationWeather', JSON.stringify(currentWeather));
-      localStorage.setItem('selectedLocationWeekly', JSON.stringify(weeklyForecast));
-
-      window.location.href = 'weeklyForecast.html';
-    });
-
-    // Remove location handler for X button
-    const closeBtn = card.querySelector('.card-close');
-    if (closeBtn) {
-      closeBtn.addEventListener('click', e => {
-        e.stopPropagation();
-        const id = e.currentTarget.dataset.id;
-        locations = locations.filter(l => l.id !== id);
-        renderLocations();
-      });
-    }
   });
 
   if (locations.length < MAX_LOCATIONS) {
