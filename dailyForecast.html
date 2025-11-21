@@ -4,20 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daily Forecast</title>
-<link rel="stylesheet" href="global.css"> 
+<link rel="stylesheet" href="daily.css"> 
 </head>
-
 
 <body>
 
-  <!-- Top Navigation -->
+<!-- Top Navigation -->
 <header class="top-nav">
   <div class="logo">☁️ Weatherly</div>
   <nav class="nav-links">
     <a href="saved.html">Dashboard</a>
     <a href="search.html">Search</a>
     <a href="pastWeather.html">Past Weather</a>
-    <a href="weatherAlerts.html" class="active" >Alerts</a>
+    <a href="weatherAlerts.html" class="active">Alerts</a>
     <a href="settings.html">Settings</a>
     <a href="help.html">Help</a>
   </nav>
@@ -29,7 +28,7 @@
 
 <button id="backBtn" class="btn-ghost" onclick="window.location.href='weeklyForecast.html'">
     ← Back to Weekly Forecast
-  </button>
+</button>
 
 <main class="main-container">
 
@@ -54,9 +53,7 @@
 </main>
 
 <script>
-/* ---------------- Dynamic Daily Forecast JS ---------------- */
-
-// Load selected day forecast from localStorage
+/* ---------------- Load Data ---------------- */
 const selectedDay = JSON.parse(localStorage.getItem('selectedDayForecast')) || {
   day: "Mon",
   high: 75,
@@ -66,17 +63,16 @@ const selectedDay = JSON.parse(localStorage.getItem('selectedDayForecast')) || {
   location: "Unknown Location"
 };
 
-// Generate sample hourly data dynamically
+// Generate hourly data
 const hourlyData = [];
 for (let i = 0; i < 6; i++) {
   const hourTemp = selectedDay.high - Math.floor(Math.random() * 5);
-  const hourIcon = selectedDay.icon;
   const precip = Math.floor(Math.random() * 20);
   const hourLabel = `${6 + i*3} ${i < 4 ? 'AM' : 'PM'}`;
-  hourlyData.push({ time: hourLabel, temp: hourTemp, icon: hourIcon, precipitation: precip });
+  hourlyData.push({ time: hourLabel, temp: hourTemp, icon: selectedDay.icon, precipitation: precip });
 }
 
-// Sample additional metrics
+// Metrics
 const metrics = {
   humidity: Math.floor(50 + Math.random()*40),
   windSpeed: Math.floor(5 + Math.random()*15),
@@ -105,8 +101,11 @@ document.getElementById('daySummary').innerHTML = `
           <span>H: ${selectedDay.high}°</span> <span>L: ${selectedDay.low}°</span>
         </div>
       </div>
-      <div class="icon">${selectedDay.icon}</div>
+
+      <!-- Icon with Tailwind-style background -->
+      <div class="icon icon-bg bg-orange-100">${selectedDay.icon}</div>
     </div>
+
     <p class="summary-text">
       Forecast for ${selectedDay.location} on ${selectedDay.day}. Expect ${selectedDay.condition.toLowerCase()} conditions.
     </p>
@@ -121,7 +120,10 @@ document.getElementById('hourlyForecast').innerHTML = `
       ${hourlyData.map(hour => `
         <div class="hour-item">
           <div class="hour-time">${hour.time}</div>
-          <div class="hour-icon">${hour.icon}</div>
+
+          <!-- Hourly icon with a soft neutral sunny background -->
+          <div class="hour-icon icon-bg bg-orange-100">${hour.icon}</div>
+
           <div class="hour-temp">${hour.temp}°</div>
           <div class="hour-precip">${hour.precipitation}%</div>
         </div>
@@ -133,12 +135,16 @@ document.getElementById('hourlyForecast').innerHTML = `
 /* ---------------- Detailed Metrics ---------------- */
 document.getElementById('detailedMetrics').innerHTML = `
   <div class="metrics-grid">
+
     <div class="card metric-card">
       <div class="metric-row">
+        <div class="icon-bg bg-orange-100 metric-icon">🌅</div>
         <span class="metric-label">Sunrise</span>
         <span class="metric-value">${metrics.sunrise}</span>
       </div>
+
       <div class="metric-row">
+        <div class="icon-bg bg-indigo-100 metric-icon">🌇</div>
         <span class="metric-label">Sunset</span>
         <span class="metric-value">${metrics.sunset}</span>
       </div>
@@ -146,36 +152,49 @@ document.getElementById('detailedMetrics').innerHTML = `
 
     <div class="card metric-card">
       <div class="metric-row">
+        <div class="icon-bg bg-blue-100 metric-icon">💧</div>
         <span class="metric-label">Humidity</span>
         <span class="metric-value">${metrics.humidity}%</span>
       </div>
+
       <div class="metric-row">
+        <div class="icon-bg bg-gray-100 metric-icon">🌬️</div>
         <span class="metric-label">Wind Speed</span>
         <span class="metric-value">${metrics.windSpeed} mph</span>
       </div>
     </div>
+
   </div>
 `;
 
 /* ---------------- Additional Details ---------------- */
 document.getElementById('additionalDetails').innerHTML = `
   <div class="additional-grid">
+
     <div class="card small-card">
+      <div class="icon-bg bg-purple-100 small-icon">👁️</div>
       <div class="small-label">Visibility</div>
       <div class="small-value">${metrics.visibility}</div>
     </div>
+
     <div class="card small-card">
+      <div class="icon-bg bg-teal-100 small-icon">📏</div>
       <div class="small-label">Pressure</div>
       <div class="small-value">${metrics.pressure}</div>
     </div>
+
     <div class="card small-card">
+      <div class="icon-bg bg-blue-100 small-icon">🌧️</div>
       <div class="small-label">Precipitation</div>
       <div class="small-value">${metrics.precipitation}</div>
     </div>
+
     <div class="card small-card">
+      <div class="icon-bg bg-yellow-100 small-icon">☀️</div>
       <div class="small-label">UV Index</div>
       <div class="small-value">${metrics.uvIndex}</div>
     </div>
+
   </div>
 `;
 </script>
