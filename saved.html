@@ -199,6 +199,17 @@ function renderLocations() {
 
       window.location.href = 'weeklyForecast.html';
     });
+
+    // Remove location handler for X button
+    const closeBtn = card.querySelector('.card-close');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        const id = e.currentTarget.dataset.id;
+        locations = locations.filter(l => l.id !== id);
+        renderLocations();
+      });
+    }
   });
 
   if (locations.length < MAX_LOCATIONS) {
@@ -214,7 +225,9 @@ function renderLocations() {
       </div>
     `;
 
-    addCard.addEventListener('click', showSearchBar);
+    addCard.addEventListener('click', () => {
+      window.location.href = 'search.html';
+    });
     locationsContainer.appendChild(addCard);
   }
 
