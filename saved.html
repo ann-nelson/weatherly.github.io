@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Weatherly - Dashboard</title>
-<link rel="stylesheet" href="stylesheet/global.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weatherly - Dashboard</title>
+  <link rel="stylesheet" href="stylesheet/global.css">
+
+  <script src="mockData.js"></script>
 </head>
 <body>
 
-<!-- Top Navigation -->
 <header class="top-nav">
   <div class="logo">☁️<h1>Weatherly</h1></div>
   <nav class="nav-links">
@@ -26,41 +27,53 @@
 </header>
 
 <main class="main-container">
-  <!-- Header -->
   <header class="section-header">
     <h2>My Locations</h2>
     <p id="locationsInfo">Manage your top 3 of 5 saved locations</p>
   </header>
 
-  <!-- Locations Grid -->
+  <button id="resetDemoBtn" class="btn-outline" style="margin-bottom: 20px;">
+    Reset Demo Locations
+  </button>
+
   <div id="locationsContainer" class="locations-grid"></div>
 </main>
 
 <script>
-/* -------- Saved Locations (start with 3) -------- */
-let locations = [
+const MAX_LOCATIONS = 5;
+const STORAGE_KEY = 'weatherlySavedLocations';
+
+const defaultDemoLocations = [
   {id:'1', name:'New York', country:'USA', temp:72, condition:'Partly Cloudy', high:75, low:65, humidity:65, windSpeed:12, icon:'⛅'},
   {id:'2', name:'London', country:'UK', temp:61, condition:'Rainy', high:64, low:58, humidity:85, windSpeed:15, icon:'🌧️'},
   {id:'3', name:'Tokyo', country:'Japan', temp:68, condition:'Sunny', high:73, low:62, humidity:55, windSpeed:8, icon:'☀️'}
 ];
 
-/* -------- Extra sample (not saved yet) -------- */
+let locations = JSON.parse(localStorage.getItem(STORAGE_KEY));
+
+if (!locations || !Array.isArray(locations) || locations.length === 0) {
+  locations = [...defaultDemoLocations];
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(locations));
+}
+
 let extraSampleLocations = [
   {id:'4', name:'Sydney', country:'Australia', temp:78, condition:'Sunny', high:82, low:70, humidity:45, windSpeed:10, icon:'☀️'},
   {id:'5', name:'Toronto', country:'Canada', temp:59, condition:'Cloudy', high:63, low:54, humidity:72, windSpeed:14, icon:'☁️'}
 ];
 
-/* DOM */
 const locationsContainer = document.getElementById('locationsContainer');
 const locationsInfo = document.getElementById('locationsInfo');
+const resetDemoBtn = document.getElementById('resetDemoBtn');
 
-/* Render */
+function saveLocations() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(locations));
+}
+
 function renderLocations() {
   locationsContainer.innerHTML = '';
-  const maxDisplayed = 5;
-  const displayedLocations = locations.slice(0, maxDisplayed);
+  const displayedLocations = locations.slice(0, MAX_LOCATIONS);
 
-  locationsInfo.textContent = `Your top ${displayedLocations.length} of ${maxDisplayed} saved locations`;
+  locationsInfo.textContent = `Your top ${displayedLocations.length} of ${MAX_LOCATIONS} saved locations`;
 
   displayedLocations.forEach(loc => {
     const card = document.createElement('div');
@@ -104,18 +117,86 @@ function renderLocations() {
           </div>
         </div>
       </div>
+      <div class="card-actions">
+        <button class="view-weekly-btn">7-Day Forecast</button>
+      </div>
     `;
 
     locationsContainer.appendChild(card);
 
     const cardSaved = card.querySelector('.card-saved');
-    
-    // Make card clickable to navigate to weekly forecast
+
     cardSaved.addEventListener('click', (e) => {
-      // Don't navigate if clicking the close button
       if (e.target.classList.contains('card-close') || e.target.closest('.card-close')) {
         return;
       }
+
+      const currentWeather = {
+        location: `${loc.name}, ${loc.country}`,
+        temp: loc.temp,
+        condition: loc.condition,
+        high: loc.high,
+        low: loc.low,
+        humidity: loc.humidity,
+        wind: loc.windSpeed,
+        icon: loc.icon
+      };
+
+      const weeklyForecast = [
+        { day: "Mon", high: loc.high,     low: loc.low,     condition: loc.condition,         icon: loc.icon },
+        { day: "Tue", high: loc.high+1,   low: loc.low-1,   condition: "Partly Cloudy",       icon: "⛅" },
+        { day: "Wed", high: loc.high+2,   low: loc.low,     condition: "Light Rain",          icon: "🌧️" },
+        { day: "Thu", high: loc.high-1,   low: loc.low-2,   condition: "Thunderstorm",        icon: "⛈️" },
+        { day: "Fri", high: loc.high,     low: loc.low-1,   condition: "Sunny",               icon: "☀️" },
+        { day: "Sat", high: loc.high-2,   low: loc.low-3,   condition: "Partly Cloudy",       icon: "⛅" },
+        { day: "Sun", high: loc.high-1,   low: loc.low-2,   condition: "Sunny",               icon: "☀️" }
+      ];
+
+      localStorage.setItem('selectedLocationWeather', JSON.stringify(currentWeather));
+      localStorage.setItem('selectedLocationWeekly', JSON.stringify(weeklyForecast));
+
+      window.location.href = 'weeklyForecast.html';
+    });
+
+    const closeBtn = card.querySelector('.card-close');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        const id = e.currentTarget.dataset.id;
+        locations = locations.filter(l => l.id !== id);
+        saveLocations();
+        renderLocations();
+      });
+    }
+
+    const weeklyBtn = card.querySelector('.view-weekly-btn');
+    weeklyBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+
+      const currentWeather = {
+        location: `${loc.name}, ${loc.country}`,
+        temp: loc.temp,
+        condition: loc.condition,
+        high: loc.high,
+        low: loc.low,
+        humidity: loc.humidity,
+        wind: loc.windSpeed,
+        icon: loc.icon
+      };
+
+      const weeklyForecast = [
+        { day: "Mon", high: loc.high,     low: loc.low,     condition: loc.condition,         icon: loc.icon },
+        { day: "Tue", high: loc.high+1,   low: loc.low-1,   condition: "Partly Cloudy",       icon: "⛅" },
+        { day: "Wed", high: loc.high+2,   low: loc.low,     condition: "Light Rain",          icon: "🌧️" },
+        { day: "Thu", high: loc.high-1,   low: loc.low-2,   condition: "Thunderstorm",        icon: "⛈️" },
+        { day: "Fri", high: loc.high,     low: loc.low-1,   condition: "Sunny",               icon: "☀️" },
+        { day: "Sat", high: loc.high-2,   low: loc.low-3,   condition: "Partly Cloudy",       icon: "⛅" },
+        { day: "Sun", high: loc.high-1,   low: loc.low-2,   condition: "Sunny",               icon: "☀️" }
+      ];
+
+      localStorage.setItem('selectedLocationWeather', JSON.stringify(currentWeather));
+      localStorage.setItem('selectedLocationWeekly', JSON.stringify(weeklyForecast));
+
       window.location.href = 'weeklyForecast.html';
     });
 
@@ -131,9 +212,8 @@ function renderLocations() {
     }
   });
 
-  /* ----- Add Location Card (if room) ----- */
-  if (locations.length < maxDisplayed) {
-    const remaining = maxDisplayed - locations.length;
+  if (locations.length < MAX_LOCATIONS) {
+    const remaining = MAX_LOCATIONS - locations.length;
 
     const addCard = document.createElement('div');
     addCard.className = 'add-card';
@@ -150,10 +230,14 @@ function renderLocations() {
     });
     locationsContainer.appendChild(addCard);
   }
+
+  saveLocations();
 }
 
-/* ---- SHOW SEARCH BAR ---- */
 function showSearchBar() {
+  const existing = document.querySelector('.search-wrapper');
+  if (existing) return;
+
   const searchWrapper = document.createElement('div');
   searchWrapper.className = 'search-wrapper';
 
@@ -168,35 +252,54 @@ function showSearchBar() {
   document.getElementById('locSearchBtn').addEventListener('click', handleSearch);
 }
 
-/* ---- SEARCH HANDLER ---- */
 function handleSearch() {
   const query = document.getElementById('locSearchInput').value.trim().toLowerCase();
   const error = document.getElementById('searchError');
 
-  // Allowed sample location names
   const allowed = extraSampleLocations.map(l => l.name.toLowerCase());
 
   if (!allowed.includes(query)) {
+    error.textContent = 'Location not found';
+    error.style.display = 'block';
+    return;
+  }
+
+  if (locations.length >= MAX_LOCATIONS) {
+    error.textContent = 'You can only save up to 5 locations.';
     error.style.display = 'block';
     return;
   }
 
   error.style.display = 'none';
 
-  // Find matching location
   const found = extraSampleLocations.find(l => l.name.toLowerCase() === query);
 
-  // Add to saved list
-  locations.push(found);
+  if (locations.some(l => l.id === found.id)) {
+    error.textContent = 'This location is already saved.';
+    error.style.display = 'block';
+    return;
+  }
 
-  // Remove from available sample list
+  locations.push(found);
   extraSampleLocations = extraSampleLocations.filter(l => l.id !== found.id);
 
+  saveLocations();
   renderLocations();
 }
+
+resetDemoBtn.addEventListener('click', () => {
+  if (!confirm('Reset to default demo locations?')) return;
+
+  locations = [...defaultDemoLocations];
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(locations));
+  renderLocations();
+  alert('Dashboard reset to demo defaults!');
+});
 
 renderLocations();
 </script>
 
 </body>
 </html>
+
+

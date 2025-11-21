@@ -5,16 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Weatherly - Feedback & Help</title>
   <link rel="stylesheet" href="stylesheet/feedback.css">
+
+  <!-- MOCK DATA INITIALIZER -->
+  <script src="mockData.js"></script>
 </head>
 <body>
-  <!-- Top Navigation -->
+
+<!-- Top Navigation -->
 <header class="top-nav">
   <div class="logo">☁️ Weatherly</div>
   <nav class="nav-links">
     <a href="saved.html">Dashboard</a>
     <a href="search.html">Search</a>
     <a href="pastWeather.html">Past Weather</a>
-    <a href="weatherAlerts.html" class="active">Alerts</a>
+    <a href="weatherAlerts.html">Alerts</a>
     <a href="settings.html">Settings</a>
     <a href="help.html" class="active">Help</a>
   </nav>
@@ -24,126 +28,128 @@
   </div>
 </header>
 
-  <div class="container">
-    <h2 class="page-title">Help & Feedback</h2>
-    <p class="page-subtitle">Get help or share your thoughts with us</p>
+<div class="container">
+  <h2 class="page-title">Help & Feedback</h2>
+  <p class="page-subtitle">Get help or share your thoughts with us</p>
 
-    <div class="grid">
-      <!-- Feedback Form -->
-      <div class="card">
-        <div class="card-header">
-          <div class="icon-circle blue">💬</div>
-          <h3>Send Feedback</h3>
-        </div>
-        <p class="card-subtitle">We'd love to hear your thoughts, suggestions, or report any issues you've encountered.</p>
-
-        <div class="form-group">
-          <label for="email">Email (Optional)</label>
-          <input type="email" id="email" placeholder="your@email.com">
-        </div>
-        <div class="form-group">
-          <label for="feedback">Your Feedback</label>
-          <textarea id="feedback" placeholder="Tell us what you think..."></textarea>
-        </div>
-        <button id="submitFeedback" class="btn">Submit Feedback</button>
+  <div class="grid">
+    <!-- Feedback Form -->
+    <div class="card">
+      <div class="card-header">
+        <div class="icon-circle blue">💬</div>
+        <h3>Send Feedback</h3>
       </div>
+      <p class="card-subtitle">We'd love to hear your thoughts, suggestions, or report any issues you've encountered.</p>
 
-      <!-- Quick Help -->
-      <div class="card">
-        <div class="card-header">
-          <div class="icon-circle purple">❓</div>
-          <h3>Quick Help</h3>
-        </div>
-
-        <div class="quick-help">
-          <div class="help-card blue">
-            <div class="help-icon">📖</div>
-            <div>
-              <h4>Getting Started</h4>
-              <p>Start by adding your favorite locations using the Search tab. View detailed forecasts by clicking on any location.</p>
-            </div>
-          </div>
-          <div class="help-card green">
-            <div class="help-icon">⚠️</div>
-            <div>
-              <h4>Stay Informed</h4>
-              <p>Enable notifications in Settings to receive weather alerts and daily forecasts for your saved locations.</p>
-            </div>
-          </div>
-          <div class="help-card orange">
-            <div class="help-icon">✉️</div>
-            <div>
-              <h4>Contact Support</h4>
-              <p>Need more help? Reach out to our support team:</p>
-              <a href="mailto:support@weatherpro.com">support@weatherpro.com</a>
-            </div>
-          </div>
-        </div>
+      <div class="form-group">
+        <label for="email">Email (Optional)</label>
+        <input type="email" id="email" placeholder="your@email.com">
       </div>
+      <div class="form-group">
+        <label for="feedback">Your Feedback</label>
+        <textarea id="feedback" placeholder="Tell us what you think..."></textarea>
+      </div>
+      <button id="submitFeedback" class="btn">Submit Feedback</button>
     </div>
 
-    <!-- FAQ Section -->
-    <div class="card faq-card">
+    <!-- Quick Help -->
+    <div class="card">
       <div class="card-header">
-        <div class="icon-circle indigo">❓</div>
-        <h3>Frequently Asked Questions</h3>
+        <div class="icon-circle purple">❓</div>
+        <h3>Quick Help</h3>
       </div>
 
-      <div class="accordion" id="faqAccordion"></div>
+      <div class="quick-help">
+        <div class="help-card blue">
+          <div class="help-icon">📖</div>
+          <div>
+            <h4>Getting Started</h4>
+            <p>Start by adding your favorite locations using the Search tab. View detailed forecasts by clicking on any location.</p>
+          </div>
+        </div>
+        <div class="help-card green">
+          <div class="help-icon">⚠️</div>
+          <div>
+            <h4>Stay Informed</h4>
+            <p>Enable notifications in Settings to receive weather alerts and daily forecasts for your saved locations.</p>
+          </div>
+        </div>
+        <div class="help-card orange">
+          <div class="help-icon">✉️</div>
+          <div>
+            <h4>Contact Support</h4>
+            <p>Need more help? Reach out to our support team:</p>
+            <a href="mailto:support@weatherpro.com">support@weatherpro.com</a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <script>
-    // Feedback form functionality
-    const feedbackInput = document.getElementById('feedback');
-    const emailInput = document.getElementById('email');
-    const submitBtn = document.getElementById('submitFeedback');
+  <!-- FAQ Section -->
+  <div class="card faq-card">
+    <div class="card-header">
+      <div class="icon-circle indigo">❓</div>
+      <h3>Frequently Asked Questions</h3>
+    </div>
 
-    submitBtn.addEventListener('click', () => {
-      const feedback = feedbackInput.value.trim();
-      if (!feedback) {
-        alert('Please enter your feedback');
-        return;
-      }
-      alert('Thank you for your feedback!');
-      feedbackInput.value = '';
-      emailInput.value = '';
+    <div class="accordion" id="faqAccordion"></div>
+  </div>
+</div>
+
+<script>
+  // Feedback form functionality
+  const feedbackInput = document.getElementById('feedback');
+  const emailInput = document.getElementById('email');
+  const submitBtn = document.getElementById('submitFeedback');
+
+  submitBtn.addEventListener('click', () => {
+    const feedback = feedbackInput.value.trim();
+    if (!feedback) {
+      alert('Please enter your feedback');
+      return;
+    }
+    alert('Thank you for your feedback!');
+    feedbackInput.value = '';
+    emailInput.value = '';
+  });
+
+  // FAQs
+  const faqs = [
+    { question: 'How do I add a location to my dashboard?', answer: 'Navigate to the Search tab, enter a city or country name, and click "Add Location" on your desired location. You can save up to 5 locations on your dashboard.' },
+    { question: 'How often is the weather data updated?', answer: 'Weather data is automatically updated every 15 minutes when auto-refresh is enabled in Settings. You can also manually refresh the data at any time.' },
+    { question: 'What do the different weather alerts mean?', answer: 'Severe alerts (red) indicate dangerous weather conditions requiring immediate attention. Moderate alerts (orange) suggest weather that may affect your plans. Info alerts (blue) provide general weather information.' },
+    { question: 'Can I compare weather between multiple locations?', answer: 'Yes! Go to the Past Weather tab and select two locations from the dropdown menus. The chart will display a comparison of temperature trends.' },
+    { question: 'How do I change the temperature unit?', answer: 'Go to Settings and select your preferred temperature unit (Fahrenheit, Celsius, or Kelvin) from the dropdown menu. Remember to save your changes.' },
+    { question: 'What does the UV Index indicate?', answer: 'The UV Index measures the strength of ultraviolet radiation. Low (0-2) requires minimal protection, Moderate (3-5) requires some protection, High (6-7) requires extra protection, Very High (8-10) requires maximum protection, and Extreme (11+) requires all available protection.' },
+    { question: 'How do I enable weather notifications?', answer: 'Go to Settings > Notifications and toggle on "Enable Notifications". You can then customize which types of alerts you want to receive.' },
+    { question: 'Can I view historical weather data?', answer: 'Yes! The Past Weather tab allows you to view temperature trends, precipitation history, and compare data across different time ranges for your saved locations.' },
+  ];
+
+  const faqAccordion = document.getElementById('faqAccordion');
+
+  faqs.forEach((faq) => {
+    const item = document.createElement('div');
+    item.className = 'accordion-item';
+
+    const trigger = document.createElement('button');
+    trigger.className = 'accordion-trigger';
+    trigger.textContent = faq.question;
+
+    const content = document.createElement('div');
+    content.className = 'accordion-content';
+    content.textContent = faq.answer;
+
+    trigger.addEventListener('click', () => {
+      content.classList.toggle('open');
     });
 
-    // FAQs
-    const faqs = [
-      { question: 'How do I add a location to my dashboard?', answer: 'Navigate to the Search tab, enter a city or country name, and click "Add Location" on your desired location. You can save up to 5 locations on your dashboard.' },
-      { question: 'How often is the weather data updated?', answer: 'Weather data is automatically updated every 15 minutes when auto-refresh is enabled in Settings. You can also manually refresh the data at any time.' },
-      { question: 'What do the different weather alerts mean?', answer: 'Severe alerts (red) indicate dangerous weather conditions requiring immediate attention. Moderate alerts (orange) suggest weather that may affect your plans. Info alerts (blue) provide general weather information.' },
-      { question: 'Can I compare weather between multiple locations?', answer: 'Yes! Go to the Past Weather tab and select two locations from the dropdown menus. The chart will display a comparison of temperature trends.' },
-      { question: 'How do I change the temperature unit?', answer: 'Go to Settings and select your preferred temperature unit (Fahrenheit, Celsius, or Kelvin) from the dropdown menu. Remember to save your changes.' },
-      { question: 'What does the UV Index indicate?', answer: 'The UV Index measures the strength of ultraviolet radiation. Low (0-2) requires minimal protection, Moderate (3-5) requires some protection, High (6-7) requires extra protection, Very High (8-10) requires maximum protection, and Extreme (11+) requires all available protection.' },
-      { question: 'How do I enable weather notifications?', answer: 'Go to Settings > Notifications and toggle on "Enable Notifications". You can then customize which types of alerts you want to receive.' },
-      { question: 'Can I view historical weather data?', answer: 'Yes! The Past Weather tab allows you to view temperature trends, precipitation history, and compare data across different time ranges for your saved locations.' },
-    ];
-
-    const faqAccordion = document.getElementById('faqAccordion');
-
-    faqs.forEach((faq, index) => {
-      const item = document.createElement('div');
-      item.className = 'accordion-item';
-
-      const trigger = document.createElement('button');
-      trigger.className = 'accordion-trigger';
-      trigger.textContent = faq.question;
-
-      const content = document.createElement('div');
-      content.className = 'accordion-content';
-      content.textContent = faq.answer;
-
-      trigger.addEventListener('click', () => {
-        content.classList.toggle('open');
-      });
-
-      item.appendChild(trigger);
-      item.appendChild(content);
-      faqAccordion.appendChild(item);
-    });
-  </script>
+    item.appendChild(trigger);
+    item.appendChild(content);
+    faqAccordion.appendChild(item);
+  });
+</script>
 </body>
 </html>
+
+
