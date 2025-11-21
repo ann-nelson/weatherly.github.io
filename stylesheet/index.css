@@ -1,0 +1,11 @@
+body.main-bg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.container-box {
+  max-width: 800px;
+  width: 100%;
+}
