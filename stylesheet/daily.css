@@ -88,6 +88,50 @@
   z-index: 10;
 }
 
+.logo {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.nav-links a {
+  margin: 0 14px;
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+}
+
+.nav-links a.active {
+  color: #2563eb;
+}
+
+.user-section button {
+  margin-left: 10px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.profile-btn {
+  background: #f7f7f7;
+}
+
+.logout-btn {
+  background: #fff;
+}
+
+/* Back Button */
+#backBtn {
+  margin: 30px 50px;
+  background: none;
+  border: none;
+  color: #2563eb;
+  font-size: 15px;
+  cursor: pointer;
+}
+
 /* ---------------------------------------------------
    Base Card Style
 --------------------------------------------------- */
