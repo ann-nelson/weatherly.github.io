@@ -1,0 +1,196 @@
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  background: linear-gradient(#e8f0ff, #d9e6ff);
+  color: #1a1a1a;
+}
+
+/* Top Navigation */
+.top-nav {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 16px 40px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.nav-links a {
+  margin: 0 14px;
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+}
+
+.nav-links a.active {
+  color: #2563eb;
+}
+
+.user-section button {
+  margin-left: 10px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.profile-btn {
+  background: #f7f7f7;
+}
+
+.logout-btn {
+  background: #fff;
+}
+
+/* Back Button */
+#backBtn {
+  margin: 30px 50px;
+  background: none;
+  border: none;
+  color: #2563eb;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+/* Main Container */
+.main-container {
+  width: 90%;
+  max-width: 900px;
+  margin: auto;
+  margin-bottom: 50px;
+}
+
+.header h2 {
+  font-size: 26px;
+  margin-bottom: 5px;
+}
+
+.header p {
+  color: #555;
+}
+
+/* Current Weather Card */
+.current-weather {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  padding: 25px;
+  border-radius: 16px;
+  margin: 25px 0;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.current-weather .label {
+  opacity: 0.9;
+  margin-bottom: 4px;
+}
+
+.temperature {
+  font-size: 48px;
+  font-weight: 700;
+}
+
+.condition-text {
+  font-size: 18px;
+}
+
+.weather-details span {
+  margin-right: 14px;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.weather-icon {
+  font-size: 60px;
+}
+
+/* Weekly Grid */
+.results-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.day-card {
+  background: white;
+  padding: 18px 20px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.06);
+}
+
+.day-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.day {
+  font-weight: 600;
+}
+
+.icon {
+  font-size: 26px;
+}
+
+.condition {
+  color: #555;
+  width: 120px;
+}
+
+.temp {
+  font-weight: 500;
+  color: #333;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 600px) {
+  .current-weather {
+    padding: 18px;
+  }
+
+  .temperature {
+    font-size: 38px;
+  }
+
+  .results-grid {
+    gap: 10px;
+  }
+
+  .day-card {
+    padding: 14px 16px;
+  }
+
+  .condition {
+    width: auto;
+  }
+
+  .hide-on-mobile {
+    display: none;
+  }
+
+  .mobile-only {
+    display: block !important;
+  }
+}
