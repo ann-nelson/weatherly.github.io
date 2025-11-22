@@ -45,36 +45,21 @@
   --icon-bg-snow:  rgba(59, 130, 246, 0.15);   /* blue-500/15 */
 }
 
-/* ---------------------------------------------------
-   Layout Containers
---------------------------------------------------- */
-.main-container {
-  max-width: 1100px;
-  margin: var(--space-8) auto;
-  padding: 0 var(--space-4);
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
 }
 
-.daily-forecast-container {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-8);
+body {
+  background: linear-gradient(#e8f0ff, #d9e6ff);
+  color: #1a1a1a;
 }
 
-/* ---------------------------------------------------
-   Header
---------------------------------------------------- */
-.forecast-header h2 {
-  color: var(--gray-800);
-  margin-bottom: var(--space-2);
-  font-size: 1.5rem;
-}
-
-.forecast-header p {
-  color: var(--gray-600);
-  font-size: 1rem;
-}
-
-/* Top Navigation */
+/* -----------------------
+Top Navigation
+------------------------ */
 .top-nav {
   width: 100%;
   display: flex;
@@ -131,6 +116,36 @@
   font-size: 15px;
   cursor: pointer;
 }
+
+/* ---------------------------------------------------
+   Layout Containers
+--------------------------------------------------- */
+.main-container {
+  max-width: 1100px;
+  margin: var(--space-8) auto;
+  padding: 0 var(--space-4);
+}
+
+.daily-forecast-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+/* ---------------------------------------------------
+   Header
+--------------------------------------------------- */
+.forecast-header h2 {
+  color: var(--gray-800);
+  margin-bottom: var(--space-2);
+  font-size: 1.5rem;
+}
+
+.forecast-header p {
+  color: var(--gray-600);
+  font-size: 1rem;
+}
+
 
 /* ---------------------------------------------------
    Base Card Style
@@ -306,4 +321,98 @@
   color: var(--gray-900);
   font-size: 1rem;
   font-weight: 500;
+}
+
+/* ---------------------------------------------------
+   Responsive Design
+--------------------------------------------------- */
+
+/* ----------- Small Screens (≤ 640px) ----------- */
+@media (max-width: 640px) {
+  .top-nav {
+    padding: 12px 20px;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .nav-links a {
+    margin: 0 8px;
+  }
+
+  #backBtn {
+    margin: 20px;
+  }
+
+  .summary-top {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .temp-info .temp {
+    font-size: 2.25rem;
+  }
+
+  .day-summary-card {
+    padding: var(--space-4);
+  }
+
+  /* Hourly becomes 3 columns */
+  .hour-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Metrics becomes full-width stacked */
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Additional details: 2 columns */
+  .additional-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .main-container {
+    margin: var(--space-4) auto;
+    padding: 0 var(--space-2);
+  }
+}
+
+
+/* ----------- Medium Screens (641px – 1024px) ----------- */
+@media (min-width: 641px) and (max-width: 1024px) {
+  /* Top nav */
+  .top-nav {
+    padding: 16px 24px;
+  }
+
+  /* Hourly forecast grid becomes 4 columns */
+  .hour-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Metrics: 2 per row */
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Additional details: 3 per row */
+  .additional-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+
+/* ----------- Large Screens (≥ 1025px) ----------- */
+@media (min-width: 1025px) {
+  .hour-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .additional-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
