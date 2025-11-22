@@ -164,6 +164,18 @@ body {
   color: #333;
 }
 
+.day-card .arrow {
+  font-size: 20px;
+  color: #2563eb;
+  font-weight: 600;
+  margin-left: 12px;
+  transition: transform 0.2s ease;
+}
+
+.day-card:hover .arrow {
+  transform: translateX(4px);
+}
+
 /* Mobile Adjustments */
 @media (max-width: 600px) {
   .current-weather {
