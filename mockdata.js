@@ -90,22 +90,31 @@ const defaultWeatherAlerts = [
     id: 1,
     title: "Severe Thunderstorm Warning",
     location: "New York, NY",
+    country: "USA",
     severity: "Severe",
-    description: "Damaging winds and hail possible."
+    description: "A severe thunderstorm warning has been issued for the area. Strong winds and heavy rainfall expected.",
+    timeRange: "2:00 PM - 6:00 PM",
+    issuedHoursAgo: 1
   },
   {
     id: 2,
     title: "Heat Advisory",
     location: "Houston, TX",
+    country: "USA",
     severity: "Moderate",
-    description: "High heat index expected."
+    description: "Temperatures will reach above 95°F. Stay hydrated and avoid prolonged outdoor exposure.",
+    timeRange: "11:00 AM - 8:00 PM",
+    issuedHoursAgo: 3
   },
   {
     id: 3,
-    title: "Flood Watch",
-    location: "Chicago, IL",
-    severity: "Severe",
-    description: "Heavy rainfall possible."
+    title: "Air Quality Alert",
+    location: "Tokyo",
+    country: "Japan",
+    severity: "Info",
+    description: "Moderate air quality. Sensitive groups should limit outdoor activities.",
+    timeRange: "6:00 AM - 9:00 PM",
+    issuedHoursAgo: 5
   }
 ];
 
@@ -136,8 +145,21 @@ function initializeWeatherlyMockData() {
     localStorage.setItem("weatherlySavedLocations", JSON.stringify(defaultSavedLocations));
   }
 
-  if (!localStorage.getItem("weatherAlerts")) {
+  // Check if weatherAlerts exists and has the new structure (with timeRange)
+  const existingAlerts = localStorage.getItem("weatherAlerts");
+  if (!existingAlerts) {
     localStorage.setItem("weatherAlerts", JSON.stringify(defaultWeatherAlerts));
+  } else {
+    // If alerts exist but don't have the new fields, update them
+    try {
+      const parsed = JSON.parse(existingAlerts);
+      if (parsed.length > 0 && !parsed[0].hasOwnProperty('timeRange')) {
+        localStorage.setItem("weatherAlerts", JSON.stringify(defaultWeatherAlerts));
+      }
+    } catch (e) {
+      // If parsing fails, set default
+      localStorage.setItem("weatherAlerts", JSON.stringify(defaultWeatherAlerts));
+    }
   }
 
   if (!localStorage.getItem("pastWeatherData")) {
