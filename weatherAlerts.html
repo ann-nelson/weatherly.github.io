@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Weatherly - Alerts</title>
 <link rel="stylesheet" href="stylesheet/global.css">
-<script src="mockData.js"></script>
+<script src="mockdata.js"></script>
 </head>
 <body>
 
 <!-- Top Navigation -->
 <header class="top-nav">
-  <div class="logo">☁️ Weatherly</div>
+  <div class="logo">☁️ <h1>Weatherly</h1></div>
   <nav class="nav-links">
     <a href="saved.html">Dashboard</a>
     <a href="search.html">Search</a>
@@ -28,7 +28,7 @@
 
 <main class="main-container">
   <header class="section-header">
-    <h1>Weather Alerts</h1>
+    <h2>Weather Alerts</h1>
     <p>Active warnings and advisories for your saved locations</p>
   </header>
 
@@ -81,11 +81,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const alertList = document.getElementById("alert-list");
   const noAlerts = document.getElementById("no-alerts");
 
-  // Sample alerts for demo account
-  const alertsData = JSON.parse(localStorage.getItem("weatherAlerts")) || [
-    { id: 1, title: "Severe Thunderstorm Warning", location: "New York, NY", severity: "High", description: "A severe thunderstorm is approaching with heavy rain and wind." },
-    { id: 2, title: "Flash Flood Advisory", location: "Houston, TX", severity: "Medium", description: "Heavy rain may cause flash flooding in low-lying areas." }
-  ];
+  // Get alerts from localStorage (initialized by mockdata.js)
+  const alertsData = JSON.parse(localStorage.getItem("weatherAlerts")) || [];
 
   function renderAlerts() {
     alertList.innerHTML = "";
@@ -102,8 +99,9 @@ document.addEventListener("DOMContentLoaded", () => {
       card.className = "alert-card card";
 
       card.innerHTML = `
-        <h4>${alert.title}</h4>
-        <p><strong>Location:</strong> ${alert.location}</p>
+        <h3>${alert.title}</h3>
+        <p>${alert.location}</p>
+        <p>${alert.description}</p>
         <p><strong>Severity:</strong> ${alert.severity}</p>
 
         <!-- NEW BUTTON -->
