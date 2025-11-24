@@ -124,6 +124,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const issuedHoursAgo = alert.issuedHoursAgo !== undefined ? alert.issuedHoursAgo : 0;
       const hoursText = issuedHoursAgo === 1 ? "hour" : "hours";
 
+      const alertDetailsUrl = `detailedAlert.html?id=${alert.id}`;
+
       card.innerHTML = `
         <div class="alert-card-content">
           ${icon}
@@ -140,9 +142,13 @@ document.addEventListener("DOMContentLoaded", () => {
               <span class="alert-issued">issued ${issuedHoursAgo} ${hoursText} ago</span>
             </div>
           </div>
-          <a href="detailedAlert.html?id=${alert.id}" class="alert-view-details">View Details →</a>
+          <a href="${alertDetailsUrl}" class="alert-view-details" onclick="event.stopPropagation();">View Details →</a>
         </div>
       `;
+
+      card.addEventListener("click", () => {
+        window.location.href = alertDetailsUrl;
+      });
 
       alertList.appendChild(card);
     });
