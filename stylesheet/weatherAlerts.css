@@ -25,17 +25,23 @@
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-/* Alert card background colors */
+/* Alert card background colors and borders */
 .alert-severe {
   background-color: #fee2e2;
+  border: 2px solid #ff7b7b;
+  border-left: 4px solid #ff7b7b;
 }
 
 .alert-moderate {
   background-color: #ffedd5;
+  border: 2px solid #f9b997;
+  border-left: 4px solid #f9b997;
 }
 
 .alert-info {
   background-color: #dbeafe;
+  border: 2px solid #5c82ff;
+  border-left: 4px solid #5c82ff;
 }
 
 .alert-card-content {
@@ -117,7 +123,7 @@
 
 .alert-location {
   font-size: 0.9rem;
-  color: #6b7280;
+  color: #465064;
   margin: 0 0 0.75rem 0;
 }
 
@@ -168,12 +174,12 @@
 
 /* Section header fix */
 .section-header h2 {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   margin-bottom: 0.5rem;
 }
 
 .section-header p {
-  color: #6b7280;
+  color: #374151;
   margin-bottom: 1.5rem;
 }
 
