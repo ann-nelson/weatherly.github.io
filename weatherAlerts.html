@@ -51,27 +51,11 @@
         Stay informed about weather conditions in your saved locations. Configure notification preferences in Settings.
       </p>
 
-      <!-- FIXED CHECKBOX STRUCTURE -->
       <div class="settings-tags">
-        <label>
-          <input type="checkbox" id="pref-severe">
-          <span>Severe Weather</span>
-        </label>
-
-        <label>
-          <input type="checkbox" id="pref-temp">
-          <span>Temperature Alerts</span>
-        </label>
-
-        <label>
-          <input type="checkbox" id="pref-precip">
-          <span>Precipitation</span>
-        </label>
-
-        <label>
-          <input type="checkbox" id="pref-air">
-          <span>Air Quality</span>
-        </label>
+        <span class="settings-tag">Severe Weather</span>
+        <span class="settings-tag">Temperature Alerts</span>
+        <span class="settings-tag">Precipitation</span>
+        <span class="settings-tag">Air Quality</span>
       </div>
     </div>
   </div>
@@ -124,6 +108,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const issuedHoursAgo = alert.issuedHoursAgo !== undefined ? alert.issuedHoursAgo : 0;
       const hoursText = issuedHoursAgo === 1 ? "hour" : "hours";
 
+      const alertDetailsUrl = `detailedAlert.html?id=${alert.id}`;
+
       card.innerHTML = `
         <div class="alert-card-content">
           ${icon}
@@ -132,17 +118,22 @@ document.addEventListener("DOMContentLoaded", () => {
               <h3 class="alert-title">${alert.title}</h3>
               <span class="alert-badge alert-badge-${severityType}">${alert.severity}</span>
             </div>
-            <p class="alert-location">${alert.location}, ${alert.country || "USA"}</p>
+            <p class="alert-location">📍 ${alert.location}, ${alert.country || "USA"}</p>
             <p class="alert-description">${alert.description}</p>
             <div class="alert-timing">
+              <span class="alert-time-icon">🕐</span>
               <span class="alert-time-range">${timeRange}</span>
               <span class="alert-timing-separator">|</span>
               <span class="alert-issued">issued ${issuedHoursAgo} ${hoursText} ago</span>
             </div>
           </div>
-          <a href="detailedAlert.html?id=${alert.id}" class="alert-view-details">View Details →</a>
+          <a href="${alertDetailsUrl}" class="alert-view-details" onclick="event.stopPropagation();">View Details →</a>
         </div>
       `;
+
+      card.addEventListener("click", () => {
+        window.location.href = alertDetailsUrl;
+      });
 
       alertList.appendChild(card);
     });

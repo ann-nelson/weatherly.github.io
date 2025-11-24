@@ -119,6 +119,100 @@ const defaultWeatherAlerts = [
 ];
 
 /* -----------------------------
+   DETAILED ALERT DATA
+   For detailedAlert.html
+------------------------------ */
+const detailedAlertsData = {
+  1: {
+    id: 1,
+    type: "severe",
+    title: "Severe Thunderstorm Warning",
+    location: "New York",
+    country: "USA",
+    description: "A severe thunderstorm warning has been issued for the area. Strong winds and heavy rainfall expected.",
+    startTime: "2:00 PM",
+    endTime: "6:00 PM",
+    effectivePeriod: "2:00 PM - 6:00 PM",
+    issuedHoursAgo: 1,
+    issuedBy: "National Weather Service - New York",
+    affectedAreas: ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"],
+    instructions: [
+      "Seek shelter in a sturdy building immediately",
+      "Stay away from windows and doors",
+      "Avoid using electrical appliances",
+      "Do not go outside until the storm has passed",
+      "If driving, pull over safely and wait for conditions to improve"
+    ],
+    details: {
+      windSpeed: "60-70 mph",
+      precipitation: "Heavy (2-3 inches/hour)",
+      visibility: "Less than 0.25 miles",
+      severity: "Severe",
+      urgency: "Immediate",
+      certainty: "Observed"
+    }
+  },
+  2: {
+    id: 2,
+    type: "moderate",
+    title: "Heat Advisory",
+    location: "Houston",
+    country: "USA",
+    description: "Temperatures will reach above 95°F. Stay hydrated and avoid prolonged outdoor exposure.",
+    startTime: "11:00 AM",
+    endTime: "8:00 PM",
+    effectivePeriod: "11:00 AM - 8:00 PM",
+    issuedHoursAgo: 3,
+    issuedBy: "National Weather Service - Houston",
+    affectedAreas: ["Downtown Houston", "The Heights", "Montrose", "Midtown"],
+    instructions: [
+      "Drink plenty of water throughout the day",
+      "Avoid strenuous outdoor activities",
+      "Wear lightweight and light-colored clothing",
+      "Never leave children or pets in vehicles",
+      "Check on elderly neighbors and relatives"
+    ],
+    details: {
+      temperature: "95-100°F",
+      heatIndex: "105-110°F",
+      humidity: "High (70-80%)",
+      severity: "Moderate",
+      urgency: "Expected",
+      certainty: "Likely"
+    }
+  },
+  3: {
+    id: 3,
+    type: "info",
+    title: "Air Quality Alert",
+    location: "Tokyo",
+    country: "Japan",
+    description: "Moderate air quality. Sensitive groups should limit outdoor activities.",
+    startTime: "6:00 AM",
+    endTime: "9:00 PM",
+    effectivePeriod: "6:00 AM - 9:00 PM",
+    issuedHoursAgo: 5,
+    issuedBy: "Japan Meteorological Agency",
+    affectedAreas: ["Shibuya", "Shinjuku", "Chiyoda", "Minato"],
+    instructions: [
+      "Sensitive groups should limit outdoor activities",
+      "Keep windows closed if air quality worsens",
+      "Use air purifiers if available",
+      "Avoid outdoor exercise during peak hours",
+      "Monitor air quality updates"
+    ],
+    details: {
+      airQualityIndex: "Moderate (51-100)",
+      primaryPollutant: "PM2.5",
+      visibility: "Good",
+      severity: "Info",
+      urgency: "Future",
+      certainty: "Possible"
+    }
+  }
+};
+
+/* -----------------------------
    PAST WEATHER STRUCTURE
    (Used in Sprint 2+, but initialized here)
 ------------------------------ */
@@ -165,6 +259,24 @@ function initializeWeatherlyMockData() {
   if (!localStorage.getItem("pastWeatherData")) {
     localStorage.setItem("pastWeatherData", JSON.stringify(defaultPastWeather));
   }
+
+  // Store detailed alerts data
+  if (!localStorage.getItem("detailedAlertsData")) {
+    localStorage.setItem("detailedAlertsData", JSON.stringify(detailedAlertsData));
+  } else {
+    // Update if structure is outdated (check if first alert has all required fields)
+    try {
+      const stored = JSON.parse(localStorage.getItem("detailedAlertsData"));
+      if (!stored[1] || !stored[1].instructions || !stored[1].affectedAreas) {
+        localStorage.setItem("detailedAlertsData", JSON.stringify(detailedAlertsData));
+      }
+    } catch (e) {
+      localStorage.setItem("detailedAlertsData", JSON.stringify(detailedAlertsData));
+    }
+  }
 }
+
+// Make detailedAlertsData globally accessible
+window.detailedAlertsData = detailedAlertsData;
 
 initializeWeatherlyMockData();

@@ -17,6 +17,7 @@
   padding: 1.5rem;
   box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
   transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  cursor: pointer;
 }
 
 .alert-card:hover {
@@ -24,17 +25,23 @@
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-/* Alert card background colors */
+/* Alert card background colors and borders */
 .alert-severe {
   background-color: #fee2e2;
+  border: 2px solid #ff7b7b;
+  border-left: 4px solid #ff7b7b;
 }
 
 .alert-moderate {
   background-color: #ffedd5;
+  border: 2px solid #f9b997;
+  border-left: 4px solid #f9b997;
 }
 
 .alert-info {
   background-color: #dbeafe;
+  border: 2px solid #5c82ff;
+  border-left: 4px solid #5c82ff;
 }
 
 .alert-card-content {
@@ -99,13 +106,14 @@
 }
 
 .alert-badge-severe {
-  background-color: #fee2e2;
-  color: #b91c1c;
+  background-color: #fb0000;
+  color: #ffffff;
+  border: 1px solid #dc2626;
 }
 
 .alert-badge-moderate {
-  background-color: #f3f4f6;
-  color: #111827;
+  background-color: #000000;
+  color: #ffffff;
 }
 
 .alert-badge-info {
@@ -115,7 +123,7 @@
 
 .alert-location {
   font-size: 0.9rem;
-  color: #6b7280;
+  color: #465064;
   margin: 0 0 0.75rem 0;
 }
 
@@ -133,6 +141,11 @@
   gap: 0.5rem;
   font-size: 0.85rem;
   color: #6b7280;
+}
+
+.alert-time-icon {
+  font-size: 0.9rem;
+  line-height: 1;
 }
 
 .alert-time-range {
@@ -161,17 +174,17 @@
 
 .alert-view-details:hover {
   color: #2563eb;
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 /* Section header fix */
 .section-header h2 {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   margin-bottom: 0.5rem;
 }
 
 .section-header p {
-  color: #6b7280;
+  color: #374151;
   margin-bottom: 1.5rem;
 }
 
@@ -190,21 +203,20 @@
 .settings-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.75rem;
   margin-top: 1rem;
 }
 
-.settings-tags label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  font-size: 0.9rem;
-}
-
-.settings-tags input[type="checkbox"] {
-  width: auto;
-  margin: 0;
+.settings-tag {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: #f3f4f6;
+  color: #374151;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: default;
+  user-select: none;
 }
 
 /* No alerts state */
