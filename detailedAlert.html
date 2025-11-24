@@ -93,13 +93,13 @@
       <div id="classificationCard" class="card hidden">
         <h3>Alert Classification</h3>
         <div class="classification-item">
-          <strong>Severity:</strong> <span id="severity" class="classification-badge"></span>
+          <strong>Severity</strong> <span id="severity" class="classification-badge"></span>
         </div>
         <div class="classification-item">
-          <strong>Urgency:</strong> <span id="urgency" class="classification-badge"></span>
+          <strong>Urgency</strong> <span id="urgency" class="classification-badge"></span>
         </div>
         <div class="classification-item">
-          <strong>Certainty:</strong> <span id="certainty" class="classification-badge"></span>
+          <strong>Certainty</strong> <span id="certainty" class="classification-badge"></span>
         </div>
       </div>
 
@@ -213,6 +213,7 @@ function loadAlertData(alertId, detailedAlertsData) {
   alertIcon.style.backgroundColor = colorScheme.bg;
   alertIcon.style.color = colorScheme.text;
   alertHeader.style.border = `2px solid ${colorScheme.border}`;
+  alertHeader.style.borderLeft = `4px solid ${colorScheme.border}`;
   alertHeader.style.backgroundColor = colorScheme.bg;
 
   // Populate alert info
@@ -295,7 +296,7 @@ function loadAlertData(alertId, detailedAlertsData) {
       classificationCard.classList.remove('hidden');
       if(alert.details.severity) {
         severity.textContent = alert.details.severity;
-        severity.className = `classification-badge ${alert.type === 'severe' ? 'badge-severe' : 'badge-gray'}`;
+        severity.className = 'classification-badge badge-gray';
       }
       if(alert.details.urgency) {
         urgency.textContent = alert.details.urgency;
