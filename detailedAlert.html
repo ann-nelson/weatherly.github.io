@@ -5,13 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Weatherly - Detailed Alert</title>
 <link rel="stylesheet" href="stylesheet/global.css">
-<script src="mockData.js"></script>
+<link rel="stylesheet" href="stylesheet/detailedAlert.css">
+<script src="mockdata.js"></script>
 </head>
 <body>
 
 <!-- Top Navigation -->
 <header class="top-nav">
-  <div class="logo">☁️ Weatherly</div>
+  <div class="logo">☁️ <h1>Weatherly</h1></div>
   <nav class="nav-links">
     <a href="saved.html">Dashboard</a>
     <a href="search.html">Search</a>
@@ -28,23 +29,23 @@
 
 <main class="main-container">
 
-  <button id="backBtn" class="btn-ghost" onclick="window.location.href='weatherAlerts.html'">
+  <a href="weatherAlerts.html" class="back-link">
     ← Back to Alerts
-  </button>
+  </a>
 
   <!-- Alert Header -->
-  <div id="alertHeader" class="card alert-header">
-    <div id="alertIcon" class="icon-circle">⚠️</div>
+  <div id="alertHeader" class="alert-header-card">
+    <div id="alertIcon" class="alert-icon-large">⚠️</div>
     <div class="alert-info">
       <div class="alert-title-row">
-        <h2 id="alertTitle">Severe Thunderstorm</h2>
-        <span id="alertBadge" class="badge">Severe</span>
+        <h2 id="alertTitle">Severe Thunderstorm Warning</h2>
+        <span id="alertBadge" class="alert-badge-detail">Severe</span>
       </div>
       <div class="alert-location">
-        📍 <span id="alertLocation">Springfield</span>
+        📍 <span id="alertLocation">New York, USA</span>
       </div>
     </div>
-    <button id="shareBtn" class="btn-outline">Share</button>
+    <button id="shareBtn" class="share-btn">📤 Share</button>
   </div>
 
   <div class="grid alert-details-grid">
@@ -55,8 +56,8 @@
         <p id="alertDescription"></p>
       </div>
 
-      <div id="instructionsCard" class="card card-yellow hidden">
-        <h3>⚠️ Safety Instructions</h3>
+      <div id="instructionsCard" class="card instructions-card hidden">
+        <h3>ⓘ Safety Instructions</h3>
         <ul id="instructionsList"></ul>
       </div>
 
@@ -75,18 +76,34 @@
     <div class="sidebar-column">
       <div class="card">
         <h3>Time Details</h3>
-        <p><strong>Issued:</strong> <span id="issuedTime"></span></p>
-        <p><strong>Effective:</strong> <span id="effectivePeriod"></span></p>
+        <div class="time-detail-item">
+          <span class="time-icon">🗓️</span>
+          <div>
+            <strong>Issued:</strong> <span id="issuedTime"></span>
+          </div>
+        </div>
+        <div class="time-detail-item">
+          <span class="time-icon">🕒</span>
+          <div>
+            <strong>Effective Period:</strong> <span id="effectivePeriod"></span>
+          </div>
+        </div>
       </div>
 
       <div id="classificationCard" class="card hidden">
         <h3>Alert Classification</h3>
-        <p><strong>Severity:</strong> <span id="severity"></span></p>
-        <p><strong>Urgency:</strong> <span id="urgency"></span></p>
-        <p><strong>Certainty:</strong> <span id="certainty"></span></p>
+        <div class="classification-item">
+          <strong>Severity:</strong> <span id="severity" class="classification-badge"></span>
+        </div>
+        <div class="classification-item">
+          <strong>Urgency:</strong> <span id="urgency" class="classification-badge"></span>
+        </div>
+        <div class="classification-item">
+          <strong>Certainty:</strong> <span id="certainty" class="classification-badge"></span>
+        </div>
       </div>
 
-      <div id="issuedByCard" class="card card-gray hidden">
+      <div id="issuedByCard" class="card hidden">
         <h3>Issued By</h3>
         <p id="issuedBy"></p>
       </div>
@@ -96,28 +113,71 @@
 </main>
 
 <script>
-  const alert = {
-    id: "1",
-    type: "severe",
-    title: "Severe Thunderstorm",
-    location: "Springfield",
-    description: "Severe thunderstorm warning in effect for Springfield. Heavy rainfall and high winds expected.",
-    startTime: "2025-11-17 14:00",
-    endTime: "2025-11-17 18:00",
-    issued: "2025-11-17 13:45",
-    issuedBy: "National Weather Service",
-    affectedAreas: ["Downtown", "Northside", "West Hills"],
-    instructions: ["Stay indoors", "Secure outdoor objects", "Avoid driving if possible"],
-    details: {
-      windSpeed: "50 mph",
-      precipitation: "2 inches",
-      temperature: "75°F",
-      visibility: "2 miles",
-      severity: "Severe",
-      urgency: "Immediate",
-      certainty: "Observed"
+document.addEventListener("DOMContentLoaded", () => {
+  // Get alert ID from URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const alertId = parseInt(urlParams.get('id')) || 1;
+
+  // Function to get alert data
+  function getAlertData() {
+    // Try localStorage first
+    try {
+      const stored = localStorage.getItem("detailedAlertsData");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed && Object.keys(parsed).length > 0) {
+          return parsed;
+        }
+      }
+    } catch (e) {
+      console.warn("Could not parse localStorage data", e);
     }
-  };
+
+    // Fallback to global variable
+    if (typeof window.detailedAlertsData !== 'undefined' && window.detailedAlertsData) {
+      return window.detailedAlertsData;
+    }
+
+    return null;
+  }
+
+  // Get data with retry
+  let detailedAlertsData = getAlertData();
+  
+  if (!detailedAlertsData || Object.keys(detailedAlertsData).length === 0) {
+    // Wait a bit for mockdata.js to initialize
+    setTimeout(() => {
+      detailedAlertsData = getAlertData();
+      if (detailedAlertsData && Object.keys(detailedAlertsData).length > 0) {
+        loadAlertData(alertId, detailedAlertsData);
+      } else {
+        console.error("Alert data not found. Available data:", detailedAlertsData);
+        console.log("Trying to initialize...");
+        // Force initialization
+        if (typeof initializeWeatherlyMockData === 'function') {
+          initializeWeatherlyMockData();
+          detailedAlertsData = getAlertData();
+          if (detailedAlertsData) {
+            loadAlertData(alertId, detailedAlertsData);
+          }
+        }
+      }
+    }, 100);
+    return;
+  }
+
+  loadAlertData(alertId, detailedAlertsData);
+});
+
+function loadAlertData(alertId, detailedAlertsData) {
+  const alert = detailedAlertsData[alertId];
+
+  if (!alert) {
+    console.error("Alert not found for ID:", alertId);
+    console.log("Available alerts:", Object.keys(detailedAlertsData));
+    // Don't redirect, just show error
+    return;
+  }
 
   // DOM elements
   const alertIcon = document.getElementById('alertIcon');
@@ -140,40 +200,135 @@
   const issuedByCard = document.getElementById('issuedByCard');
   const issuedBy = document.getElementById('issuedBy');
   const shareBtn = document.getElementById('shareBtn');
+  const alertHeader = document.getElementById('alertHeader');
 
-  // Apply colors
-  const alertColors = { severe:{bg:'#fee2e2',text:'#b91c1c'}, moderate:{bg:'#ffedd5',text:'#ea580c'}, info:{bg:'#dbeafe',text:'#1e40af'} };
-  alertIcon.style.backgroundColor = alertColors[alert.type].bg;
-  alertIcon.style.color = alertColors[alert.type].text;
+  // Apply colors based on severity type
+  const alertColors = { 
+    severe: {bg: '#fee2e2', text: '#b91c1c', border: '#ff7b7b'},
+    moderate: {bg: '#ffedd5', text: '#ea580c', border: '#f9b997'},
+    info: {bg: '#dbeafe', text: '#1e40af', border: '#5c82ff'}
+  };
+  
+  const colorScheme = alertColors[alert.type] || alertColors.severe;
+  alertIcon.style.backgroundColor = colorScheme.bg;
+  alertIcon.style.color = colorScheme.text;
+  alertHeader.style.border = `2px solid ${colorScheme.border}`;
+  alertHeader.style.backgroundColor = colorScheme.bg;
 
   // Populate alert info
   alertTitle.textContent = alert.title;
-  alertBadge.textContent = alert.type.charAt(0).toUpperCase() + alert.type.slice(1);
-  alertLocation.textContent = alert.location;
+  // Use details.severity if available, otherwise capitalize type
+  const severityText = alert.details && alert.details.severity ? alert.details.severity : (alert.type.charAt(0).toUpperCase() + alert.type.slice(1));
+  alertBadge.textContent = severityText;
+  alertBadge.className = `alert-badge-detail alert-badge-${alert.type}`;
+  alertLocation.textContent = `${alert.location}, ${alert.country}`;
   alertDescription.textContent = alert.description;
+  
+  console.log("Loading alert:", alert); // Debug log
 
-  if(alert.instructions.length){ instructionsCard.classList.remove('hidden'); alert.instructions.forEach(i=>{ const li=document.createElement('li'); li.textContent=i; instructionsList.appendChild(li); }); }
-  if(alert.affectedAreas.length){ areasCard.classList.remove('hidden'); alert.affectedAreas.forEach(a=>{ const span=document.createElement('span'); span.className='badge-outline'; span.textContent=a; affectedAreas.appendChild(span); }); }
-  if(alert.details){ 
-    detailsCard.classList.remove('hidden'); 
-    const conds = [ {label:'Wind Speed', value:alert.details.windSpeed, icon:'💨'}, {label:'Precipitation', value:alert.details.precipitation, icon:'💧'}, {label:'Temperature', value:alert.details.temperature, icon:'🌡️'}, {label:'Visibility', value:alert.details.visibility, icon:'👁️'} ];
-    conds.forEach(c=>{ if(c.value){ const div=document.createElement('div'); div.className='condition-card'; div.innerHTML=`<span class="condition-icon">${c.icon}</span><div><p class="condition-label">${c.label}</p><p class="condition-value">${c.value}</p></div>`; weatherConditions.appendChild(div); } });
-    classificationCard.classList.remove('hidden');
-    severity.textContent = alert.details.severity;
-    urgency.textContent = alert.details.urgency;
-    certainty.textContent = alert.details.certainty;
+  // Safety Instructions
+  if(alert.instructions && alert.instructions.length) {
+    instructionsCard.classList.remove('hidden');
+    alert.instructions.forEach(instruction => {
+      const li = document.createElement('li');
+      li.textContent = instruction;
+      instructionsList.appendChild(li);
+    });
   }
-  if(alert.issuedBy){ issuedByCard.classList.remove('hidden'); issuedBy.textContent=alert.issuedBy; }
 
-  issuedTime.textContent = alert.issued;
-  effectivePeriod.textContent = alert.startTime + " - " + alert.endTime;
+  // Affected Areas
+  if(alert.affectedAreas && alert.affectedAreas.length) {
+    areasCard.classList.remove('hidden');
+    alert.affectedAreas.forEach(area => {
+      const span = document.createElement('span');
+      span.className = 'badge-outline';
+      span.textContent = area;
+      affectedAreas.appendChild(span);
+    });
+  }
 
-  // Share
-  shareBtn.addEventListener('click', ()=>{
-    const text=`${alert.title} - ${alert.location}: ${alert.description}`;
-    if(navigator.share){ navigator.share({title:alert.title,text}); }
-    else{ navigator.clipboard.writeText(text); alert("Alert copied to clipboard"); }
+  // Expected Conditions
+  if(alert.details) {
+    detailsCard.classList.remove('hidden');
+    const conditions = [];
+    
+    if(alert.details.windSpeed) {
+      conditions.push({label: 'Wind Speed', value: alert.details.windSpeed, icon: '💨'});
+    }
+    if(alert.details.precipitation) {
+      conditions.push({label: 'Precipitation', value: alert.details.precipitation, icon: '🌧️'});
+    }
+    if(alert.details.temperature) {
+      conditions.push({label: 'Temperature', value: alert.details.temperature, icon: '🌡️'});
+    }
+    if(alert.details.heatIndex) {
+      conditions.push({label: 'Heat Index', value: alert.details.heatIndex, icon: '🌡️'});
+    }
+    if(alert.details.humidity) {
+      conditions.push({label: 'Humidity', value: alert.details.humidity, icon: '💧'});
+    }
+    if(alert.details.airQualityIndex) {
+      conditions.push({label: 'Air Quality Index', value: alert.details.airQualityIndex, icon: '🌬️'});
+    }
+    if(alert.details.primaryPollutant) {
+      conditions.push({label: 'Primary Pollutant', value: alert.details.primaryPollutant, icon: '☁️'});
+    }
+    if(alert.details.visibility) {
+      conditions.push({label: 'Visibility', value: alert.details.visibility, icon: '👁️'});
+    }
+
+    conditions.forEach(cond => {
+      const div = document.createElement('div');
+      div.className = 'condition-card';
+      div.innerHTML = `
+        <span class="condition-icon">${cond.icon}</span>
+        <div>
+          <p class="condition-label">${cond.label}</p>
+          <p class="condition-value">${cond.value}</p>
+        </div>
+      `;
+      weatherConditions.appendChild(div);
+    });
+
+    // Alert Classification
+    if(alert.details.severity || alert.details.urgency || alert.details.certainty) {
+      classificationCard.classList.remove('hidden');
+      if(alert.details.severity) {
+        severity.textContent = alert.details.severity;
+        severity.className = `classification-badge ${alert.type === 'severe' ? 'badge-severe' : 'badge-gray'}`;
+      }
+      if(alert.details.urgency) {
+        urgency.textContent = alert.details.urgency;
+        urgency.className = 'classification-badge badge-gray';
+      }
+      if(alert.details.certainty) {
+        certainty.textContent = alert.details.certainty;
+        certainty.className = 'classification-badge badge-gray';
+      }
+    }
+  }
+
+  // Issued By
+  if(alert.issuedBy) {
+    issuedByCard.classList.remove('hidden');
+    issuedBy.textContent = alert.issuedBy;
+  }
+
+  // Time Details
+  issuedTime.textContent = `${alert.issuedHoursAgo} hour${alert.issuedHoursAgo !== 1 ? 's' : ''} ago`;
+  effectivePeriod.textContent = alert.effectivePeriod;
+
+  // Share functionality
+  shareBtn.addEventListener('click', () => {
+    const text = `${alert.title} - ${alert.location}, ${alert.country}: ${alert.description}`;
+    if(navigator.share) {
+      navigator.share({title: alert.title, text: text});
+    } else {
+      navigator.clipboard.writeText(text);
+      alert("Alert copied to clipboard");
+    }
   });
+}
 </script>
 
 </body>

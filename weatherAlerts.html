@@ -134,9 +134,10 @@ document.addEventListener("DOMContentLoaded", () => {
               <h3 class="alert-title">${alert.title}</h3>
               <span class="alert-badge alert-badge-${severityType}">${alert.severity}</span>
             </div>
-            <p class="alert-location">${alert.location}, ${alert.country || "USA"}</p>
+            <p class="alert-location">📍 ${alert.location}, ${alert.country || "USA"}</p>
             <p class="alert-description">${alert.description}</p>
             <div class="alert-timing">
+              <span class="alert-time-icon">🕐</span>
               <span class="alert-time-range">${timeRange}</span>
               <span class="alert-timing-separator">|</span>
               <span class="alert-issued">issued ${issuedHoursAgo} ${hoursText} ago</span>

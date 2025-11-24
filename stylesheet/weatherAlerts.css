@@ -143,6 +143,11 @@
   color: #6b7280;
 }
 
+.alert-time-icon {
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
 .alert-time-range {
   font-weight: 500;
 }
