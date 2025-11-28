@@ -236,12 +236,19 @@ function handleSearch() {
     return;
   }
 
+  // Add location
   locations.push(found);
   extraSampleLocations = extraSampleLocations.filter(l => l.id !== found.id);
 
   saveLocations();
   renderLocations();
+
+  // Delay redirect so the toast can display (600 ms)
+  setTimeout(() => {
+    window.location.href = "saved.html";
+  }, 600);
 }
+
 
 resetDemoBtn.addEventListener('click', () => {
   if (!confirm('Reset to default demo locations?')) return;
