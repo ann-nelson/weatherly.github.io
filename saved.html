@@ -241,11 +241,7 @@ function handleSearch() {
   extraSampleLocations = extraSampleLocations.filter(l => l.id !== found.id);
 
   saveLocations();
-
-  // Delay redirect so the toast can display (600 ms)
-  setTimeout(() => {
-    window.location.href = "saved.html";
-  }, 600);
+  renderLocations();
 }
 
 
