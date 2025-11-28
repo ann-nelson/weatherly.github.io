@@ -236,12 +236,14 @@ function handleSearch() {
     return;
   }
 
+  // Add location
   locations.push(found);
   extraSampleLocations = extraSampleLocations.filter(l => l.id !== found.id);
 
   saveLocations();
   renderLocations();
 }
+
 
 resetDemoBtn.addEventListener('click', () => {
   if (!confirm('Reset to default demo locations?')) return;
