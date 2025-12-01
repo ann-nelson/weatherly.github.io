@@ -4,18 +4,20 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Weekly Forecast</title>
-<link rel="stylesheet" href="global.css" />
+<link rel="stylesheet" href="stylesheet/weekly.css" />
+<!-- SHARED MOCK DATA INITIALIZER -->
+<script src="mockData.js"></script>
 </head>
 
 <body>
   <!-- Top Navigation -->
 <header class="top-nav">
-  <div class="logo">☁️ Weatherly</div>
+  <div class="logo">☁️<h1 class="title">Weatherly</h1></div>
   <nav class="nav-links">
-    <a href="saved.html">Dashboard</a>
+    <a href="saved.html" class="active">Dashboard</a>
     <a href="search.html">Search</a>
     <a href="pastWeather.html">Past Weather</a>
-    <a href="weatherAlerts.html" class="active" >Alerts</a>
+    <a href="weatherAlerts.html">Alerts</a>
     <a href="settings.html">Settings</a>
     <a href="help.html">Help</a>
   </nav>
@@ -68,65 +70,80 @@
 
   </div>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
 
-      // Retrieve selected location data from localStorage or dashboard click
-      const currentWeather = JSON.parse(localStorage.getItem("selectedLocationWeather")) || {
-        location: "New York, NY",
-        temp: 75,
-        condition: "Sunny",
-        high: 78,
-        low: 68,
-        humidity: 55,
-        wind: 10,
-        icon: "☀️"
+    // Retrieve selected location data
+    const currentWeather = JSON.parse(localStorage.getItem("selectedLocationWeather")) || {
+      location: "New York, NY",
+      temp: 75,
+      condition: "Sunny",
+      high: 78,
+      low: 68,
+      humidity: 55,
+      wind: 10,
+      icon: "☀️"
+    };
+
+    const weeklyForecast = JSON.parse(localStorage.getItem("selectedLocationWeekly")) || [
+      { day: "Mon", high: 78, low: 65, condition: "Sunny", icon: "☀️" },
+      { day: "Tue", high: 80, low: 66, condition: "Cloudy", icon: "☁️" },
+      { day: "Wed", high: 82, low: 68, condition: "Rain", icon: "🌧️" },
+      { day: "Thu", high: 79, low: 67, condition: "Thunderstorm", icon: "⛈️" },
+      { day: "Fri", high: 77, low: 65, condition: "Sunny", icon: "☀️" },
+      { day: "Sat", high: 76, low: 64, condition: "Partly Cloudy", icon: "⛅" },
+      { day: "Sun", high: 75, low: 63, condition: "Sunny", icon: "☀️" }
+    ];
+
+    // Populate current weather
+    document.getElementById("locationInfo").textContent = currentWeather.location;
+    document.getElementById("temp").textContent = `${currentWeather.temp}°`;
+    document.getElementById("condition").textContent = currentWeather.condition;
+    document.getElementById("high").textContent = `H: ${currentWeather.high}°`;
+    document.getElementById("low").textContent = `L: ${currentWeather.low}°`;
+    document.getElementById("humidity").textContent = `Humidity: ${currentWeather.humidity}%`;
+    document.getElementById("wind").textContent = `Wind: ${currentWeather.wind} mph`;
+    document.getElementById("humidityMobile").textContent = `Humidity: ${currentWeather.humidity}%`;
+    document.getElementById("windMobile").textContent = `Wind: ${currentWeather.wind} mph`;
+    document.getElementById("weatherIcon").textContent = currentWeather.icon;
+
+    // Populate weekly forecast
+    const weeklyGrid = document.getElementById("weeklyGrid");
+
+    weeklyForecast.forEach(day => {
+      const card = document.createElement("div");
+      card.className = "day-card";
+
+      card.innerHTML = `
+        <p class="day">${day.day}</p>
+        <div class="icon">${day.icon}</div>
+        <p class="condition">${day.condition}</p>
+        <p class="temp">H: ${day.high}° / L: ${day.low}°</p>
+        <span class="arrow">➜</span>
+      `;
+
+      // --- Function to save + navigate ---
+      const navigateToDaily = () => {
+        const selectedDay = { ...day, location: currentWeather.location };
+        localStorage.setItem("selectedDayForecast", JSON.stringify(selectedDay));
+        window.location.href = "dailyForecast.html";
       };
 
-      const weeklyForecast = JSON.parse(localStorage.getItem("selectedLocationWeekly")) || [
-        { day: "Mon", high: 78, low: 65, condition: "Sunny", icon: "☀️" },
-        { day: "Tue", high: 80, low: 66, condition: "Cloudy", icon: "☁️" },
-        { day: "Wed", high: 82, low: 68, condition: "Rain", icon: "🌧️" },
-        { day: "Thu", high: 79, low: 67, condition: "Thunderstorm", icon: "⛈️" },
-        { day: "Fri", high: 77, low: 65, condition: "Sunny", icon: "☀️" },
-        { day: "Sat", high: 76, low: 64, condition: "Partly Cloudy", icon: "⛅" },
-        { day: "Sun", high: 75, low: 63, condition: "Sunny", icon: "☀️" },
-      ];
+      // Make entire card clickable
+      card.addEventListener("click", navigateToDaily);
 
-      // Populate current weather
-      document.getElementById("locationInfo").textContent = currentWeather.location;
-      document.getElementById("temp").textContent = `${currentWeather.temp}°`;
-      document.getElementById("condition").textContent = currentWeather.condition;
-      document.getElementById("high").textContent = `H: ${currentWeather.high}°`;
-      document.getElementById("low").textContent = `L: ${currentWeather.low}°`;
-      document.getElementById("humidity").textContent = `Humidity: ${currentWeather.humidity}%`;
-      document.getElementById("wind").textContent = `Wind: ${currentWeather.wind} mph`;
-      document.getElementById("humidityMobile").textContent = `Humidity: ${currentWeather.humidity}%`;
-      document.getElementById("windMobile").textContent = `Wind: ${currentWeather.wind} mph`;
-      document.getElementById("weatherIcon").textContent = currentWeather.icon;
-
-      // Populate weekly forecast grid
-      const weeklyGrid = document.getElementById("weeklyGrid");
-      weeklyForecast.forEach(day => {
-        const card = document.createElement("div");
-        card.className = "day-card";
-        card.innerHTML = `
-          <p class="day">${day.day}</p>
-          <div class="icon">${day.icon}</div>
-          <p class="condition">${day.condition}</p>
-          <p class="temp">H: ${day.high}° / L: ${day.low}°</p>
-        `;
-        
-        // ---------- Click to Daily Forecast ----------
-        card.addEventListener('click', () => {
-          const selectedDay = {...day, location: currentWeather.location};
-          localStorage.setItem('selectedDayForecast', JSON.stringify(selectedDay));
-          window.location.href = 'dailyforecpast.html';
-        });
-        weeklyGrid.appendChild(card);
+      // Arrow click (does not trigger card click twice)
+      const arrow = card.querySelector(".arrow");
+      arrow.addEventListener("click", (event) => {
+        event.stopPropagation();
+        navigateToDaily();
       });
+
+      weeklyGrid.appendChild(card);
     });
-  </script>
+  });
+</script>
 
 </body>
 </html>
+

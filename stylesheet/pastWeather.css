@@ -1,0 +1,39 @@
+/* ------------------------- */
+/* Past Weather Page Styles */
+/* ------------------------- */
+
+/* Controls and Charts Grid Layout */
+.controls-grid {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.charts-grid {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.chart-subtitle {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-bottom: 0.75rem;
+}
+
+/* Responsive Layout */
+@media (min-width: 768px) {
+  .controls-grid {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.8fr);
+    align-items: stretch;
+  }
+
+  .charts-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .charts-grid .card:nth-child(9) {
+    grid-column: 1 / -1;
+  }
+}
+

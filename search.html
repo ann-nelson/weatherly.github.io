@@ -4,13 +4,17 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Weatherly - Search Locations</title>
-<link rel="stylesheet" href="global.css" />
+
+<link rel="stylesheet" href="stylesheet/global.css" />
+
+<!-- SHARED MOCK DATA INITIALIZER -->
+<script src="mockData.js"></script>
 </head>
 <body>
 
 <!-- Top Navigation -->
 <header class="top-nav">
-  <div class="logo">☁️ Weatherly</div>
+  <div class="logo">☁️<h1 class="title">Weatherly</h1></div>
   <nav class="nav-links">
     <a href="saved.html">Dashboard</a>
     <a href="search.html" class="active">Search</a>
@@ -45,26 +49,42 @@
 <script>
 /* ---------------- MOCK DATA ---------------- */
 const mockLocations = [
-  { id: '1', name: 'Charlotte', country: 'USA (NC)', temp: 78, condition: 'Partly Cloudy', high: 82, low: 68, humidity: 62, windSpeed: 9, icon: '⛅' },
-  { id: '16', name: 'Moscow', country: 'Russia', temp: 48, condition: 'Cold', high: 52, low: 42, humidity: 60, windSpeed: 13, icon: '❄️' },
-  { id: '2', name: 'New York', country: 'USA (NY)', temp: 72, condition: 'Partly Cloudy', high: 75, low: 65, humidity: 65, windSpeed: 12, icon: '⛅' },
-  { id: '3', name: 'London', country: 'UK', temp: 61, condition: 'Rainy', high: 64, low: 58, humidity: 85, windSpeed: 15, icon: '🌧️' },
-  { id: '4', name: 'Tokyo', country: 'Japan', temp: 68, condition: 'Sunny', high: 73, low: 62, humidity: 55, windSpeed: 8, icon: '☀️' },
-  { id: '5', name: 'Paris', country: 'France', temp: 66, condition: 'Cloudy', high: 69, low: 59, humidity: 70, windSpeed: 10, icon: '☁️' },
-  { id: '6', name: 'Sydney', country: 'Australia', temp: 77, condition: 'Sunny', high: 82, low: 70, humidity: 60, windSpeed: 14, icon: '☀️' },
-  { id: '7', name: 'Dubai', country: 'UAE', temp: 95, condition: 'Hot', high: 99, low: 88, humidity: 40, windSpeed: 8, icon: '🌡️' },
-  { id: '8', name: 'Singapore', country: 'Singapore', temp: 86, condition: 'Humid', high: 89, low: 79, humidity: 85, windSpeed: 6, icon: '🌤️' },
-  { id: '9', name: 'Los Angeles', country: 'USA (CA)', temp: 75, condition: 'Sunny', high: 78, low: 68, humidity: 50, windSpeed: 9, icon: '☀️' },
+  { id: '1',  name: 'Charlotte',    country: 'USA (NC)', temp: 78, condition: 'Partly Cloudy', high: 82, low: 68, humidity: 62, windSpeed: 9,  icon: '⛅' },
+  { id: '16', name: 'Moscow',       country: 'Russia',   temp: 48, condition: 'Cold',          high: 52, low: 42, humidity: 60, windSpeed: 13, icon: '❄️' },
+  { id: '2',  name: 'New York',     country: 'USA (NY)', temp: 72, condition: 'Partly Cloudy', high: 75, low: 65, humidity: 65, windSpeed: 12, icon: '⛅' },
+  { id: '3',  name: 'London',       country: 'UK',       temp: 61, condition: 'Rainy',         high: 64, low: 58, humidity: 85, windSpeed: 15, icon: '🌧️' },
+  { id: '4',  name: 'Tokyo',        country: 'Japan',    temp: 68, condition: 'Sunny',         high: 73, low: 62, humidity: 55, windSpeed: 8,  icon: '☀️' },
+  { id: '5',  name: 'Paris',        country: 'France',   temp: 66, condition: 'Cloudy',        high: 69, low: 59, humidity: 70, windSpeed: 10, icon: '☁️' },
+  { id: '6',  name: 'Sydney',       country: 'Australia',temp: 77, condition: 'Sunny',         high: 82, low: 70, humidity: 60, windSpeed: 14, icon: '☀️' },
+  { id: '7',  name: 'Dubai',        country: 'UAE',      temp: 95, condition: 'Hot',           high: 99, low: 88, humidity: 40, windSpeed: 8,  icon: '🌡️' },
+  { id: '8',  name: 'Singapore',    country: 'Singapore',temp: 86, condition: 'Humid',         high: 89, low: 79, humidity: 85, windSpeed: 6,  icon: '🌤️' },
+  { id: '9',  name: 'Los Angeles',  country: 'USA (CA)', temp: 75, condition: 'Sunny',         high: 78, low: 68, humidity: 50, windSpeed: 9,  icon: '☀️' },
 ];
+
+/* --------- Shared storage key with Dashboard --------- */
+const DASHBOARD_STORAGE_KEY = 'weatherlySavedLocations';
 
 /* --------- Search State --------- */
 let addedLocations = new Set();
+
+/* --------- Initialize addedLocations from Dashboard data --------- */
+(function hydrateAddedFromDashboard() {
+  const saved = JSON.parse(localStorage.getItem(DASHBOARD_STORAGE_KEY)) || [];
+  saved.forEach(loc => {
+    if (loc && loc.id !== undefined && loc.id !== null) {
+      addedLocations.add(String(loc.id));
+    }
+  });
+})();
 
 /* ----------- Search Function ----------- */
 function handleSearch() {
   const query = document.getElementById("searchInput").value.trim().toLowerCase();
   const container = document.getElementById("resultsContainer");
-  if (!query) { container.innerHTML = ""; return; }
+  if (!query) {
+    container.innerHTML = "";
+    return;
+  }
 
   const results = mockLocations.filter(loc =>
     loc.name.toLowerCase().includes(query) ||
@@ -72,7 +92,11 @@ function handleSearch() {
   );
 
   if (results.length === 0) {
-    container.innerHTML = `<div class="no-results"><h3>No Results Found</h3><p>Try searching for another city or country.</p></div>`;
+    container.innerHTML = `
+      <div class="no-results">
+        <h3>No Results Found</h3>
+        <p>Try searching for another city or country.</p>
+      </div>`;
     return;
   }
 
@@ -81,7 +105,7 @@ function handleSearch() {
 
 /* -------- Render Location Card -------- */
 function createLocationCard(location) {
-  const isAdded = addedLocations.has(location.id);
+  const isAdded = addedLocations.has(String(location.id));
   return `
     <div class="location-card">
       <div class="card-header">
@@ -112,10 +136,33 @@ function createLocationCard(location) {
   `;
 }
 
-/* -------- Add Location -------- */
+/* -------- Add Location → Dashboard -------- */
 function addLocation(id) {
+  const location = mockLocations.find(l => l.id === id);
+  if (!location) return;
+
+  const saved = JSON.parse(localStorage.getItem(DASHBOARD_STORAGE_KEY)) || [];
+
+  // Enforce max limit
+  if (saved.length >= 5) {
+    alert('You can only save up to 5 locations on your dashboard.');
+    return;
+  }
+
+  // Prevent duplicates
+  if (!saved.some(l => String(l.id) === id)) {
+    saved.push(location);
+    localStorage.setItem(DASHBOARD_STORAGE_KEY, JSON.stringify(saved));
+  }
+
+  // Update button state
   addedLocations.add(id);
-  handleSearch(); // re-render results
+  handleSearch();
+
+  //  delay then redirect 
+  setTimeout(() => {
+    window.location.href = "saved.html";
+  }, 600);  // matches your toast duration
 }
 </script>
 
