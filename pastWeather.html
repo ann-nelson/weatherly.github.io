@@ -222,9 +222,9 @@ function renderLocation2Charts() {
   const loc2 = locations.find(l => l.id === selectedLocation2);
   const labels = historicalData2.map(d => d.date);
   
-  const tempHigh2 = historicalData2.map(d => d.high);
-  const tempAvg2 = historicalData2.map(d => d.temp);
-  const tempLow2 = historicalData2.map(d => d.low);
+  const tempHigh2 = historicalData2.map(d => d.high + "°F");
+  const tempAvg2 = historicalData2.map(d => d.temp); + "°F"
+  const tempLow2 = historicalData2.map(d => d.low + "°F");
   const precipitation2 = historicalData2.map(d => d.precipitation);
   const humidity2 = historicalData2.map(d => d.humidity);
   const wind2 = historicalData2.map(d => d.windSpeed);

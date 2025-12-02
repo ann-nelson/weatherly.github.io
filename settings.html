@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Weatherly Settings</title>
+<title>Weatherly - Settings</title>
 <link rel="stylesheet" href="stylesheet/global.css">
-<script src="mockData.js"></script>
+<link rel="stylesheet" href="stylesheet/settings.css">
 </head>
-<body class="page">
+<body>
 
-  <!-- Top Navigation -->
+<!-- Top Navigation -->
 <header class="top-nav">
   <div class="logo">☁️ Weatherly</div>
   <nav class="nav-links">
@@ -17,7 +17,7 @@
     <a href="search.html">Search</a>
     <a href="pastWeather.html">Past Weather</a>
     <a href="weatherAlerts.html">Alerts</a>
-    <a href="settings.html" class="active" >Settings</a>
+    <a href="settings.html" class="active">Settings</a>
     <a href="help.html">Help</a>
   </nav>
   <div class="user-section">
@@ -26,211 +26,127 @@
   </div>
 </header>
 
-<div id="settings" class="container">
+<main class="main-container">
 
-  <h2>Settings</h2>
-  <p class="text-muted">Customize your weather app experience</p>
-
-  <!-- GENERAL SETTINGS -->
-  <div class="card">
-    <div class="card-header flex items-center gap-2">
-      <span>⚙️</span>
-      <h3>General Preferences</h3>
-    </div>
-
-    <div class="card-body">
-      <div class="form-group">
-        <label>Temperature Unit</label>
-        <select id="temperatureUnit">
-          <option value="fahrenheit">Fahrenheit (°F)</option>
-          <option value="celsius">Celsius (°C)</option>
-          <option value="kelvin">Kelvin (K)</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Time Format</label>
-        <select id="timeFormat">
-          <option value="12h">12-hour</option>
-          <option value="24h">24-hour</option>
-        </select>
-      </div>
-
-      <div class="form-toggle flex justify-between items-center">
-        <div>
-          <label>Auto-refresh Weather Data</label>
-          <p class="text-muted">Automatically update weather information</p>
-        </div>
-        <input type="checkbox" id="autoRefresh">
-      </div>
-    </div>
+  <div class="section-header">
+    <h2>Settings</h2>
+    <p>Adjust your preferences for Weatherly alerts and interface.</p>
   </div>
 
-  <!-- DISPLAY SETTINGS -->
-  <div class="card">
-    <div class="card-header flex items-center gap-2">
-      <span>👁️</span>
-      <h3>Display Preferences</h3>
-    </div>
+  <div class="alerts-container">
 
-    <div class="card-body">
-      <div class="form-group">
-        <label>Font Size</label>
-        <select id="fontSize">
-          <option value="small">Small</option>
-          <option value="medium">Medium (Default)</option>
-          <option value="large">Large</option>
-          <option value="extra-large">Extra Large</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Contrast Mode</label>
-        <select id="contrastMode">
-          <option value="normal">Normal</option>
-          <option value="high">High Contrast</option>
-          <option value="low">Low Contrast</option>
-        </select>
-      </div>
-
-      <p class="text-muted">Choose which weather metrics to display on the dashboard</p>
-
-      <div class="form-toggle flex justify-between items-center">
-        <label>Humidity</label>
-        <input type="checkbox" id="showHumidity">
-      </div>
-
-      <div class="form-toggle flex justify-between items-center">
-        <label>Wind Speed</label>
-        <input type="checkbox" id="showWindSpeed">
-      </div>
-
-      <div class="form-toggle flex justify-between items-center">
-        <label>Precipitation</label>
-        <input type="checkbox" id="showPrecipitation">
-      </div>
-    </div>
-  </div>
-
-  <!-- NOTIFICATIONS -->
-  <div class="card">
-    <div class="card-header flex items-center gap-2">
-      <span>🔔</span>
-      <h3>Notifications</h3>
-    </div>
-
-    <div class="card-body">
-      <div class="form-toggle flex justify-between items-center">
-        <div>
-          <label>Enable Notifications</label>
-          <p class="text-muted">Receive weather updates and alerts</p>
-        </div>
-        <input type="checkbox" id="notifications">
-      </div>
-
-      <div id="notificationOptions" class="flex flex-col gap-2 hidden">
-        <div class="form-toggle flex justify-between items-center">
-          <div>
-            <label>Severe Weather Alerts</label>
-            <p class="text-muted">Get notified about severe weather conditions</p>
+    <!-- Account Card -->
+    <div class="alert-card alert-info">
+      <div class="alert-card-content">
+        <div class="alert-icon alert-icon-info">👤</div>
+        <div class="alert-main">
+          <div class="alert-header">
+            <h3 class="alert-title">Account</h3>
           </div>
-          <input type="checkbox" id="severeWeatherAlerts">
-        </div>
-
-        <div class="form-toggle flex justify-between items-center">
-          <div>
-            <label>Daily Forecast Summary</label>
-            <p class="text-muted">Receive daily weather forecast notifications</p>
-          </div>
-          <input type="checkbox" id="dailyForecast">
-        </div>
-
-        <div class="form-toggle flex justify-between items-center">
-          <div>
-            <label>Temperature Changes</label>
-            <p class="text-muted">Get notified of significant temperature changes</p>
-          </div>
-          <input type="checkbox" id="temperatureChanges">
+          <p class="alert-description">Username: Demo User</p>
+          <button class="btn btn-primary" onclick="window.location.href='profile.html'">Edit Profile</button>
         </div>
       </div>
     </div>
+
+    <!-- Units Card -->
+    <div class="alert-card alert-info">
+      <div class="alert-card-content">
+        <div class="alert-icon alert-icon-info">🌡️</div>
+        <div class="alert-main">
+          <div class="alert-header">
+            <h3 class="alert-title">Units</h3>
+          </div>
+          <div class="settings-tags">
+            <label><input type="radio" name="unit-temp" id="unit-f"> Fahrenheit (°F)</label>
+            <label><input type="radio" name="unit-temp" id="unit-c"> Celsius (°C)</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notifications Card -->
+    <div class="alert-card alert-info">
+      <div class="alert-card-content">
+        <div class="alert-icon alert-icon-info">🔔</div>
+        <div class="alert-main">
+          <div class="alert-header">
+            <h3 class="alert-title">Notifications</h3>
+          </div>
+          <div class="settings-tags">
+            <label><input type="checkbox" id="set-severe"> Severe Weather</label>
+            <label><input type="checkbox" id="set-temp"> Temperature Alerts</label>
+            <label><input type="checkbox" id="set-precip"> Precipitation Alerts</label>
+            <label><input type="checkbox" id="set-air"> Air Quality Alerts</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Accessibility Card -->
+    <div class="alert-card alert-info">
+      <div class="alert-card-content">
+        <div class="alert-icon alert-icon-info">♿</div>
+        <div class="alert-main">
+          <div class="alert-header">
+            <h3 class="alert-title">Accessibility</h3>
+          </div>
+          <div class="settings-tags">
+            <label><input type="checkbox" id="a11y-high-contrast"> High Contrast Mode</label>
+            <label><input type="checkbox" id="a11y-large-text"> Large Text</label>
+            <label><input type="checkbox" id="a11y-animations"> Reduce Motion</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
-  <!-- BUTTONS -->
-  <div class="flex justify-between gap-2">
-    <button id="resetBtn" class="btn-outline">Reset to Defaults</button>
-    <button id="saveBtn" class="btn-primary">💾 Save Settings</button>
+  <div class="button-group">
+    <button class="btn btn-primary" id="saveSettings">💾 Save</button>
+    <button class="btn btn-outline" id="cancelSettings">❌ Cancel</button>
   </div>
 
-</div>
+</main>
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  const el = id => document.getElementById(id);
+  const body = document.body;
+  const checkboxes = ["set-severe","set-temp","set-precip","set-air","a11y-high-contrast","a11y-large-text","a11y-animations"];
+  const savedPrefs = JSON.parse(localStorage.getItem("userSettings")) || {};
+  
+  if(savedPrefs.unit==="C") document.getElementById("unit-c").checked = true;
+  else document.getElementById("unit-f").checked = true;
 
-  const fields = {
-    temperatureUnit: "fahrenheit",
-    timeFormat: "12h",
-    fontSize: "medium",
-    contrastMode: "normal",
-    notifications: true,
-    severeWeatherAlerts: true,
-    dailyForecast: true,
-    temperatureChanges: false,
-    autoRefresh: true,
-    showHumidity: true,
-    showWindSpeed: true,
-    showPrecipitation: true
-  };
+  checkboxes.forEach(id => document.getElementById(id).checked = savedPrefs[id]||false);
 
-  // Load values from localStorage
-  Object.keys(fields).forEach(key => {
-    const stored = localStorage.getItem(key);
-    if (stored !== null) {
-      fields[key] = stored === "true" ? true : stored === "false" ? false : stored;
-    }
+  function applyAccessibility(settings){
+    body.classList.toggle("large-text", settings["a11y-large-text"]);
+    body.classList.toggle("high-contrast", settings["a11y-high-contrast"]);
+    body.classList.toggle("reduce-motion", settings["a11y-animations"]);
+  }
+  applyAccessibility(savedPrefs);
+  let tempPrefs = JSON.parse(JSON.stringify(savedPrefs));
 
-    if (typeof fields[key] === "boolean") {
-      el(key).checked = fields[key];
-    } else {
-      el(key).value = fields[key];
-    }
+  document.getElementById("saveSettings").addEventListener("click", ()=> {
+    const updated = {unit: document.getElementById("unit-c").checked?"C":"F"};
+    checkboxes.forEach(id=>updated[id]=document.getElementById(id).checked);
+    localStorage.setItem("userSettings", JSON.stringify(updated));
+    tempPrefs = JSON.parse(JSON.stringify(updated));
+    applyAccessibility(updated);
+    alert("Settings saved!");
   });
 
-  // Show/hide notification options
-  const showNotificationOptions = () => {
-    el("notificationOptions").classList.toggle("hidden", !el("notifications").checked);
-  };
-  el("notifications").addEventListener("change", showNotificationOptions);
-  showNotificationOptions();
-
-  // Save button
-  el("saveBtn").addEventListener("click", () => {
-    Object.keys(fields).forEach(key => {
-      const input = el(key);
-      const val = input.type === "checkbox" ? input.checked : input.value;
-      localStorage.setItem(key, val);
-    });
-    alert("Settings saved successfully!");
-  });
-
-  // Reset button
-  el("resetBtn").addEventListener("click", () => {
-    Object.keys(fields).forEach(key => {
-      const def = fields[key];
-      if (typeof def === "boolean") {
-        el(key).checked = def;
-        localStorage.setItem(key, def);
-      } else {
-        el(key).value = def;
-        localStorage.setItem(key, def);
-      }
-    });
-    showNotificationOptions();
-    alert("Settings reset to defaults!");
+  document.getElementById("cancelSettings").addEventListener("click", ()=> {
+    if(tempPrefs.unit==="C") document.getElementById("unit-c").checked=true;
+    else document.getElementById("unit-f").checked=true;
+    checkboxes.forEach(id=>document.getElementById(id).checked=tempPrefs[id]||false);
+    applyAccessibility(tempPrefs);
+    alert("Changes canceled!");
   });
 });
 </script>
 
 </body>
 </html>
+
