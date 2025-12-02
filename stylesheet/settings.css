@@ -1,91 +1,170 @@
 /* ------------------------- */
-/* SETTINGS PAGE BASE STYLES */
+/* Settings Page Styles */
 /* ------------------------- */
 
-.settings-container {
-  max-width: 750px;
-  margin: 40px auto;
-  padding: 1.5rem;
-  background: #fff;
-  border-radius: 0.75rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
-  transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+.main-container {
+  max-width: 960px;
+  margin: 2rem auto;
+  padding: 0 1rem;
 }
 
-.settings-container:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+.section-header {
+  margin-bottom: 2rem;
 }
 
-.settings-container h1 {
+.section-header h2 {
   font-size: 2rem;
-  font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 20px;
+  margin-bottom: 0.25rem;
 }
 
-.settings-section {
-  margin-bottom: 32px;
-}
-
-.settings-section h2 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #374151;
-  margin-bottom: 14px;
-}
-
-.setting-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 0;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.setting-label {
+.section-header p {
+  color: #555;
   font-size: 1rem;
-  color: #374151;
 }
 
-/* ------------------------- */
-/* Toggle switch */
-/* ------------------------- */
-
-.toggle {
-  position: relative;
-  width: 46px;
-  height: 24px;
-}
-.toggle input { display: none; }
-
-.slider {
-  position: absolute;
-  inset: 0;
-  background-color: #d1d5db;
-  border-radius: 34px;
-  transition: 0.3s;
-}
-.slider:before {
-  content: "";
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  background: #fff;
-  border-radius: 50%;
-  bottom: 3px;
-  left: 3px;
-  transition: 0.3s;
+.alerts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-input:checked + .slider { background: #2563eb; }
-input:checked + .slider:before { transform: translateX(22px); }
+.alert-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding: 1rem;
+  background-color: #f9f9f9;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 
-/* ------------------------- */
-/* Save Button */
-/* ------------------------- */
+.alert-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
 
-.save-btn {
-  margin-top: 24px;
-  padding: 10px 20px;
-  background
+.alert-card-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.alert-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.alert-main {
+  flex: 1;
+}
+
+.alert-header {
+  margin-bottom: 0.5rem;
+}
+
+.alert-title {
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.alert-description {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+.settings-tags {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.settings-tags label {
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+  border: none;
+  display: inline-block;
+}
+
+.btn-primary {
+  background-color: #4a90e2;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #357ab8;
+}
+
+.btn-outline {
+  background-color: #fff;
+  color: #f44336;
+  border: 2px solid #f44336;
+}
+
+.btn-outline:hover {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+/* Accessibility Classes */
+body.large-text {
+  font-size: 1.25rem; /* base font larger */
+}
+
+body.large-text h2,
+body.large-text h3,
+body.large-text p,
+body.large-text label,
+body.large-text .btn {
+  font-size: 1.25em; /* scale elements proportionally */
+}
+
+body.high-contrast {
+  background-color: #1e1e1e !important;
+  color: #f0f0f0 !important;
+}
+
+body.high-contrast .alert-card {
+  background-color: #333 !important;
+  color: #f0f0f0;
+}
+
+body.high-contrast .btn-primary {
+  background-color: #ff9800;
+  color: #1e1e1e;
+}
+
+body.high-contrast .btn-primary:hover {
+  background-color: #f57c00;
+}
+
+body.high-contrast .btn-outline {
+  background-color: #1e1e1e;
+  color: #ff9800;
+  border-color: #ff9800;
+}
+
+body.high-contrast .btn-outline:hover {
+  background-color: #ff9800;
+  color: #1e1e1e;
+}
+
+body.reduce-motion * {
+  transition: none !important;
+  animation: none !important;
+}

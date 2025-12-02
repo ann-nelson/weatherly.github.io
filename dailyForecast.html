@@ -199,6 +199,25 @@ document.getElementById('additionalDetails').innerHTML = `
 
   </div>
 `;
+/* ---------------- Temperature Unit Conversion ---------------- */
+const tempUnit = JSON.parse(localStorage.getItem('userSettings'))?.unit || 'F';
+
+function convertTemp(temp) {
+  return tempUnit === 'F' ? temp : Math.round((temp - 32) * 5 / 9);
+}
+
+// Update displayed temps
+document.querySelectorAll('.temp').forEach(el => {
+  el.textContent = convertTemp(parseInt(el.textContent)) + '°' + tempUnit;
+});
+document.querySelectorAll('.hour-temp').forEach(el => {
+  el.textContent = convertTemp(parseInt(el.textContent)) + '°' + tempUnit;
+});
+document.querySelectorAll('.high-low').forEach(el => {
+  el.innerHTML = el.innerHTML.replace(/H: (\d+)°/, (_, val) => `H: ${convertTemp(+val)}°${tempUnit}`)
+                             .replace(/L: (\d+)°/, (_, val) => `L: ${convertTemp(+val)}°${tempUnit}`);
+});
+
 </script>
 
 </body>

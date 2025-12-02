@@ -121,6 +121,7 @@ body {
   margin-right: 14px;
   font-size: 14px;
   opacity: 0.9;
+  white-space: nowrap;
 }
 
 .weather-icon {

@@ -1,57 +1,84 @@
 /* ------------------------- */
-/* PAGE CONTAINER */
+/* GLOBAL STYLES */
 /* ------------------------- */
-
 body {
-  background: #f8fafc;
-  font-family: system-ui, sans-serif;
+  background: #eaf0ff; /* match other pages */
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   margin: 0;
   padding: 0;
+  color: #111827;
 }
 
-.main-container,
-.container {
+.main-container {
   max-width: 1100px;
   margin: 90px auto 40px;
   padding: 0 20px;
 }
 
-h2 {
-  font-size: 2rem;
+h1 {
+  font-size: 1.8rem;
   font-weight: 700;
   margin-bottom: 6px;
-  color: #1e293b;
 }
 
-.container > p {
-  color: #475569;
+.section-header p {
+  color: #6b7280;
   margin-bottom: 20px;
 }
 
 /* ------------------------- */
-/* BACK BUTTON */
+/* TOP NAVIGATION */
 /* ------------------------- */
-
-#backBtn {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  border: none;
-  background: transparent;
-  font-size: 1rem;
-  cursor: pointer;
-  color: #475569;
-  transition: color 0.2s ease;
+.top-nav {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 16px 40px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
-#backBtn:hover {
+.logo {
+  font-size: 25px;
+  font-weight: 600;
+}
+
+.nav-links a {
+  margin: 0 14px;
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+}
+
+.nav-links a.active {
   color: #2563eb;
+}
+
+.user-section button {
+  margin-left: 10px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.profile-btn {
+  background: #f7f7f7;
+}
+
+.logout-btn {
+  background: #fff;
 }
 
 /* ------------------------- */
 /* GRID LAYOUT */
 /* ------------------------- */
-
 .main-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -59,19 +86,24 @@ h2 {
   margin-top: 25px;
 }
 
+@media (max-width: 880px) {
+  .main-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ------------------------- */
 /* CARD BASE STYLE */
 /* ------------------------- */
-
 .card,
 .profile-card,
 .stats-card,
 .danger-card,
 .pro-tip-card {
-  background: #ffffff;
-  border-radius: 0.75rem;
-  padding: 1.25rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  background: white;
+  border-radius: 12px;
+  padding: 20px 26px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
@@ -85,7 +117,6 @@ h2 {
 /* ------------------------- */
 /* PROFILE CARD */
 /* ------------------------- */
-
 .profile-header {
   display: flex;
   align-items: center;
@@ -125,35 +156,49 @@ h2 {
   margin-top: 6px;
 }
 
+/* ------------------------- */
+/* EDIT BUTTON - MATCH BLUE BUTTON STYLE */
+/* ------------------------- */
 #editProfileBtn {
   margin-left: auto;
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
-  padding: 8px 12px;
-  border-radius: 0.5rem;
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: none;
+  background: #3b82f6;
+  color: white;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  transition: background-color 0.2s ease, transform 0.15s ease;
 }
 
 #editProfileBtn:hover {
-  background: #dbeafe;
+  background: #2563eb;
+  transform: translateY(-1px);
 }
 
 /* ------------------------- */
-/* EDIT PROFILE FORM */
+/* EDIT PROFILE FORM WITH SMOOTH SLIDE */
 /* ------------------------- */
-
 .edit-section {
-  margin-top: 14px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.3s ease;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  padding: 0 0; /* collapsed */
+}
+
+.edit-section.show {
+  max-height: 500px;
+  padding: 10px 0;
 }
 
 .edit-section input {
   padding: 10px;
-  border-radius: 0.5rem;
+  border-radius: 6px;
   border: 1px solid #cbd5e1;
+  font-size: 0.95rem;
 }
 
 .edit-actions {
@@ -166,7 +211,7 @@ h2 {
 #cancelBtn {
   flex: 1;
   padding: 10px;
-  border-radius: 0.5rem;
+  border-radius: 6px;
   cursor: pointer;
   border: none;
   font-size: 0.95rem;
@@ -191,9 +236,8 @@ h2 {
 }
 
 /* ------------------------- */
-/* DETAILS LIST */
+/* PROFILE DETAILS LIST */
 /* ------------------------- */
-
 .profile-details {
   margin-top: 20px;
   display: flex;
@@ -220,9 +264,8 @@ h2 {
 }
 
 /* ------------------------- */
-/* STATS SIDEBAR */
+/* STATS CARD */
 /* ------------------------- */
-
 .stats-card .stat-item {
   display: flex;
   align-items: center;
@@ -232,9 +275,8 @@ h2 {
 }
 
 /* ------------------------- */
-/* PRO TIP */
+/* PRO TIP CARD */
 /* ------------------------- */
-
 .pro-tip-card {
   grid-column: span 2;
   text-align: center;
@@ -248,9 +290,8 @@ h2 {
 }
 
 /* ------------------------- */
-/* DANGER ZONE */
+/* DANGER ZONE CARD */
 /* ------------------------- */
-
 .danger-card {
   border-left: 4px solid #ef4444;
 }
@@ -271,19 +312,8 @@ h2 {
 }
 
 /* ------------------------- */
-/* RESPONSIVE */
+/* HIDDEN ELEMENT */
 /* ------------------------- */
-
-@media (max-width: 880px) {
-  .main-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .pro-tip-card {
-    grid-column: span 1;
-  }
-}
-
 .hidden {
-  display: none;
+  display: none !important;
 }

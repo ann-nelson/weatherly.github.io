@@ -746,3 +746,19 @@ input:focus, select:focus {
 .top-nav {
   transition: height 0.2s ease;
 }
+
+/* Accessibility */
+body.large-text {
+  font-size: 1.2rem;
+}
+
+body.high-contrast {
+  background-color: black;
+  color: white;
+}
+
+body.reduce-motion * {
+  transition: none !important;
+  animation: none !important;
+}
+/* ------------------------- */

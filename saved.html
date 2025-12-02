@@ -43,6 +43,13 @@
 const MAX_LOCATIONS = 5;
 const STORAGE_KEY = 'weatherlySavedLocations';
 
+// Get user preferred unit from settings (default F)
+const tempUnit = JSON.parse(localStorage.getItem('userSettings'))?.unit || 'F';
+
+function convertTemp(temp) {
+  return tempUnit === 'F' ? temp : Math.round((temp - 32) * 5 / 9);
+}
+
 const defaultDemoLocations = [
   {id:'1', name:'New York', country:'USA', temp:72, condition:'Partly Cloudy', high:75, low:65, humidity:65, windSpeed:12, icon:'⛅'},
   {id:'2', name:'London', country:'UK', temp:61, condition:'Rainy', high:64, low:58, humidity:85, windSpeed:15, icon:'🌧️'},
@@ -91,12 +98,12 @@ function renderLocations() {
 
         <div class="card-body">
           <div class="temp-condition">
-            <span class="saved-temp">${loc.temp}°</span>
+            <span class="saved-temp">${convertTemp(loc.temp)}°${tempUnit}</span>
             <span class="saved-condition">${loc.condition}</span>
           </div>
           <div class="saved-high-low">
-            <span>H: ${loc.high}°</span>
-            <span>L: ${loc.low}°</span>
+            <span>H: ${convertTemp(loc.high)}°${tempUnit}</span>
+            <span>L: ${convertTemp(loc.low)}°${tempUnit}</span>
           </div>
           <div class="card-divider"></div>
           <div class="saved-metrics">
@@ -244,7 +251,6 @@ function handleSearch() {
   renderLocations();
 }
 
-
 resetDemoBtn.addEventListener('click', () => {
   if (!confirm('Reset to default demo locations?')) return;
 
@@ -259,5 +265,3 @@ renderLocations();
 
 </body>
 </html>
-
-
