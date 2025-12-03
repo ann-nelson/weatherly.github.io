@@ -185,6 +185,7 @@ body {
 .temp-info .temp {
   font-size: 3rem;
   line-height: 1;
+  font-weight: 700;
 }
 
 .temp-info .condition {
