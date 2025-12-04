@@ -140,12 +140,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // Load saved settings from localStorage
   let savedPrefs = JSON.parse(localStorage.getItem("userSettings"));
 
-  // If nothing saved, use defaults
+  // If nothing saved, use defaults and overwrite old localStorage
   if (!savedPrefs) {
     savedPrefs = defaultPrefs;
     localStorage.setItem("userSettings", JSON.stringify(savedPrefs));
   } else {
-    // Ensure all keys exist for older storage
+    // Make sure all keys exist for old storage
     Object.keys(defaultPrefs).forEach(key => {
       if (!(key in savedPrefs)) savedPrefs[key] = defaultPrefs[key];
     });
@@ -164,7 +164,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("unit-c").checked = true;
     document.getElementById("unit-f").checked = false;
   } else {
-    // Default to Fahrenheit
     document.getElementById("unit-f").checked = true;
     document.getElementById("unit-c").checked = false;
   }
