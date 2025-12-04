@@ -115,40 +115,89 @@
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const body = document.body;
-  const checkboxes = ["set-severe","set-temp","set-precip","set-air","a11y-high-contrast","a11y-large-text","a11y-animations"];
-  const savedPrefs = JSON.parse(localStorage.getItem("userSettings")) || {};
-  
-  if(savedPrefs.unit==="C") document.getElementById("unit-c").checked = true;
-  else document.getElementById("unit-f").checked = true;
+  const checkboxes = [
+    "set-severe",
+    "set-temp",
+    "set-precip",
+    "set-air",
+    "a11y-high-contrast",
+    "a11y-large-text",
+    "a11y-animations"
+  ];
 
-  checkboxes.forEach(id => document.getElementById(id).checked = savedPrefs[id]||false);
+  // Default settings (light theme)
+  const defaultPrefs = {
+    unit: "F",
+    "set-severe": false,
+    "set-temp": false,
+    "set-precip": false,
+    "set-air": false,
+    "a11y-high-contrast": false, // explicitly false
+    "a11y-large-text": false,
+    "a11y-animations": false
+  };
 
-  function applyAccessibility(settings){
-    body.classList.toggle("large-text", settings["a11y-large-text"]);
-    body.classList.toggle("high-contrast", settings["a11y-high-contrast"]);
-    body.classList.toggle("reduce-motion", settings["a11y-animations"]);
+  // Load saved settings from localStorage or use defaults
+  let savedPrefs = JSON.parse(localStorage.getItem("userSettings")) || defaultPrefs;
+
+  // Ensure all keys exist (for old or incomplete localStorage)
+  Object.keys(defaultPrefs).forEach(key => {
+    if (!(key in savedPrefs)) savedPrefs[key] = defaultPrefs[key];
+  });
+
+  // Save defaults if nothing existed
+  if (!localStorage.getItem("userSettings")) {
+    localStorage.setItem("userSettings", JSON.stringify(savedPrefs));
   }
+
+  // Function to apply accessibility settings safely
+  function applyAccessibility(settings) {
+    // Remove all accessibility classes first
+    body.classList.remove("large-text", "high-contrast", "reduce-motion");
+
+    // Add classes only if explicitly true
+    if (settings["a11y-large-text"] === true) body.classList.add("large-text");
+    if (settings["a11y-high-contrast"] === true) body.classList.add("high-contrast");
+    if (settings["a11y-animations"] === true) body.classList.add("reduce-motion");
+  }
+
+  // Initialize UI states
+  document.getElementById(savedPrefs.unit === "C" ? "unit-c" : "unit-f").checked = true;
+  checkboxes.forEach(id => {
+    document.getElementById(id).checked = savedPrefs[id] === true;
+  });
+
   applyAccessibility(savedPrefs);
+
+  // Keep a copy for cancel
   let tempPrefs = JSON.parse(JSON.stringify(savedPrefs));
 
-  document.getElementById("saveSettings").addEventListener("click", ()=> {
-    const updated = {unit: document.getElementById("unit-c").checked?"C":"F"};
-    checkboxes.forEach(id=>updated[id]=document.getElementById(id).checked);
+  // Save button
+  document.getElementById("saveSettings").addEventListener("click", () => {
+    const updated = {
+      unit: document.getElementById("unit-c").checked ? "C" : "F"
+    };
+    checkboxes.forEach(id => {
+      updated[id] = document.getElementById(id).checked === true;
+    });
     localStorage.setItem("userSettings", JSON.stringify(updated));
     tempPrefs = JSON.parse(JSON.stringify(updated));
     applyAccessibility(updated);
     alert("Settings saved!");
   });
 
-  document.getElementById("cancelSettings").addEventListener("click", ()=> {
-    if(tempPrefs.unit==="C") document.getElementById("unit-c").checked=true;
-    else document.getElementById("unit-f").checked=true;
-    checkboxes.forEach(id=>document.getElementById(id).checked=tempPrefs[id]||false);
+  // Cancel button
+  document.getElementById("cancelSettings").addEventListener("click", () => {
+    document.getElementById(tempPrefs.unit === "C" ? "unit-c" : "unit-f").checked = true;
+    checkboxes.forEach(id => {
+      document.getElementById(id).checked = tempPrefs[id] === true;
+    });
     applyAccessibility(tempPrefs);
     alert("Changes canceled!");
   });
 });
 </script>
+
 
 </body>
 </html>
