@@ -435,12 +435,14 @@ input:focus, select:focus {
 
 /* ------------------------- */
 /* Search for Add Location */
+
 .search-wrapper {
   margin-top: 20px;
   padding: 15px;
   background: #f5f5f5;
   border-radius: 10px;
   text-align: center;
+  
 }
 
 .search-input {
@@ -463,6 +465,16 @@ input:focus, select:focus {
 
 .search-btn:hover {
   background: #005fcc;
+}
+
+.infoBox {
+  margin-top: 15px;
+  padding: 10px;
+  background: #e0f0ff;
+  border: 1px solid #b3d4ff;
+  border-radius: 6px;
+  color: #034a8f;
+  font-size: 0.95rem;
 }
 
 

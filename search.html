@@ -6,6 +6,7 @@
 <title>Weatherly - Search Locations</title>
 
 <link rel="stylesheet" href="stylesheet/global.css" />
+<link rel="stylesheet" href="stylesheet/search.css" />
 
 <!-- SHARED MOCK DATA INITIALIZER -->
 <script src="mockData.js"></script>
@@ -37,13 +38,14 @@
   <p class="subtitle">Find and add locations to your dashboard</p>
 
   <!-- Search Bar -->
-  <div class="search-card">
-    <div class="search-wrapper">
-      <span class="search-icon">🔍</span>
-      <input id="searchInput" type="text" placeholder="Search by city or country..." />
-      <button onclick="handleSearch()" class="search-btn">Search</button>
-    </div>
-  </div>
+  <div class="search-wrapper">
+  <span class="search-icon">🔍</span>
+  <input id="searchInput" type="text" placeholder="Search by city or country..." />
+  <button onclick="handleSearch()" class="search-btn">Search</button>
+</div>
+
+<!-- Info Box (hidden by default) -->
+  <div id="infoBox" class="info-box" style="display:none"></div>
 
   <!-- Results Grid -->
   <div id="resultsContainer" class="results-grid"></div>
@@ -105,6 +107,24 @@ function handleSearch() {
 
   container.innerHTML = results.map(loc => createLocationCard(loc)).join("");
 }
+
+const infoBox = document.getElementById('infoBox');
+
+// Fill the info box with city names
+infoBox.innerHTML = `<strong>Searchable Cities:</strong> ${mockLocations.map(loc => loc.name).join(', ')}`;
+
+// Show info box when input is focused
+const searchInput = document.getElementById('searchInput');
+searchInput.addEventListener('focus', () => {
+  infoBox.style.display = 'block';
+});
+
+// Hide info box when input loses focus
+searchInput.addEventListener('blur', () => {
+  // Delay hiding so user can click "Search" button
+  setTimeout(() => infoBox.style.display = 'none', 200);
+});
+
 
 /* -------- Render Location Card -------- */
 function createLocationCard(location) {
