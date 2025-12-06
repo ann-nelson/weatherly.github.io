@@ -1,0 +1,426 @@
+/* ---------------------------------------------------
+   Root Variables (Tailwind Design Tokens)
+--------------------------------------------------- */
+:root {
+  /* Colors */
+  --gray-50:  #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+
+  --orange-100: #ffedd5;
+  --orange-400: #fb923c;
+  --orange-500: #f97316;
+
+  --pink-500:   #ec4899;
+  --pink-600:   #db2777;
+
+  /* Sizing */
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+
+  /* Shadow (Tailwind default shadow-sm) */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.03);
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+
+  /* Icon Backgrounds (matching Tailwind pastel utilities) */
+  --icon-bg-sun:   rgba(251, 146, 60, 0.15);   /* orange-400/15 */
+  --icon-bg-rain:  rgba(14, 165, 233, 0.15);   /* sky-500/15 */
+  --icon-bg-cloud: rgba(107, 114, 128, 0.15);  /* gray-500/15 */
+  --icon-bg-snow:  rgba(59, 130, 246, 0.15);   /* blue-500/15 */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+               Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+body {
+  background: linear-gradient(#e8f0ff, #d9e6ff);
+  color: #1a1a1a;
+}
+
+/* ------------------------- */
+/* Top Navigation */
+.top-nav {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 16px 40px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 25px;
+  font-weight: 600;
+}
+
+.title{
+  display: inline;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.nav-links a {
+  margin: 0 14px;
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+}
+
+.nav-links a.active {
+  color: #2563eb;
+}
+
+.user-section button {
+  margin-left: 10px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.profile-btn {
+  background: #f7f7f7;
+}
+
+.logout-btn {
+  background: #fff;
+}
+
+/* Back Button */
+#backBtn {
+  margin: 0 -15px 12px;
+  background: none;
+  border: none;
+  color: #2563eb;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+/* ---------------------------------------------------
+   Layout Containers
+  --------------------------------------------------- */
+.daily-main {
+  /* Mirror weekly page layout: centered column with comfortable width */
+  padding: 3rem 0;
+  max-width: 1500px;
+  margin: 0 auto 50px;
+}
+
+.daily-forecast-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+/* ---------------------------------------------------
+   Header
+--------------------------------------------------- */
+.forecast-header h2 {
+  color: var(--gray-800);
+  margin-bottom: var(--space-2);
+  font-size: 1.5rem;
+}
+
+.forecast-header p {
+  color: var(--gray-600);
+  font-size: 1rem;
+}
+
+
+/* ---------------------------------------------------
+   Base Card Style
+--------------------------------------------------- */
+.card {
+  background: white;
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ---------------------------------------------------
+   Day Summary Card
+--------------------------------------------------- */
+.day-summary-card {
+  padding: var(--space-6);
+  background: linear-gradient(to bottom right, var(--orange-400), var(--pink-500));
+  color: white;
+  border-radius: var(--radius-lg);
+}
+
+.summary-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.temp-info .temp {
+  font-size: 3rem;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.temp-info .condition {
+  color: var(--orange-100);
+  font-size: 1rem;
+}
+
+.high-low {
+  display: flex;
+  gap: var(--space-4);
+  color: var(--orange-100);
+  font-size: 1rem;
+}
+
+.summary-top .icon {
+  font-size: 3.75rem;
+}
+
+/* ---------------------------------------------------
+   Tailwind-style Icon Backgrounds
+--------------------------------------------------- */
+.icon-bg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3);
+  border-radius: var(--radius-xl);
+}
+
+/* Then apply classes like:  
+   <div class="icon-bg bg-sun"> <Icon /> </div>  
+*/
+.bg-sun  { background: var(--icon-bg-sun); }
+.bg-rain { background: var(--icon-bg-rain); }
+.bg-cloud { background: var(--icon-bg-cloud); }
+.bg-snow { background: var(--icon-bg-snow); }
+
+/* ---------------------------------------------------
+   Summary Text
+--------------------------------------------------- */
+.summary-text {
+  color: var(--orange-100);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* ---------------------------------------------------
+   Hourly Forecast
+--------------------------------------------------- */
+.hourly-forecast h3 {
+  color: var(--gray-800);
+  margin-bottom: var(--space-3);
+  font-size: 1.125rem;
+}
+
+.hourly-card {
+  padding: var(--space-4);
+}
+
+.hour-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--space-4);
+}
+
+.hour-item {
+  text-align: center;
+}
+
+.hour-time {
+  color: var(--gray-600);
+  margin-bottom: var(--space-2);
+  font-size: 0.875rem;
+}
+
+.hour-icon {
+  font-size: 1.875rem;
+  margin-bottom: var(--space-2);
+}
+
+.hour-temp {
+  color: var(--gray-900);
+  font-size: 1rem;
+  margin-bottom: var(--space-1);
+}
+
+.hour-precip {
+  color: var(--gray-500);
+  font-size: 0.75rem;
+}
+
+/* ---------------------------------------------------
+   Metrics Grid
+--------------------------------------------------- */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+
+.metric-card {
+  padding: var(--space-6);
+}
+
+.metric-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.metric-label {
+  color: var(--gray-500);
+  font-size: 0.875rem;
+}
+
+.metric-value {
+  color: var(--gray-900);
+  font-size: 1rem;
+}
+
+/* ---------------------------------------------------
+   Additional Details
+--------------------------------------------------- */
+.additional-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+}
+
+.small-card {
+  padding: var(--space-4);
+}
+
+.small-label {
+  color: var(--gray-500);
+  font-size: 0.75rem;
+}
+
+.small-value {
+  color: var(--gray-900);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* ---------------------------------------------------
+   Responsive Design
+--------------------------------------------------- */
+
+/* ----------- Small Screens (≤ 640px) ----------- */
+@media (max-width: 640px) {
+  .top-nav {
+    padding: 12px 20px;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .nav-links a {
+    margin: 0 8px;
+  }
+
+  #backBtn {
+    margin: 20px;
+  }
+
+  .summary-top {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .temp-info .temp {
+    font-size: 2.25rem;
+  }
+
+  .day-summary-card {
+    padding: var(--space-4);
+  }
+
+  /* Hourly becomes 3 columns */
+  .hour-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Metrics becomes full-width stacked */
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Additional details: 2 columns */
+  .additional-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .daily-main {
+    margin: var(--space-4) auto;
+    padding: 0 var(--space-2);
+  }
+}
+
+
+/* ----------- Medium Screens (641px – 1024px) ----------- */
+@media (min-width: 641px) and (max-width: 1024px) {
+  /* Top nav */
+  .top-nav {
+    padding: 16px 24px;
+  }
+
+  /* Hourly forecast grid becomes 4 columns */
+  .hour-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Metrics: 2 per row */
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Additional details: 3 per row */
+  .additional-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+
+/* ----------- Large Screens (≥ 1025px) ----------- */
+@media (min-width: 1025px) {
+  .hour-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .additional-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

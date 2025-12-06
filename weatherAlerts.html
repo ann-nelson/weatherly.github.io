@@ -6,7 +6,7 @@
 <title>Weatherly - Alerts</title>
 <link rel="stylesheet" href="stylesheet/global.css">
 <link rel="stylesheet" href="stylesheet/weatherAlerts.css">
-<script src="mockdata.js"></script>
+<script src="mockData.js"></script>
 </head>
 <body>
 
@@ -69,8 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const alertList = document.getElementById("alert-list");
   const noAlerts = document.getElementById("no-alerts");
 
-  // Get alerts from localStorage (initialized by mockdata.js)
-  // The initializeWeatherlyMockData() function will update old data structures
+  // Get alerts from localStorage (initialized by mockData.js)
   const alertsData = JSON.parse(localStorage.getItem("weatherAlerts")) || [];
 
   function renderAlerts() {
@@ -145,6 +144,6 @@ document.addEventListener("DOMContentLoaded", () => {
   renderAlerts();
 });
 </script>
-
+<script src="accessibility.js"></script>
 </body>
 </html>

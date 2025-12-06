@@ -39,12 +39,12 @@
 
   <!-- Search Bar -->
   <div class="search-wrapper">
-  <span class="search-icon">🔍</span>
-  <input id="searchInput" type="text" placeholder="Search by city or country..." />
-  <button onclick="handleSearch()" class="search-btn">Search</button>
-</div>
+    <span class="search-icon">🔍</span>
+    <input id="searchInput" type="text" placeholder="Search by city or country..." />
+    <button onclick="handleSearch()" class="search-btn">Search</button>
+  </div>
 
-<!-- Info Box (hidden by default) -->
+  <!-- Info Box (hidden by default) -->
   <div id="infoBox" class="info-box" style="display:none"></div>
 
   <!-- Results Grid -->
@@ -52,6 +52,14 @@
 </main>
 
 <script>
+/* --------- Global settings (units + accessibility) --------- */
+const userSettings = JSON.parse(localStorage.getItem('userSettings')) || {};
+const tempUnit = userSettings.unit || 'F';
+
+function convertTemp(temp) {
+  return tempUnit === 'F' ? temp : Math.round((temp - 32) * 5 / 9);
+}
+
 /* ---------------- MOCK DATA ---------------- */
 const mockLocations = [
   { id: '10',  name: 'Charlotte',    country: 'USA (NC)', temp: 78, condition: 'Partly Cloudy', high: 82, low: 68, humidity: 62, windSpeed: 9,  icon: '⛅' },
@@ -121,14 +129,16 @@ searchInput.addEventListener('focus', () => {
 
 // Hide info box when input loses focus
 searchInput.addEventListener('blur', () => {
-  // Delay hiding so user can click "Search" button
   setTimeout(() => infoBox.style.display = 'none', 200);
 });
 
-
-/* -------- Render Location Card -------- */
+/* -------- Render Location Card (with units) -------- */
 function createLocationCard(location) {
   const isAdded = addedLocations.has(String(location.id));
+  const temp = convertTemp(location.temp);
+  const high = convertTemp(location.high);
+  const low = convertTemp(location.low);
+
   return `
     <div class="location-card">
       <div class="card-header">
@@ -140,12 +150,12 @@ function createLocationCard(location) {
       </div>
       <div class="card-body">
         <div class="temp-condition">
-          <span class="temp">${location.temp}°</span>
+          <span class="temp">${temp}°${tempUnit}</span>
           <span class="condition">${location.condition}</span>
         </div>
         <div class="high-low">
-          <span>H: ${location.high}°</span>
-          <span>L: ${location.low}°</span>
+          <span>H: ${high}°${tempUnit}</span>
+          <span>L: ${low}°${tempUnit}</span>
         </div>
         <div class="metrics">
           <span>Humidity: ${location.humidity}%</span>
@@ -166,29 +176,24 @@ function addLocation(id) {
 
   const saved = JSON.parse(localStorage.getItem(DASHBOARD_STORAGE_KEY)) || [];
 
-  // Enforce max limit
   if (saved.length >= 5) {
     alert('You can only save up to 5 locations on your dashboard.');
     return;
   }
 
-  // Prevent duplicates
   if (!saved.some(l => String(l.id) === id)) {
     saved.push(location);
     localStorage.setItem(DASHBOARD_STORAGE_KEY, JSON.stringify(saved));
   }
 
-  // Update button state
   addedLocations.add(id);
   handleSearch();
 
-  //  delay then redirect 
   setTimeout(() => {
     window.location.href = "saved.html";
-  }, 600);  // matches your toast duration
+  }, 600);
 }
 </script>
-
+<script src="accessibility.js"></script>
 </body>
 </html>
-
