@@ -1,43 +1,114 @@
-body {
-  font-family: Arial, sans-serif;
-  background: #f9fafb;
+/* ------------------------- */
+/* Global Reset & Base Styles */
+/* ------------------------- */
+* {
   margin: 0;
-  padding: 20px;
-  color: #333;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.container {
-  max-width: 1000px;
-  margin: auto;
+body {
+  background: #eaf0ff;   /* light bluish background */
+  color: #111827;
+  margin: 0;
+  padding: 0;
+  /* font-family is inherited from global.css so typography matches the rest of the app */
 }
+
+/* ------------------------- */
+/* Top Navigation */
+/* ------------------------- */
+.top-nav {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 16px 40px; /* inner padding */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 25px;
+  font-weight: 600;
+}
+
+.title {
+  display: inline;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.nav-links a {
+  margin: 0 14px;
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+}
+
+.nav-links a.active {
+  color: #2563eb;
+}
+
+.user-section button {
+  margin-left: 10px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.profile-btn {
+  background: #f7f7f7;
+}
+
+.logout-btn {
+  background: #fff;
+}
+
+/* ------------------------- */
+/* Page Layout & Containers */
+/* ------------------------- */
 
 .page-title {
-  font-size: 1.8rem;
-  margin-bottom: 5px;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 6px;
 }
 
 .page-subtitle {
   font-size: 1rem;
-  color: #555;
+  color: #6b7280;
   margin-bottom: 20px;
 }
 
+/* ------------------------- */
+/* Grid Layout */
+/* ------------------------- */
 .grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 20px;
 }
 
-@media(min-width: 768px) {
+@media (min-width: 768px) {
   .grid {
     grid-template-columns: 1fr 1fr;
   }
 }
 
+/* ------------------------- */
+/* Card Styles */
+/* ------------------------- */
 .card {
   background: white;
-  padding: 20px;
   border-radius: 12px;
+  padding: 20px 26px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
@@ -65,40 +136,59 @@ body {
 .indigo { background: #e0e7ff; color: #4f46e5; }
 
 .card-subtitle {
-  font-size: 0.9rem;
-  margin-bottom: 15px;
+  font-size: 0.95rem;
   color: #555;
+  margin-bottom: 15px;
 }
 
+/* ------------------------- */
+/* Form Inputs */
+/* ------------------------- */
 .form-group {
   margin-bottom: 15px;
 }
 
 input, textarea {
   width: 100%;
-  padding: 8px;
+  padding: 10px 12px;
   border-radius: 6px;
   border: 1px solid #ccc;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  background: #fff;
 }
 
-textarea { min-height: 120px; }
+textarea {
+  min-height: 120px;
+}
 
+input:focus, textarea:focus {
+  border-color: #bfd1ff;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+/* ------------------------- */
+/* Buttons */
+/* ------------------------- */
 .btn {
   background: #3b82f6;
   color: white;
-  padding: 10px;
+  padding: 10px 12px;
   width: 100%;
   border: none;
   border-radius: 6px;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   cursor: pointer;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
 }
 
 .btn:hover {
   background: #2563eb;
 }
 
+/* ------------------------- */
+/* Quick Help Cards */
+/* ------------------------- */
 .quick-help .help-card {
   display: flex;
   gap: 10px;
@@ -133,7 +223,13 @@ textarea { min-height: 120px; }
   text-decoration: underline;
 }
 
-/* Accordion */
+/* ------------------------- */
+/* FAQ Accordion */
+/* ------------------------- */
+.faq-card {
+  margin-top: 25px;
+}
+
 .accordion-item {
   border-bottom: 1px solid #e5e7eb;
 }
@@ -145,6 +241,7 @@ textarea { min-height: 120px; }
   text-align: left;
   padding: 10px 0;
   font-size: 0.95rem;
+  font-weight: 600;
   cursor: pointer;
   color: #1f2937;
 }
@@ -161,4 +258,13 @@ textarea { min-height: 120px; }
 .accordion-content.open {
   max-height: 500px;
   padding: 5px 0 10px 20px;
+}
+
+/* ------------------------- */
+/* Responsive Adjustments */
+/* ------------------------- */
+@media (max-width: 767px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
 }
