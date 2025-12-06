@@ -12,7 +12,10 @@
 <body>
 
 <header class="top-nav">
-  <div class="logo">☁️<h1 class="title">Weatherly</h1></div>
+  <div class="logo">
+    <span class="logo-icon">☁️</span>
+    <h1 class="title">Weatherly</h1>
+  </div>
   <nav class="nav-links">
     <a href="saved.html" class="active">Dashboard</a>
     <a href="search.html">Search</a>
@@ -52,9 +55,9 @@ function convertTemp(temp) {
 }
 
 const defaultDemoLocations = [
-  {id:'1', name:'New York', country:'USA', temp:72, condition:'Partly Cloudy', high:75, low:65, humidity:65, windSpeed:12, icon:'⛅'},
-  {id:'2', name:'London', country:'UK', temp:61, condition:'Rainy', high:64, low:58, humidity:85, windSpeed:15, icon:'🌧️'},
-  {id:'3', name:'Tokyo', country:'Japan', temp:68, condition:'Sunny', high:73, low:62, humidity:55, windSpeed:8, icon:'☀️'}
+  {id:'101', name:'New York',     country:'USA (NY)',    temp:72,  condition:'Partly Cloudy',  high:75,  low:65,  humidity:65,  windSpeed:12,  icon: '⛅' },
+  {id:'102', name:'London',       country:'UK',          temp:61,  condition:'Rainy',          high:64,  low:58,  humidity:85,  windSpeed:15,  icon: '🌧️' },
+  {id:'103', name:'Tokyo',        country:'Japan',       temp:68,  condition:'Sunny',          high:73,  low:62,  humidity:55,  windSpeed:8,   icon: '☀️' },
 ];
 
 let locations = JSON.parse(localStorage.getItem(STORAGE_KEY));
@@ -65,8 +68,14 @@ if (!locations || !Array.isArray(locations) || locations.length === 0) {
 }
 
 let extraSampleLocations = [
-  {id:'4', name:'Sydney', country:'Australia', temp:78, condition:'Sunny', high:82, low:70, humidity:45, windSpeed:10, icon:'☀️'},
-  {id:'5', name:'Toronto', country:'Canada', temp:59, condition:'Cloudy', high:63, low:54, humidity:72, windSpeed:14, icon:'☁️'}
+  {id:'104', name:'Sydney',       country:'Australia',   temp:78,  condition:'Sunny',          high:82,  low:70,  humidity:45,  windSpeed:10,  icon: '☀️' },
+  {id:'105', name:'Toronto',      country:'Canada',      temp:59,  condition:'Cloudy',         high:63,  low:54,  humidity:72,  windSpeed:14,  icon: '☁️' },
+  {id:'100', name:'Charlotte',    country: 'USA (NC)',   temp: 78, condition: 'Partly Cloudy', high: 82, low: 68, humidity: 62, windSpeed: 9,  icon: '⛅' },
+  {id:'106', name: 'Moscow',      country: 'Russia',     temp: 48, condition: 'Cold',          high: 52, low: 42, humidity: 60, windSpeed: 13, icon: '❄️' },
+  {id:'110', name: 'Paris',       country: 'France',     temp: 66, condition: 'Cloudy',        high: 69, low: 59, humidity: 70, windSpeed: 10, icon: '☁️' },
+  {id:'107', name: 'Dubai',       country: 'UAE',        temp: 95, condition: 'Hot',           high: 99, low: 88, humidity: 40, windSpeed: 8,  icon: '🌡️' },
+  {id:'108', name: 'Singapore',   country: 'Singapore',  temp: 86, condition: 'Humid',         high: 89, low: 79, humidity: 85, windSpeed: 6,  icon: '🌤️' },
+  {id:'109', name: 'Los Angeles', country: 'USA (CA)',   temp: 75, condition: 'Sunny',         high: 78, low: 68, humidity: 50, windSpeed: 9,  icon: '☀️' },
 ];
 
 const locationsContainer = document.getElementById('locationsContainer');
