@@ -6,6 +6,7 @@
 <title>Weatherly - Search Locations</title>
 
 <link rel="stylesheet" href="stylesheet/global.css" />
+<link rel="stylesheet" href="stylesheet/search.css" />
 
 <!-- SHARED MOCK DATA INITIALIZER -->
 <script src="mockData.js"></script>
@@ -14,7 +15,10 @@
 
 <!-- Top Navigation -->
 <header class="top-nav">
-  <div class="logo">☁️ Weatherly</div>
+  <div class="logo">
+    <span class="logo-icon">☁️</span>
+    <h1 class="title">Weatherly</h1>
+  </div>
   <nav class="nav-links">
     <a href="saved.html">Dashboard</a>
     <a href="search.html" class="active">Search</a>
@@ -34,24 +38,33 @@
   <p class="subtitle">Find and add locations to your dashboard</p>
 
   <!-- Search Bar -->
-  <div class="search-card">
-    <div class="search-wrapper">
-      <span class="search-icon">🔍</span>
-      <input id="searchInput" type="text" placeholder="Search by city or country..." />
-      <button onclick="handleSearch()" class="search-btn">Search</button>
-    </div>
+  <div class="search-wrapper">
+    <span class="search-icon">🔍</span>
+    <input id="searchInput" type="text" placeholder="Search by city or country..." />
+    <button onclick="handleSearch()" class="search-btn">Search</button>
   </div>
+
+  <!-- Info Box (hidden by default) -->
+  <div id="infoBox" class="info-box" style="display:none"></div>
 
   <!-- Results Grid -->
   <div id="resultsContainer" class="results-grid"></div>
 </main>
 
 <script>
+/* --------- Global settings (units + accessibility) --------- */
+const userSettings = JSON.parse(localStorage.getItem('userSettings')) || {};
+const tempUnit = userSettings.unit || 'F';
+
+function convertTemp(temp) {
+  return tempUnit === 'F' ? temp : Math.round((temp - 32) * 5 / 9);
+}
+
 /* ---------------- MOCK DATA ---------------- */
 const mockLocations = [
-  { id: '1',  name: 'Charlotte',    country: 'USA (NC)', temp: 78, condition: 'Partly Cloudy', high: 82, low: 68, humidity: 62, windSpeed: 9,  icon: '⛅' },
+  { id: '10',  name: 'Charlotte',    country: 'USA (NC)', temp: 78, condition: 'Partly Cloudy', high: 82, low: 68, humidity: 62, windSpeed: 9,  icon: '⛅' },
   { id: '16', name: 'Moscow',       country: 'Russia',   temp: 48, condition: 'Cold',          high: 52, low: 42, humidity: 60, windSpeed: 13, icon: '❄️' },
-  { id: '2',  name: 'New York',     country: 'USA (NY)', temp: 72, condition: 'Partly Cloudy', high: 75, low: 65, humidity: 65, windSpeed: 12, icon: '⛅' },
+  { id: '1',  name: 'New York',     country: 'USA (NY)', temp: 72, condition: 'Partly Cloudy', high: 75, low: 65, humidity: 65, windSpeed: 12, icon: '⛅' },
   { id: '3',  name: 'London',       country: 'UK',       temp: 61, condition: 'Rainy',         high: 64, low: 58, humidity: 85, windSpeed: 15, icon: '🌧️' },
   { id: '4',  name: 'Tokyo',        country: 'Japan',    temp: 68, condition: 'Sunny',         high: 73, low: 62, humidity: 55, windSpeed: 8,  icon: '☀️' },
   { id: '5',  name: 'Paris',        country: 'France',   temp: 66, condition: 'Cloudy',        high: 69, low: 59, humidity: 70, windSpeed: 10, icon: '☁️' },
@@ -103,9 +116,29 @@ function handleSearch() {
   container.innerHTML = results.map(loc => createLocationCard(loc)).join("");
 }
 
-/* -------- Render Location Card -------- */
+const infoBox = document.getElementById('infoBox');
+
+// Fill the info box with city names
+infoBox.innerHTML = `<strong>Searchable Cities:</strong> ${mockLocations.map(loc => loc.name).join(', ')}`;
+
+// Show info box when input is focused
+const searchInput = document.getElementById('searchInput');
+searchInput.addEventListener('focus', () => {
+  infoBox.style.display = 'block';
+});
+
+// Hide info box when input loses focus
+searchInput.addEventListener('blur', () => {
+  setTimeout(() => infoBox.style.display = 'none', 200);
+});
+
+/* -------- Render Location Card (with units) -------- */
 function createLocationCard(location) {
   const isAdded = addedLocations.has(String(location.id));
+  const temp = convertTemp(location.temp);
+  const high = convertTemp(location.high);
+  const low = convertTemp(location.low);
+
   return `
     <div class="location-card">
       <div class="card-header">
@@ -117,12 +150,12 @@ function createLocationCard(location) {
       </div>
       <div class="card-body">
         <div class="temp-condition">
-          <span class="temp">${location.temp}°</span>
+          <span class="temp">${temp}°${tempUnit}</span>
           <span class="condition">${location.condition}</span>
         </div>
         <div class="high-low">
-          <span>H: ${location.high}°</span>
-          <span>L: ${location.low}°</span>
+          <span>H: ${high}°${tempUnit}</span>
+          <span>L: ${low}°${tempUnit}</span>
         </div>
         <div class="metrics">
           <span>Humidity: ${location.humidity}%</span>
@@ -143,26 +176,24 @@ function addLocation(id) {
 
   const saved = JSON.parse(localStorage.getItem(DASHBOARD_STORAGE_KEY)) || [];
 
-  // Enforce max 5 locations (same rule as dashboard)
   if (saved.length >= 5) {
     alert('You can only save up to 5 locations on your dashboard.');
     return;
   }
 
-  // Prevent duplicates on dashboard
-  if (saved.some(l => String(l.id) === id)) {
-    alert('This location is already on your dashboard.');
-  } else {
+  if (!saved.some(l => String(l.id) === id)) {
     saved.push(location);
     localStorage.setItem(DASHBOARD_STORAGE_KEY, JSON.stringify(saved));
   }
 
-  // Track as added for this session so the button state updates
   addedLocations.add(id);
-  handleSearch(); // re-render results with updated button text/state
+  handleSearch();
+
+  setTimeout(() => {
+    window.location.href = "saved.html";
+  }, 600);
 }
 </script>
-
+<script src="accessibility.js"></script>
 </body>
 </html>
-

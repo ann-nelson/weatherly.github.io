@@ -5,13 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Weatherly - Alerts</title>
 <link rel="stylesheet" href="stylesheet/global.css">
+<link rel="stylesheet" href="stylesheet/weatherAlerts.css">
 <script src="mockData.js"></script>
 </head>
 <body>
 
 <!-- Top Navigation -->
 <header class="top-nav">
-  <div class="logo">☁️ Weatherly</div>
+  <div class="logo">
+    <span class="logo-icon">☁️</span>
+    <h1 class="title">Weatherly</h1>
+  </div>
   <nav class="nav-links">
     <a href="saved.html">Dashboard</a>
     <a href="search.html">Search</a>
@@ -28,12 +32,12 @@
 
 <main class="main-container">
   <header class="section-header">
-    <h1>Weather Alerts</h1>
+    <h2>Weather Alerts</h2>
     <p>Active warnings and advisories for your saved locations</p>
   </header>
 
-  <div id="alerts-container" class="alerts-grid">
-    <div id="alert-list" class="grid-list"></div>
+  <div id="alerts-container" class="alerts-container">
+    <div id="alert-list" class="alert-list"></div>
 
     <div id="no-alerts" class="card no-alerts hidden">
       <div class="no-alerts-icon">ℹ️</div>
@@ -50,27 +54,11 @@
         Stay informed about weather conditions in your saved locations. Configure notification preferences in Settings.
       </p>
 
-      <!-- FIXED CHECKBOX STRUCTURE -->
       <div class="settings-tags">
-        <label>
-          <input type="checkbox" id="pref-severe">
-          <span>Severe Weather</span>
-        </label>
-
-        <label>
-          <input type="checkbox" id="pref-temp">
-          <span>Temperature Alerts</span>
-        </label>
-
-        <label>
-          <input type="checkbox" id="pref-precip">
-          <span>Precipitation</span>
-        </label>
-
-        <label>
-          <input type="checkbox" id="pref-air">
-          <span>Air Quality</span>
-        </label>
+        <span class="settings-tag">Severe Weather</span>
+        <span class="settings-tag">Temperature Alerts</span>
+        <span class="settings-tag">Precipitation</span>
+        <span class="settings-tag">Air Quality</span>
       </div>
     </div>
   </div>
@@ -81,11 +69,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const alertList = document.getElementById("alert-list");
   const noAlerts = document.getElementById("no-alerts");
 
-  // Sample alerts for demo account
-  const alertsData = JSON.parse(localStorage.getItem("weatherAlerts")) || [
-    { id: 1, title: "Severe Thunderstorm Warning", location: "New York, NY", severity: "High", description: "A severe thunderstorm is approaching with heavy rain and wind." },
-    { id: 2, title: "Flash Flood Advisory", location: "Houston, TX", severity: "Medium", description: "Heavy rain may cause flash flooding in low-lying areas." }
-  ];
+  // Get alerts from localStorage (initialized by mockData.js)
+  const alertsData = JSON.parse(localStorage.getItem("weatherAlerts")) || [];
 
   function renderAlerts() {
     alertList.innerHTML = "";
@@ -99,21 +84,58 @@ document.addEventListener("DOMContentLoaded", () => {
 
     alertsData.forEach(alert => {
       const card = document.createElement("div");
-      card.className = "alert-card card";
+      
+      // Determine severity type and styling
+      let severityType = alert.severity.toLowerCase();
+      if (severityType === "severe") {
+        card.className = "alert-card alert-severe";
+      } else if (severityType === "moderate") {
+        card.className = "alert-card alert-moderate";
+      } else {
+        card.className = "alert-card alert-info";
+      }
+
+      // Determine icon based on severity
+      let icon = "";
+      if (severityType === "severe") {
+        icon = '<div class="alert-icon alert-icon-severe">⚠️</div>';
+      } else if (severityType === "moderate") {
+        icon = '<div class="alert-icon alert-icon-moderate">⚠️</div>';
+      } else {
+        icon = '<div class="alert-icon alert-icon-info">ℹ️</div>';
+      }
+
+      // Format timing information
+      const timeRange = alert.timeRange || "All Day";
+      const issuedHoursAgo = alert.issuedHoursAgo !== undefined ? alert.issuedHoursAgo : 0;
+      const hoursText = issuedHoursAgo === 1 ? "hour" : "hours";
+
+      const alertDetailsUrl = `detailedAlert.html?id=${alert.id}`;
 
       card.innerHTML = `
-        <h4>${alert.title}</h4>
-        <p><strong>Location:</strong> ${alert.location}</p>
-        <p><strong>Severity:</strong> ${alert.severity}</p>
-
-        <!-- NEW BUTTON -->
-        <button
-          class="more-info-btn"
-          onclick="event.stopPropagation(); window.location.href='detailedAlert.html?id=${alert.id}'"
-        >
-          More Info →
-        </button>
+        <div class="alert-card-content">
+          ${icon}
+          <div class="alert-main">
+            <div class="alert-header">
+              <h3 class="alert-title">${alert.title}</h3>
+              <span class="alert-badge alert-badge-${severityType}">${alert.severity}</span>
+            </div>
+            <p class="alert-location">📍 ${alert.location}, ${alert.country || "USA"}</p>
+            <p class="alert-description">${alert.description}</p>
+            <div class="alert-timing">
+              <span class="alert-time-icon">🕐</span>
+              <span class="alert-time-range">${timeRange}</span>
+              <span class="alert-timing-separator">|</span>
+              <span class="alert-issued">issued ${issuedHoursAgo} ${hoursText} ago</span>
+            </div>
+          </div>
+          <a href="${alertDetailsUrl}" class="alert-view-details" onclick="event.stopPropagation();">View Details →</a>
+        </div>
       `;
+
+      card.addEventListener("click", () => {
+        window.location.href = alertDetailsUrl;
+      });
 
       alertList.appendChild(card);
     });
@@ -122,6 +144,6 @@ document.addEventListener("DOMContentLoaded", () => {
   renderAlerts();
 });
 </script>
-
+<script src="accessibility.js"></script>
 </body>
 </html>

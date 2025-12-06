@@ -4,182 +4,216 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Weatherly - Profile</title>
+
+  <!-- Global + Page Styles -->
+  <link rel="stylesheet" href="stylesheet/global.css">
   <link rel="stylesheet" href="stylesheet/profile.css">
-  <script src="mockData.js"></script>
 </head>
+
 <body>
 
-  <button id="backBtn" class="btn-ghost" onclick="window.location.href='saved.html'">
-    ← Back to Dashboard
-  </button>
-
-  <div class="container">
-
-    <h2>My Profile</h2>
-    <p>Manage your account information and preferences</p>
-
-    <div class="main-grid">
-
-      <!-- Profile Card -->
-      <div class="profile-card">
-        <div class="profile-header">
-          <div class="avatar">
-            <span class="user-icon">👤</span>
-          </div>
-          <div class="user-info">
-            <h3 id="userName">User Name</h3>
-            <p id="userEmail">user@example.com</p>
-            <span class="badge">Active Account</span>
-          </div>
-          <button id="editProfileBtn">✏️ Edit Profile</button>
-        </div>
-
-        <div id="editSection" class="edit-section hidden">
-          <label for="editName">Full Name</label>
-          <input type="text" id="editName">
-          
-          <label for="editEmail">Email Address</label>
-          <input type="email" id="editEmail">
-
-          <div class="edit-actions">
-            <button id="saveBtn">💾 Save Changes</button>
-            <button id="cancelBtn">❌ Cancel</button>
-          </div>
-        </div>
-
-        <div class="profile-details">
-          <div class="detail-item">
-            <div class="icon">✉️</div>
-            <div>
-              <div class="label">Email</div>
-              <div id="detailEmail"></div>
-            </div>
-          </div>
-
-          <div class="detail-item">
-            <div class="icon">📅</div>
-            <div>
-              <div class="label">Member Since</div>
-              <div id="memberSince"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Danger Zone -->
-      <div class="danger-card">
-        <h3>Danger Zone</h3>
-        <p>Deleting your account is permanent and cannot be undone.</p>
-        <button id="deleteAccountBtn" class="destructive-btn">🗑️ Delete Account</button>
-      </div>
-
-      <!-- Stats Sidebar -->
-      <div class="stats-card">
-        <h3>Account Stats</h3>
-        <div class="stat-item">
-          <div class="icon">📍</div>
-          <span>Saved Locations:</span>
-          <span id="savedLocations">0</span>
-        </div>
-        <div class="stat-item">
-          <div class="icon">📅</div>
-          <span>Days Active:</span>
-          <span id="daysActive">0</span>
-        </div>
-      </div>
-
-      <div class="pro-tip-card">
-        <h3>Pro Tip</h3>
-        <p>Enable notifications in Settings to receive severe weather alerts for your saved locations.</p>
-      </div>
-
-    </div>
+<!-- Top Navigation -->
+<header class="top-nav">
+  <div class="logo">
+    <span class="logo-icon">☁️</span>
+    <h1 class="title">Weatherly</h1>
   </div>
+  <nav class="nav-links">
+    <a href="saved.html">Dashboard</a>
+    <a href="search.html">Search</a>
+    <a href="pastWeather.html">Past Weather</a>
+    <a href="weatherAlerts.html">Alerts</a>
+    <a href="settings.html">Settings</a>
+    <a href="help.html">Help</a>
+  </nav>
 
-  <script>
-    // Sample user data (simulate fetching from localStorage)
-    const user = JSON.parse(localStorage.getItem('currentUser')) || {
-      id: 1,
-      name: "John Doe",
-      email: "john@example.com",
-      createdAt: "2023-01-01T00:00:00Z"
-    };
+  <div class="user-section">
+    <button onclick="window.location.href='profile.html'" class="profile-btn active">Demo User</button>
+    <button onclick="window.location.href='login.html'" class="logout-btn">Logout</button>
+  </div>
+</header>
 
-    const getSavedLocationsCount = () => {
-      const data = localStorage.getItem('locations_' + user.id);
-      return data ? JSON.parse(data).length : 0;
-    };
+<!-- MAIN PAGE CONTENT -->
+<main class="main-container">
 
-    // Elements
-    const userName = document.getElementById('userName');
-    const userEmail = document.getElementById('userEmail');
-    const detailEmail = document.getElementById('detailEmail');
-    const memberSince = document.getElementById('memberSince');
-    const savedLocations = document.getElementById('savedLocations');
-    const daysActive = document.getElementById('daysActive');
+  <header class="section-header">
+    <h1>My Profile</h1>
+    <p>Manage your account information and preferences</p>
+  </header>
 
-    const editProfileBtn = document.getElementById('editProfileBtn');
-    const editSection = document.getElementById('editSection');
-    const editName = document.getElementById('editName');
-    const editEmail = document.getElementById('editEmail');
-    const saveBtn = document.getElementById('saveBtn');
-    const cancelBtn = document.getElementById('cancelBtn');
-    const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+  <!-- GRID LAYOUT -->
+  <div class="main-grid">
 
-    function formatDate(dateStr) {
-      const date = new Date(dateStr);
-      return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-    }
+    <!-- PROFILE CARD -->
+    <div class="profile-card card">
+      <div class="profile-header">
+        <div class="avatar"><span class="user-icon">👤</span></div>
 
-    function updateProfileDisplay() {
-      userName.textContent = user.name;
-      userEmail.textContent = user.email;
-      detailEmail.textContent = user.email;
-      memberSince.textContent = formatDate(user.createdAt);
-      savedLocations.textContent = getSavedLocationsCount();
-      daysActive.textContent = Math.floor((Date.now() - new Date(user.createdAt).getTime()) / (1000*60*60*24));
-    }
+        <div class="user-info">
+          <h3 id="userName">User Name</h3>
+          <p id="userEmail">user@example.com</p>
+          <span class="badge">Active Account</span>
+        </div>
 
-    editProfileBtn.addEventListener('click', () => {
-      editSection.classList.remove('hidden');
-      editName.value = user.name;
-      editEmail.value = user.email;
+        <button id="editProfileBtn" class="edit-btn">✏️ Edit</button>
+      </div>
+
+      <!-- EDIT SECTION -->
+      <div id="editSection" class="edit-section">
+        <label>Full Name</label>
+        <input type="text" id="editName">
+
+        <label>Email</label>
+        <input type="email" id="editEmail">
+
+        <div class="edit-actions">
+          <button id="saveBtn">💾 Save</button>
+          <button id="cancelBtn" class="cancel">Cancel</button>
+        </div>
+      </div>
+
+      <!-- DETAILS -->
+      <div class="profile-details">
+        <div class="detail-item">
+          <div class="icon">✉️</div>
+          <div>
+            <div class="label">Email</div>
+            <div id="detailEmail"></div>
+          </div>
+        </div>
+
+        <div class="detail-item">
+          <div class="icon">📅</div>
+          <div>
+            <div class="label">Member Since</div>
+            <div id="memberSince"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS CARD -->
+    <div class="stats-card card">
+      <h3>Account Stats</h3>
+
+      <div class="stat-item">
+        <div class="icon">📍</div>
+        <span>Saved Locations:</span>
+        <span id="savedLocations">0</span>
+      </div>
+
+      <div class="stat-item">
+        <div class="icon">📅</div>
+        <span>Days Active:</span>
+        <span id="daysActive">0</span>
+      </div>
+    </div>
+
+    <!-- DANGER ZONE -->
+    <div class="danger-card card">
+      <h3>Danger Zone</h3>
+      <p>This action is permanent. Proceed with caution.</p>
+      <button id="deleteAccountBtn" class="destructive-btn">🗑️ Delete Account</button>
+    </div>
+
+    <!-- PRO TIP -->
+    <div class="pro-tip-card card">
+      <h3>Pro Tip</h3>
+      <p>Enable notifications in Settings to get severe weather alerts faster.</p>
+    </div>
+
+  </div>
+</main>
+
+<!-- SCRIPT -->
+<script>
+  const user = JSON.parse(localStorage.getItem("currentUser")) || {
+    id: 1,
+    name: "John Doe",
+    email: "john@example.com",
+    createdAt: "2023-01-01T00:00:00Z"
+  };
+
+  // UPDATED: use same key as dashboard
+  const getSavedLocationsCount = () => {
+    const data = localStorage.getItem("weatherlySavedLocations");
+    return data ? JSON.parse(data).length : 0;
+  };
+
+  const userName = document.getElementById("userName");
+  const userEmail = document.getElementById("userEmail");
+  const detailEmail = document.getElementById("detailEmail");
+  const memberSince = document.getElementById("memberSince");
+  const savedLocations = document.getElementById("savedLocations");
+  const daysActive = document.getElementById("daysActive");
+
+  const editSection = document.getElementById("editSection");
+  const editProfileBtn = document.getElementById("editProfileBtn");
+  const editName = document.getElementById("editName");
+  const editEmail = document.getElementById("editEmail");
+  const saveBtn = document.getElementById("saveBtn");
+  const cancelBtn = document.getElementById("cancelBtn");
+  const deleteAccountBtn = document.getElementById("deleteAccountBtn");
+
+  function formatDate(dateStr) {
+    const d = new Date(dateStr);
+    return d.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
     });
+  }
 
-    saveBtn.addEventListener('click', () => {
-      user.name = editName.value;
-      user.email = editEmail.value;
+  function updateUI() {
+    userName.textContent = user.name;
+    userEmail.textContent = user.email;
+    detailEmail.textContent = user.email;
+    memberSince.textContent = formatDate(user.createdAt);
+    savedLocations.textContent = getSavedLocationsCount();
+    daysActive.textContent = Math.floor((Date.now() - new Date(user.createdAt)) / (1000*60*60*24));
+  }
 
-      // Save to localStorage
-      const usersData = localStorage.getItem('users');
-      let users = usersData ? JSON.parse(usersData) : [];
-      users = users.map(u => u.id === user.id ? user : u);
-      localStorage.setItem('users', JSON.stringify(users));
-      localStorage.setItem('currentUser', JSON.stringify(user));
+  // EDIT BUTTON TOGGLE
+  editProfileBtn.onclick = () => {
+    editSection.classList.toggle("show");
+    editName.value = user.name;
+    editEmail.value = user.email;
+  };
 
-      editSection.classList.add('hidden');
-      updateProfileDisplay();
-      alert("Profile updated successfully!");
-    });
+  saveBtn.onclick = () => {
+    user.name = editName.value;
+    user.email = editEmail.value;
 
-    cancelBtn.addEventListener('click', () => {
-      editSection.classList.add('hidden');
-    });
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const updated = users.map(u => u.id === user.id ? user : u);
 
-    deleteAccountBtn.addEventListener('click', () => {
-      if(confirm("Are you sure you want to delete your account? This cannot be undone.")) {
-        const usersData = localStorage.getItem('users');
-        let users = usersData ? JSON.parse(usersData) : [];
-        users = users.filter(u => u.id !== user.id);
-        localStorage.setItem('users', JSON.stringify(users));
-        localStorage.removeItem(`locations_${user.id}`);
-        localStorage.removeItem('currentUser');
-        alert("Account deleted.");
-        location.reload();
-      }
-    });
+    localStorage.setItem("users", JSON.stringify(updated));
+    localStorage.setItem("currentUser", JSON.stringify(user));
 
-    updateProfileDisplay();
-  </script>
+    editSection.classList.remove("show");
+    updateUI();
+    alert("Profile updated successfully!");
+  };
+
+  cancelBtn.onclick = () => editSection.classList.remove("show");
+
+  // DELETE ACCOUNT
+  deleteAccountBtn.onclick = () => {
+    if (!confirm("This action cannot be undone. Are you sure?")) return;
+
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    users = users.filter(u => u.id !== user.id);
+
+    localStorage.setItem("users", JSON.stringify(users));
+    localStorage.removeItem("currentUser");
+    localStorage.removeItem("locations_" + user.id);
+
+    alert("Account deleted.");
+    window.location.href = "login.html";
+  };
+
+  updateUI();
+</script>
+<script src="accessibility.js"></script>
 </body>
 </html>
