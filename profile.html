@@ -71,6 +71,7 @@
           <button id="cancelBtn" class="cancel">Cancel</button>
         </div>
       </div>
+    </div>
 
       <!-- DETAILS -->
       <div class="profile-details">
@@ -134,8 +135,9 @@
     createdAt: "2023-01-01T00:00:00Z"
   };
 
+  // UPDATED: use same key as dashboard
   const getSavedLocationsCount = () => {
-    const data = localStorage.getItem("locations_" + user.id);
+    const data = localStorage.getItem("weatherlySavedLocations");
     return data ? JSON.parse(data).length : 0;
   };
 
@@ -213,6 +215,6 @@
 
   updateUI();
 </script>
-
+<script src="accessibility.js"></script>
 </body>
 </html>
