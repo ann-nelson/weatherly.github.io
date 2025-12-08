@@ -348,3 +348,51 @@ body {
 
   /* Maintain your original desktop look */
 }
+
+  body.high-contrast {
+    background: #000 !important;
+    color: #fff !important;
+  }
+  body.high-contrast .card, 
+  body.high-contrast .day-card, body.high-contrast #temp-row {
+    background: #000 !important;
+    border: 2px solid #fbfbf9 !important;
+  }
+  
+  body.high-contrast .weather-icon,
+  body.high-contrast .icon {
+    color: #fff !important;
+  }
+
+  /* High Contrast Mode Overrides */
+body.high-contrast .day-card {
+  background-color: #000 !important;
+  border: 2px solid #f9f8f5 !important; /* gold border for visibility */
+  color: #FFF !important;
+}
+
+ body.high-contrast #locationInfo {
+  color: #fff !important;
+  font-weight: 600;
+}
+
+/* Ensure each element in the card is readable */
+body.high-contrast #backBtn,
+body.high-contrast h2,
+body.high-contrast .day-card .label,
+body.high-contrast .day-card .day,
+body.high-contrast .day-card .icon,
+body.high-contrast .day-card .condition,
+body.high-contrast .day-card .temp,
+body.high-contrast .day-card .high-temp,
+body.high-contrast .day-card .low-temp,
+body.high-contrast .day-card .arrow {
+  color: #FFF !important;
+}
+
+/* Make arrow and icon stand out further */
+body.high-contrast .day-card .arrow,
+body.high-contrast .day-card .icon {
+  filter: brightness(100%) contrast(100%);
+}
+

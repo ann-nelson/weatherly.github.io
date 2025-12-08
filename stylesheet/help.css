@@ -268,3 +268,13 @@ input:focus, textarea:focus {
     grid-template-columns: 1fr;
   }
 }
+
+body.high-contrast .grid h2,
+body.high-contrast  .grid p {
+  color: #090909 !important;
+}
+
+body.high-contrast h2,
+body.high-contrast p {
+  color: #f7f5f5 !important;
+}
