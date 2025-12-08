@@ -315,3 +315,9 @@
     align-self: flex-start;
   }
 }
+
+body.high-contrast .section-header h2,
+body.high-contrast .section-header p {
+  color: #f0f0f0 !important;
+}
+
