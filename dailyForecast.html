@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Forecast</title>
+<link rel="stylesheet" href="stylesheet/daily.css">
+<link rel="stylesheet" href="stylesheet/global.css">
+<!-- SHARED MOCK DATA INITIALIZER -->
+<script src="mockData.js"></script>
+</head>
+
+<body>
+
+<!-- Top Navigation -->
+<header class="top-nav">
+  <div class="logo">
+    <span class="logo-icon">☁️</span>
+    <h1 class="title">Weatherly</h1>
+  </div>
+  <nav class="nav-links">
+    <a href="saved.html" class="active">Dashboard</a>
+    <a href="search.html">Search</a>
+    <a href="pastWeather.html">Past Weather</a>
+    <a href="weatherAlerts.html">Alerts</a>
+    <a href="settings.html">Settings</a>
+    <a href="help.html">Help</a>
+  </nav>
+  <div class="user-section">
+    <button onclick="window.location.href='profile.html'" class="profile-btn">Demo User</button>
+    <button onclick="window.location.href='login.html'" class="logout-btn">Logout</button>
+  </div>
+</header>
+
+<main class="main-container daily-main">
+
+<button id="backBtn" class="btn-ghost" onclick="window.location.href='weeklyForecast.html'">
+  ← Back to Weekly Forecast
+</button>
+
+<div class="daily-forecast-container">
+
+  <!-- Header -->
+  <div id="forecastHeader" class="forecast-header"></div>
+
+  <!-- Day Summary -->
+  <div id="daySummary" class="day-summary"></div>
+
+  <!-- Hourly Forecast -->
+  <div id="hourlyForecast" class="hourly-forecast"></div>
+
+  <!-- Detailed Metrics -->
+  <div id="detailedMetrics" class="detailed-metrics"></div>
+
+  <!-- Additional Details -->
+  <div id="additionalDetails" class="additional-details"></div>
+
+</div>
+</main>
+
+<script>
+/* ---------------- Load Data ---------------- */
+const selectedDay = JSON.parse(localStorage.getItem('selectedDayForecast')) || {
+  day: "Mon",
+  high: 75,
+  low: 65,
+  condition: "Sunny",
+  icon: "☀️",
+  location: "Unknown Location"
+};
+
+// Generate hourly data
+const hourlyData = [];
+for (let i = 0; i < 6; i++) {
+  const hourTemp = selectedDay.high - Math.floor(Math.random() * 5);
+  const precip = Math.floor(Math.random() * 20);
+  const hourLabel = `${6 + i*3} ${i < 4 ? 'AM' : 'PM'}`;
+  hourlyData.push({ time: hourLabel, temp: hourTemp, icon: selectedDay.icon, precipitation: precip });
+}
+
+// Metrics
+const metrics = {
+  humidity: Math.floor(50 + Math.random()*40),
+  windSpeed: Math.floor(5 + Math.random()*15),
+  sunrise: "6:42 AM",
+  sunset: "7:28 PM",
+  visibility: "10 mi",
+  pressure: "30.12 in",
+  precipitation: Math.floor(Math.random()*20) + "%",
+  uvIndex: "6 (High)"
+};
+
+/* ---------------- Render Header ---------------- */
+document.getElementById('forecastHeader').innerHTML = `
+  <h2>Detailed Forecast</h2>
+  <p>${selectedDay.day} - ${selectedDay.location}</p>
+`;
+
+/* ---------------- Day Summary ---------------- */
+document.getElementById('daySummary').innerHTML = `
+  <div class="card day-summary-card">
+    <div class="summary-top">
+      <div class="temp-info">
+        <span class="temp">${selectedDay.high}°</span>
+        <span class="condition">${selectedDay.condition}</span>
+        <div class="high-low">
+          <span>H: ${selectedDay.high}°</span> <span>L: ${selectedDay.low}°</span>
+        </div>
+      </div>
+
+      <!-- Icon with Tailwind-style background -->
+      <div class="icon icon-bg bg-orange-100">${selectedDay.icon}</div>
+    </div>
+
+    <p class="summary-text">
+      Forecast for ${selectedDay.location} on ${selectedDay.day}. Expect ${selectedDay.condition.toLowerCase()} conditions.
+    </p>
+  </div>
+`;
+
+/* ---------------- Hourly Forecast ---------------- */
+document.getElementById('hourlyForecast').innerHTML = `
+  <h3>Hourly Forecast</h3>
+  <div class="card hourly-card">
+    <div class="hour-grid">
+      ${hourlyData.map(hour => `
+        <div class="hour-item">
+          <div class="hour-time">${hour.time}</div>
+
+          <!-- Hourly icon with a soft neutral sunny background -->
+          <div class="hour-icon icon-bg bg-orange-100">${hour.icon}</div>
+
+          <div class="hour-temp">${hour.temp}°</div>
+          <div class="hour-precip">${hour.precipitation}%</div>
+        </div>
+      `).join('')}
+    </div>
+  </div>
+`;
+
+/* ---------------- Detailed Metrics ---------------- */
+document.getElementById('detailedMetrics').innerHTML = `
+  <div class="metrics-grid">
+
+    <div class="card metric-card">
+      <div class="metric-row">
+        <div class="icon-bg bg-orange-100 metric-icon">🌅</div>
+        <span class="metric-label">Sunrise</span>
+        <span class="metric-value">${metrics.sunrise}</span>
+      </div>
+
+      <div class="metric-row">
+        <div class="icon-bg bg-indigo-100 metric-icon">🌇</div>
+        <span class="metric-label">Sunset</span>
+        <span class="metric-value">${metrics.sunset}</span>
+      </div>
+    </div>
+
+    <div class="card metric-card">
+      <div class="metric-row">
+        <div class="icon-bg bg-blue-100 metric-icon">💧</div>
+        <span class="metric-label">Humidity</span>
+        <span class="metric-value">${metrics.humidity}%</span>
+      </div>
+
+      <div class="metric-row">
+        <div class="icon-bg bg-gray-100 metric-icon">🌬️</div>
+        <span class="metric-label">Wind Speed</span>
+        <span class="metric-value">${metrics.windSpeed} mph</span>
+      </div>
+    </div>
+
+  </div>
+`;
+
+/* ---------------- Additional Details ---------------- */
+document.getElementById('additionalDetails').innerHTML = `
+  <div class="additional-grid">
+
+    <div class="card small-card">
+      <div class="icon-bg bg-purple-100 small-icon">👁️</div>
+      <div class="small-label">Visibility</div>
+      <div class="small-value">${metrics.visibility}</div>
+    </div>
+
+    <div class="card small-card">
+      <div class="icon-bg bg-teal-100 small-icon">📏</div>
+      <div class="small-label">Pressure</div>
+      <div class="small-value">${metrics.pressure}</div>
+    </div>
+
+    <div class="card small-card">
+      <div class="icon-bg bg-blue-100 small-icon">🌧️</div>
+      <div class="small-label">Precipitation</div>
+      <div class="small-value">${metrics.precipitation}</div>
+    </div>
+
+    <div class="card small-card">
+      <div class="icon-bg bg-yellow-100 small-icon">☀️</div>
+      <div class="small-label">UV Index</div>
+      <div class="small-value">${metrics.uvIndex}</div>
+    </div>
+
+  </div>
+`;
+/* ---------------- Temperature Unit Conversion ---------------- */
+const tempUnit = JSON.parse(localStorage.getItem('userSettings'))?.unit || 'F';
+
+function convertTemp(temp) {
+  return tempUnit === 'F' ? temp : Math.round((temp - 32) * 5 / 9);
+}
+
+// Update displayed temps
+document.querySelectorAll('.temp').forEach(el => {
+  el.textContent = convertTemp(parseInt(el.textContent)) + '°' + tempUnit;
+});
+document.querySelectorAll('.hour-temp').forEach(el => {
+  el.textContent = convertTemp(parseInt(el.textContent)) + '°' + tempUnit;
+});
+document.querySelectorAll('.high-low').forEach(el => {
+  el.innerHTML = el.innerHTML.replace(/H: (\d+)°/, (_, val) => `H: ${convertTemp(+val)}°${tempUnit}`)
+                             .replace(/L: (\d+)°/, (_, val) => `L: ${convertTemp(+val)}°${tempUnit}`);
+});
+
+</script>
+<script src="accessibility.js"></script>
+</body>
+</html>
