@@ -12,69 +12,6 @@ body {
   color: #1a1a1a;
 }
 
-/* ------------------------- */
-/* Top Navigation */
-.top-nav {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: white;
-  padding: 16px 40px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-.logo {
-  font-size: 25px;
-  font-weight: 600;
-}
-
-.title{
-  display: inline;
-  font-size: 24px;
-  font-weight: 600;
-}
-
-.nav-links a {
-  margin: 0 14px;
-  text-decoration: none;
-  color: #555;
-  font-weight: 500;
-  transition: transform 0.25s ease, color 0.18s ease;
-}
-
-.nav-links a.active {
-  color: #2563eb;
-}
-
-.nav-links a:hover {
-  transform: translateY(-3px);
-  color: #2563eb;
-  text-decoration: underline;
-
-}
-
-.user-section button {
-  margin-left: 10px;
-  padding: 8px 14px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  background: white;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.profile-btn {
-  background: #f7f7f7;
-}
-
-.logout-btn {
-  background: #fff;
-}
-
 /* Back Button */
 #backBtn {
   margin: 0px -15px 10px;
@@ -113,7 +50,6 @@ body {
 
 .current-weather .label {
   color: white;
-  /* opacity: 0.9; */
   margin-bottom: 4px;
 }
 
@@ -199,53 +135,13 @@ body {
   transform: translateX(4px);
 }
 
-/* Mobile Adjustments */
-@media (max-width: 600px) {
-  .current-weather {
-    padding: 18px;
-  }
-
-  .temperature {
-    font-size: 38px;
-  }
-
-  .results-grid {
-    gap: 10px;
-  }
-
-  .day-card {
-    padding: 14px 16px;
-  }
-
-  .condition {
-    width: auto;
-  }
-
-  .hide-on-mobile {
-    display: none;
-  }
-
-  .mobile-only {
-    display: block !important;
-  }
-}
-
 /* ---------------------------------------------------
    Responsive Design (Weekly Forecast)
 --------------------------------------------------- */
 
 /* ---------------- Small Screens (≤ 640px) ---------------- */
 @media (max-width: 640px) {
-  /* Top Nav */
-  .top-nav {
-    padding: 12px 20px;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .nav-links a {
-    margin: 0 8px;
-  }
+  /* Top nav layout tweaks are handled by global.css */
 
   #backBtn {
     margin: 20px;
@@ -254,7 +150,7 @@ body {
   /* Main container */
   .main-container {
     width: 95%;
-    margin-bottom: 30px;
+    margin: 0 auto 30px;
   }
 
   /* Current weather card */
@@ -293,24 +189,13 @@ body {
   .icon {
     font-size: 24px;
   }
-
-  .hide-on-mobile {
-    display: none;
-  }
-
-  .mobile-only {
-    display: block !important;
-  }
 }
 
 /* ---------------- Medium Screens (641px – 1024px) ---------------- */
 @media (min-width: 641px) and (max-width: 1024px) {
-  .top-nav {
-    padding: 16px 24px;
-  }
-
   .main-container {
     width: 92%;
+    margin: 0 auto;
   }
 
   /* Slightly increase spacing for mid-size tablets */
@@ -336,6 +221,7 @@ body {
   .main-container {
     width: 90%;
     max-width: 900px;
+    margin: 0 auto;
   }
 
   .day-card {
@@ -345,54 +231,4 @@ body {
   .condition {
     width: 120px;
   }
-
-  /* Maintain your original desktop look */
 }
-
-  body.high-contrast {
-    background: #000 !important;
-    color: #fff !important;
-  }
-  body.high-contrast .card, 
-  body.high-contrast .day-card, body.high-contrast #temp-row {
-    background: #000 !important;
-    border: 2px solid #fbfbf9 !important;
-  }
-  
-  body.high-contrast .weather-icon,
-  body.high-contrast .icon {
-    color: #fff !important;
-  }
-
-  /* High Contrast Mode Overrides */
-body.high-contrast .day-card {
-  background-color: #000 !important;
-  border: 2px solid #f9f8f5 !important; /* gold border for visibility */
-  color: #FFF !important;
-}
-
- body.high-contrast #locationInfo {
-  color: #fff !important;
-  font-weight: 600;
-}
-
-/* Ensure each element in the card is readable */
-body.high-contrast #backBtn,
-body.high-contrast h2,
-body.high-contrast .day-card .label,
-body.high-contrast .day-card .day,
-body.high-contrast .day-card .icon,
-body.high-contrast .day-card .condition,
-body.high-contrast .day-card .temp,
-body.high-contrast .day-card .high-temp,
-body.high-contrast .day-card .low-temp,
-body.high-contrast .day-card .arrow {
-  color: #FFF !important;
-}
-
-/* Make arrow and icon stand out further */
-body.high-contrast .day-card .arrow,
-body.high-contrast .day-card .icon {
-  filter: brightness(100%) contrast(100%);
-}
-

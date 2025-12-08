@@ -317,21 +317,3 @@ h1 {
 .hidden {
   display: none !important;
 }
-
-body.high-contrast .main-container h1,
-body.high-contrast  .main-container p {
-  color: #f0f0f0 !important;
-}
-
-body.high-contrast .label, body.high-contrast #detailEmail, 
-body.high-contrast #detailUsername, body.high-contrast #memberSince {
-  color: #f0f0f0 !important;
-}
-
-body.high-contrast div, body.high-contrast .profile-card, 
-body.high-contrast #userEmail, body.high-contrast .danger-card p, 
-body.high-contrast .pro-tip-card p {
-  color: #111827 !important;
-}
-
-

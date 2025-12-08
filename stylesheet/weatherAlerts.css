@@ -309,9 +309,70 @@
   background: #fff;
 }
 
-body.high-contrast .section-header h2,
-body.high-contrast .section-header p {
-  color: #f0f0f0 !important;
+/* ------------------------- */
+/* High-contrast (dark theme) tweaks */
+/* ------------------------- */
+
+body.high-contrast .alert-severe,
+body.high-contrast .alert-moderate,
+body.high-contrast .alert-info {
+  background-color: #020617;
+  border-color: #1f2937;
+  border-left-color: #38bdf8; /* accent stripe still visible */
 }
 
+body.high-contrast .alert-title,
+body.high-contrast .alert-location,
+body.high-contrast .alert-description,
+body.high-contrast .alert-timing,
+body.high-contrast .alert-issued,
+body.high-contrast .section-header h2,
+body.high-contrast .section-header p {
+  color: #e5e7eb;
+}
 
+body.high-contrast .alert-time-range {
+  color: #f9fafb;
+}
+
+body.high-contrast .alert-badge-severe {
+  background-color: #b91c1c;
+  color: #fee2e2;
+  border-color: #fecaca;
+}
+
+body.high-contrast .alert-badge-moderate {
+  background-color: #0f172a;
+  color: #e5e7eb;
+}
+
+body.high-contrast .alert-badge-info {
+  background-color: #0f172a;
+  color: #e5e7eb;
+}
+
+body.high-contrast .alert-icon-severe {
+  background-color: #7f1d1d;
+  color: #fee2e2;
+}
+
+body.high-contrast .alert-icon-moderate {
+  background-color: #7c2d12;
+  color: #ffedd5;
+}
+
+body.high-contrast .alert-icon-info {
+  background-color: #1d4ed8;
+  color: #eff6ff;
+}
+
+body.high-contrast .alert-settings {
+  background-color: #020617;
+  border-color: #1f2937;
+}
+
+body.high-contrast .settings-tag {
+  background-color: #020617;
+  color: #e5e7eb;
+  border: 1px solid #334155;
+}
