@@ -425,7 +425,74 @@ body {
   }
 }
 
-body.high-contrast .section-header h2,
-body.high-contrast .section-header p {
-  color: #f0f0f0 !important;
+/* 🌑 High Contrast Mode — DAILY PAGE (excluding top nav) */
+body.high-contrast {
+  background: #000 !important;
+  color: #fff !important;
+}
+
+/* Make ALL text inside main content white */
+body.high-contrast .main-container,
+body.high-contrast .daily-main,
+body.high-contrast .daily-forecast-container,
+body.high-contrast *:not(.top-nav *) {
+  color: #fff !important;
+  fill: #fff !important;
+}
+
+/* Remove soft/pastel icon backgrounds and make icons white */
+body.high-contrast .icon-bg,
+body.high-contrast .hour-icon,
+body.high-contrast .metric-icon,
+body.high-contrast .small-icon {
+  background: none !important;
+  color: #fff !important;
+  border: 2px solid #fff !important;
+  border-radius: 8px;
+}
+
+/* Buttons inside main content */
+body.high-contrast .main-container button,
+body.high-contrast .main-container .btn-ghost {
+  background: #000 !important;
+  color: #fff !important;
+  border: 2px solid #fff !important;
+}
+body.high-contrast .main-container button:hover {
+  background: #fff !important;
+  color: #000 !important;
+}
+
+/* Cards inside main content */
+body.high-contrast .main-container .card,
+body.high-contrast .main-container .day-summary-card,
+body.high-contrast .main-container .metric-card,
+body.high-contrast .main-container .small-card {
+  background: #000 !important;
+  border: 2px solid #fff !important;
+}
+
+
+
+/* Metric Rows */
+body.high-contrast .main-container .metric-row {
+  border-bottom: 1px solid #fff !important;
+}
+
+/* Headings inside main content */
+body.high-contrast .main-container h1,
+body.high-contrast .main-container h2,
+body.high-contrast .main-container h3 {
+  color: #fff !important;
+  border-bottom: 1px solid #fff;
+}
+
+/* Summary text and labels */
+body.high-contrast .main-container .summary-text,
+body.high-contrast .main-container .metric-label,
+body.high-contrast .main-container .small-label,
+body.high-contrast .main-container .hour-time,
+body.high-contrast .main-container .hour-temp,
+body.high-contrast .main-container .hour-precip {
+  color: #fff !important;
 }
